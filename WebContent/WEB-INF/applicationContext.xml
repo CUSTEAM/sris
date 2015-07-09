@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans 
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						classpath:/org/springframework/beans/factory/xml/spring-beans-3.2.xsd
+						http://www.springframework.org/schema/context
+						classpath:/org/springframework/beans/factory/xml/spring-context-3.2.xsd">	
+	
+	<bean id="dataSource"
+       class="org.springframework.jndi.JndiObjectFactoryBean">
+       <property name="jndiName">
+          <value>java:comp/env/jdbc/mysql</value>
+       </property>
+    </bean>
+    
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource"><ref local="dataSource"/></property>
+        <property name="hibernateProperties">
+            <props>
+               <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+               <prop key="hibernate.show_sql">false</prop>
+			   <prop key="hibernate.cache.provider_class">com.opensymphony.oscache.hibernate.OSCacheProvider</prop>
+			   <prop key="hibernate.cache.use_query_cache">true</prop>
+	     	</props>
+        </property>     
+        <property name="mappingResources">
+            <list>
+            	<value>model/Dilg.hbm.xml</value>
+            	<value>model/DilgApply.hbm.xml</value>
+            	<value>model/Stmd.hbm.xml</value>
+            </list>
+        </property>
+    </bean>
+    
+    <bean id="JdbcDAO" class="dao.JdbcDAO">
+    	<description>JDBC資料來源</description>
+    	<property name="dataSource" ref="dataSource"/>
+    </bean>    
+    
+    <bean id="HibernateDAO" class="dao.HibernateDAO">
+    	<description>hibernate資料來源</description>
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <bean id="BaseMathImpl" class="service.impl.base.BaseMathImpl">
+    	<description>數字計算基本方法</description>
+    </bean>
+    
+    <bean id="BaseLiteralImpl" class="service.impl.base.BaseLiteralImpl">
+    	<description>字串處理基本方法</description>
+    </bean>
+    
+    <bean id="BaseIOImpl" class="service.impl.base.BaseIOImpl">
+    	<description>串流處理基本方法</description>
+    </bean>
+    
+    <bean id="DataManager" class="service.impl.base.BaseAccessImpl">
+    	<description>資料來源匯整基本方法</description>
+		<property name="jdbcDao" ref="JdbcDAO"/>
+		<property name="hibernateDAO" ref="HibernateDAO"/>
+    </bean>
+    
+    <bean id="DataFinder" class="service.impl.DataFinder" parent="DataManager">
+    	<description>資料查詢低階方法</description>
+    </bean>
+    
+    <bean id="DataUpdater" class="service.impl.DataUpdater" parent="DataManager">
+    	<description>資料修改低階方法</description>
+    </bean>
+    
+    <bean id="AccountManager" class="service.impl.AccountManager">
+    	<description>帳號存取高階方法</description>
+	    <property name="dataFinder"   ref="DataFinder"/>
+	    <property name="dataUpdater" ref="DataUpdater"/>        
+    </bean>
+    
+    <bean id="CourseManager" class="service.impl.CourseManager">
+    	<description>課程存取高階方法</description>
+	    <property name="dataFinder"   ref="DataFinder"/>
+	    <property name="dataUpdater" ref="DataUpdater"/>        
+    </bean>
+    
+    <bean id="StudAffairManager" class="service.impl.StudAffairManager">
+    	<description>學務存取高階方法</description>
+	    <property name="dataFinder"   ref="DataFinder"/>
+	    <property name="dataUpdater" ref="DataUpdater"/>        
+    </bean>
+
+</beans>

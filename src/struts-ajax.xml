@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	
+	
+	
+	<package name="ajax.fee" extends="struts-default, json-default" namespace="/">	
+		<!-- 收費單 -->
+		<action name="TuitionAjax" class="action.fee.TuitionAjax">
+			<result type="json">
+			    <param name="msg">msg</param>
+			    <param name="callbackParameter">back</param>
+		   	</result>
+		</action>
+		
+	</package>
+	
+	
+</struts>

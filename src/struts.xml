@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<constant name="struts.i18n.reload" value="false" />
+    <constant name="struts.devMode" value="false" />
+    <constant name="struts.configuration.xml.reload" value="false" />
+    <!-- constant name="struts.custom.i18n.resources" value="globalMessages" /-->
+    <!-- constant name="struts.action.extension" value="jspxx" /-->
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<constant name="struts.convention.result.path" value="/" />
+	<constant name="struts.convention.exclude.packages" value="org.apache.struts.*,org.springframework.web.struts.*,org.springframework.web.struts2.*,org.hibernate.*"/>
+	<constant name="struts.serve.static" value="true" />	
+	<package name="abstract_struts" abstract="true" extends="struts-default" namespace="/">		
+		<interceptors>
+			<interceptor name="loginInterceptor" class="service.interceptor.LoginInterceptor"></interceptor>
+			<interceptor-stack name="loginDefaultStack">
+			    <interceptor-ref name="defaultStack"></interceptor-ref><!-- struts標準攔截器 -->
+				<interceptor-ref name="loginInterceptor"></interceptor-ref><!-- 登入驗證攔截器 -->				
+			</interceptor-stack>
+		</interceptors>
+		
+		<default-interceptor-ref name="loginDefaultStack"></default-interceptor-ref><!-- 登入驗證設為全域攔截器 -->
+		
+		<default-action-ref name="Login" /><!-- 全域基本動作 -->
+		
+		<global-results>
+			<result name="Relogin">/index.jsp</result>
+		</global-results>		
+	</package>
+	
+	<include file="struts-page.xml" />
+	<include file="struts-ajax.xml" />
+</struts>

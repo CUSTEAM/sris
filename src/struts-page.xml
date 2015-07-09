@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>	
+	<package name="Publiclogin" extends="abstract_struts" namespace="/">		
+		<action name="Logout" class="action.Logout">
+			<result name="logout">/index.jsp</result>
+		</action>		
+	</package>
+	
+	<package name="fee" extends="abstract_struts" namespace="/">		
+		<action name="TuitionManager" class="action.fee.TuitionManagerAction">
+			<result>/jsp/fee/TuitionManager.jsp</result>
+		</action>		
+	</package>
+	
+	<package name="Score" extends="abstract_struts" namespace="/">		
+		<action name="ScorePrint" class="action.score.ScorePrintAction">
+			<result>/jsp/score/ScorePrint.jsp</result>
+		</action>
+		
+		<action name="ScoreFilder" class="action.score.ScoreFilderAction">
+			<result>/jsp/score/ScoreFilder.jsp</result>
+		</action>
+		
+		<action name="ScoreManager" class="action.score.ScoreManagerAction">
+			<result>/jsp/score/ScoreManager.jsp</result>
+		</action>
+	</package>
+	
+	<package name="Student" extends="abstract_struts" namespace="/">
+		<action name="DumpNewStmd" class="action.student.DumpNewStmdAction">
+			<result>/jsp/student/DumpNewStmd.jsp</result>
+		</action>
+		
+		<action name="CheckStmdProfile" class="action.student.CheckStmdProfileAction">
+			<result>/jsp/student/CheckStmdProfile.jsp</result>
+		</action>
+		
+		<action name="Upgrade" class="action.student.UpgradeAction">
+			<result>/jsp/student/Upgrade.jsp</result>
+		</action>
+		
+		<action name="CountGstmd" class="action.student.CountGstmd">
+			<result>/jsp/student/CountGstmd.jsp</result>
+		</action>
+		
+	</package>
+	
+	
+</struts>
