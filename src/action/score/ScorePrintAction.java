@@ -446,11 +446,24 @@ public class ScorePrintAction extends scorePrintBase{
 		
 		List<Map>stds=new ArrayList();//上學期21
 		
+		//復學生上學期成績
+		List<Map>st=df.sqlGet("SELECT student_no FROM stmd WHERE occur_status='4'AND occur_year='"+s.getAttribute("school_year")+"'AND occur_term='"+s.getAttribute("school_term")+"'");
+		List<Map>tmp=new ArrayList();
+		Map<String, String>sc;
+		for(int i=0; i<st.size(); i++){			
+			sc=df.sqlGetMap("SELECT school_year, school_term FROM ScoreHist WHERE "
+			+ "(school_year!="+s.getAttribute("school_year")+" OR school_term!="+s.getAttribute("school_term")+") AND "
+			+ "student_no='"+st.get(i).get("student_no")+"' ORDER BY school_year DESC, school_term DESC LIMIT 1");			
+			tmp.addAll(df.sqlGet("SELECT c.ClassName,s.student_no, s.student_name, SUM(h.credit)as cnt, SUM(IF(score<60, h.credit, 0))as fail FROM ScoreHist h, stmd s, Class c "
+			+ "WHERE s.student_no=h.student_no AND c.ClassNo=s.depart_class AND (h.school_year!='"+s.getAttribute("school_year")+"' OR h.school_term!='"+s.getAttribute("school_term")+
+			"') AND s.student_no='"+st.get(i).get("student_no")+"'GROUP BY s.student_no ORDER BY c.ClassNo"));			
+		}		
+		
 		//上學期成績
-		List<Map>tmp=df.sqlGet("SELECT c.ClassName,s.student_no, s.student_name, SUM(h.credit)as cnt, SUM(IF(score<60, h.credit, 0))as fail " +
+		tmp.addAll(df.sqlGet("SELECT c.ClassName,s.student_no, s.student_name, SUM(h.credit)as cnt, SUM(IF(score<60, h.credit, 0))as fail " +
 		"FROM ScoreHist h, stmd s, Class c WHERE s.student_no=h.student_no AND c.ClassNo=s.depart_class AND " +
 		"h.school_year='"+year+"' AND h.school_term='"+term+"' AND c.CampusNo='"+cno+"'AND c.SchoolType='"+tno+"' AND c.SchoolNo LIKE'"+sno+"%' AND c.DeptNo LIKE'"+dno+"%' AND c.Grade LIKE'"+gno+"%' AND c.SeqNo LIKE'"+zno+"%' " +
-		"GROUP BY s.student_no ORDER BY c.ClassNo");
+		"GROUP BY s.student_no ORDER BY c.ClassNo"));
 		
 		float cnt;
 		float fail;
@@ -458,8 +471,9 @@ public class ScorePrintAction extends scorePrintBase{
 			fail=Float.parseFloat(tmp.get(i).get("fail").toString());	
 			if(fail<1){				
 				continue;
-			}
+			}			
 			cnt=Float.parseFloat(tmp.get(i).get("cnt").toString());
+			if(cnt<9)continue;
 			if(fail>=(cnt/2)){				
 				stds.add(tmp.get(i));
 			}
@@ -471,15 +485,16 @@ public class ScorePrintAction extends scorePrintBase{
 		List<Map>tmp1=df.sqlGet("SELECT c.ClassName,s.student_no, s.student_name, SUM(h.credit)as cnt, SUM(IF((h.score<60 OR h.status IS NOT NULL), h.credit, 0))as fail " +
 		"FROM Seld h, stmd s, Class c, Dtime d WHERE d.Oid=h.Dtime_oid AND d.Sterm='"+s.getAttribute("school_term")+"' AND " +
 		"s.student_no=h.student_no AND c.ClassNo=s.depart_class AND c.CampusNo='"+cno+"' AND c.SchoolType='"+tno+"' " +
-		"GROUP BY s.student_no ORDER BY c.ClassNo");	
+		"GROUP BY s.student_no ORDER BY c.ClassNo");		
 		
 		//本學期21
 		for(int i=0; i<tmp1.size(); i++){
 			fail=Float.parseFloat(tmp1.get(i).get("fail").toString());	
 			if(fail<1){//沒有不及格跳出
 				continue;
-			}
+			}			
 			cnt=Float.parseFloat(tmp1.get(i).get("cnt").toString());
+			if(cnt<9)continue;//小於九學分無二一
 			if(fail>=(cnt/2)){				
 				stds1.add(tmp1.get(i));
 			}
