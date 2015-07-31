@@ -473,7 +473,7 @@ public class ScorePrintAction extends scorePrintBase{
 				continue;
 			}			
 			cnt=Float.parseFloat(tmp.get(i).get("cnt").toString());
-			if(cnt<9)continue;
+			//if(cnt<9)continue;
 			if(fail>=(cnt/2)){				
 				stds.add(tmp.get(i));
 			}
@@ -494,7 +494,7 @@ public class ScorePrintAction extends scorePrintBase{
 				continue;
 			}			
 			cnt=Float.parseFloat(tmp1.get(i).get("cnt").toString());
-			if(cnt<9)continue;//小於九學分無二一
+			//if(cnt<9)continue;//小於九學分無二一
 			if(fail>=(cnt/2)){				
 				stds1.add(tmp1.get(i));
 			}
