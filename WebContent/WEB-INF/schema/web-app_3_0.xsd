@@ -268,5 +268,9 @@
       <xsd:field xpath="javaee:role-link"/>
     </xsd:keyref>
   </xsd:element>
+  
+  <xsd:simpleType name="web-appType">
+  	<xsd:restriction base="string"></xsd:restriction>
+  </xsd:simpleType>
 
 </xsd:schema>
