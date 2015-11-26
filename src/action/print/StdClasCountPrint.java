@@ -479,7 +479,7 @@ public class StdClasCountPrint extends BaseAction{
 		+ "CODE_COLLEGE cco ON c.InstNo=cco.id, CODE_CAMPUS cc, CODE_DEPT cd,CODE_SCHOOL cs, "
 		+ "CODE_SCHOOL_TYPE cst WHERE c.SchoolType=cst.id AND c.SchoolNo=cs.id AND c.DeptNo=cd.id "
 		+ "AND c.CampusNo=cc.id GROUP BY c.ClassNo HAVING stds>0;";
-		System.out.println(sql);
+		//System.out.println(sql);
 		List<Map>s=df.sqlGet(sql);
 		
 		
@@ -632,10 +632,7 @@ public class StdClasCountPrint extends BaseAction{
 			out.println ("    <Cell><Data ss:Type='Number'>"+r.get(i).get("delay")+"</Data></Cell>");
 			out.println ("    <Cell><Data ss:Type='Number'>"+((r.get(i).get("deCount")-r.get(i).get("deFemale")))+"</Data></Cell>");
 			out.println ("    <Cell><Data ss:Type='Number'>"+r.get(i).get("deFemale")+"</Data></Cell>");
-			out.println ("    <Cell><Data ss:Type='Number'>"+r.get(i).get("deCount")+"</Data></Cell>");
-			
-			
-			
+			out.println ("    <Cell><Data ss:Type='Number'>"+r.get(i).get("deCount")+"</Data></Cell>");			
 			out.println ("    <Cell><Data ss:Type='Number'>"+(r.get(i).get("usCount")+r.get(i).get("unCount")+r.get(i).get("deCount"))+"</Data></Cell>");
 			out.println ("   </Row>");
 		}		
@@ -659,7 +656,7 @@ public class StdClasCountPrint extends BaseAction{
 		
 		t=df.sqlGet("SELECT id, name FROM CODE_COLLEGE");
 		r=new ArrayList();
-		for(int i=0; i<t.size(); i++){			
+		for(int i=0; i<t.size(); i++){
 			r.add(count(s, "InstNo", t.get(i).get("id")));
 		}
 		out.println (" <Worksheet ss:Name='院'>");
@@ -954,6 +951,9 @@ public class StdClasCountPrint extends BaseAction{
 		out.println ("   <ProtectScenarios>False</ProtectScenarios>");
 		out.println ("  </WorksheetOptions>");
 		out.println (" </Worksheet>");
+		
+		
+		
 		out.println (" <Worksheet ss:Name='班級'>");
 		out.println ("  <Names>");
 		out.println ("   <NamedRange ss:Name='Print_Titles' ss:RefersTo='=班級!R1'/>");
@@ -1002,7 +1002,7 @@ public class StdClasCountPrint extends BaseAction{
 			out.println ("    <Cell><Data ss:Type='String'>"+s.get(i).get("DeptName")+"</Data></Cell>");
 			out.println ("    <Cell><Data ss:Type='String'>"+s.get(i).get("ClassName")+"</Data></Cell>");
 			out.println ("    <Cell><Data ss:Type='String'>"+getTypeName(s.get(i).get("Type").toString())+"</Data></Cell>");
-			out.println ("    <Cell><Data ss:Type='Number'>"+(  Integer.parseInt(s.get(i).get("stds").toString()) - Integer.parseInt( s.get(i).get("stds2").toString() )   )+"</Data></Cell>");
+			out.println ("    <Cell><Data ss:Type='Number'>"+(Integer.parseInt(s.get(i).get("stds").toString()) - Integer.parseInt( s.get(i).get("stds2").toString() )   )+"</Data></Cell>");
 			out.println ("    <Cell><Data ss:Type='Number'>"+s.get(i).get("stds2")+"</Data></Cell>");
 			out.println ("    <Cell><Data ss:Type='Number'>"+s.get(i).get("stds")+"</Data></Cell>");
 			out.println ("   </Row>");
@@ -1027,6 +1027,253 @@ public class StdClasCountPrint extends BaseAction{
 		out.println ("   <ProtectScenarios>False</ProtectScenarios>");
 		out.println ("  </WorksheetOptions>");
 		out.println (" </Worksheet>");
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		out.println (" <Worksheet ss:Name='常態列表'>");
+		out.println ("  <Names>");
+		out.println ("   <NamedRange ss:Name='Print_Titles' ss:RefersTo='=常態列表!R1'/>");
+		out.println ("  </Names>");
+		out.println ("  <Table ss:ExpandedColumnCount='10' ss:ExpandedRowCount='"+(s.size()+99)+"' x:FullColumns='1'");
+		out.println ("   x:FullRows='1' ss:StyleID='s24' ss:DefaultColumnWidth='54'");
+		out.println ("   ss:DefaultRowHeight='16.5'>");
+		out.println ("   <Column ss:StyleID='s44' ss:AutoFitWidth='0' ss:Width='63.75'/>");
+		out.println ("   <Column ss:StyleID='s45' ss:AutoFitWidth='0' ss:Width='63.75'/>");
+		out.println ("   <Column ss:StyleID='s45' ss:AutoFitWidth='0' ss:Width='48'/>");
+		out.println ("   <Column ss:StyleID='s45' ss:AutoFitWidth='0' ss:Width='75.75'/>");
+		out.println ("   <Column ss:StyleID='s46' ss:AutoFitWidth='0' ss:Width='103.5'/>");
+		out.println ("   <Column ss:StyleID='s44' ss:AutoFitWidth='0' ss:Width='96'/>");
+		out.println ("   <Column ss:StyleID='s46' ss:AutoFitWidth='0' ss:Width='55.5'/>");
+		out.println ("   <Column ss:StyleID='s44' ss:AutoFitWidth='0' ss:Width='21'/>");
+		out.println ("   <Column ss:StyleID='s45' ss:AutoFitWidth='0' ss:Width='23.25'/>");
+		out.println ("   <Column ss:StyleID='s46' ss:AutoFitWidth='0' ss:Width='32.25'/>");
+		out.println ("   <Row>");
+		out.println ("    <Cell ss:StyleID='s161'><Data ss:Type='String'>校區</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s162'><Data ss:Type='String'>學院</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s162'><Data ss:Type='String'>部制</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s162'><Data ss:Type='String'>學制</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s163'><Data ss:Type='String'>系</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s161'><Data ss:Type='String'>班級名稱</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s163'><Data ss:Type='String'>型態</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s161'><Data ss:Type='String'>男</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s162'><Data ss:Type='String'>女</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s163'><Data ss:Type='String'>合計</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("   </Row>");
+		for(int i=0; i<s.size(); i++){
+			if(s.get(i).get("Money")==null)continue;
+			out.println ("   <Row>");
+			out.println ("    <Cell><Data ss:Type='String'>"+s.get(i).get("CampusName")+"</Data></Cell>");
+			out.println ("    <Cell><Data ss:Type='String'>"+s.get(i).get("CollegeName")+"</Data></Cell>");
+			out.println ("    <Cell><Data ss:Type='String'>"+s.get(i).get("TypeName")+"</Data></Cell>");
+			out.println ("    <Cell><Data ss:Type='String'>"+s.get(i).get("SchoolName")+"</Data></Cell>");
+			out.println ("    <Cell><Data ss:Type='String'>"+s.get(i).get("DeptName")+"</Data></Cell>");
+			out.println ("    <Cell><Data ss:Type='String'>"+s.get(i).get("ClassName")+"</Data></Cell>");
+			out.println ("    <Cell><Data ss:Type='String'>"+getTypeName(s.get(i).get("Type").toString())+"</Data></Cell>");
+			out.println ("    <Cell><Data ss:Type='Number'>"+(  Integer.parseInt(s.get(i).get("stds").toString()) - Integer.parseInt( s.get(i).get("stds2").toString() )   )+"</Data></Cell>");
+			out.println ("    <Cell><Data ss:Type='Number'>"+s.get(i).get("stds2")+"</Data></Cell>");
+			out.println ("    <Cell><Data ss:Type='Number'>"+s.get(i).get("stds")+"</Data></Cell>");
+			out.println ("   </Row>");
+		}
+		
+		out.println ("  </Table>");
+		out.println ("  <WorksheetOptions xmlns='urn:schemas-microsoft-com:office:excel'>");
+		out.println ("   <PageSetup>");
+		out.println ("    <Header x:Margin='0.31496062992125984' x:Data='&amp;C&amp;20全校班級明細&amp;G'/>");
+		out.println ("    <Footer x:Margin='0.31496062992125984'/>");
+		out.println ("    <PageMargins x:Bottom='0.74803149606299213' x:Left='0.23622047244094491'");
+		out.println ("     x:Right='0.23622047244094491' x:Top='0.74803149606299213'/>");
+		out.println ("   </PageSetup>");
+		out.println ("   <Print>");
+		out.println ("    <ValidPrinterInfo/>");
+		out.println ("    <PaperSizeIndex>9</PaperSizeIndex>");
+		out.println ("    <HorizontalResolution>-1</HorizontalResolution>");
+		out.println ("    <VerticalResolution>-1</VerticalResolution>");
+		out.println ("   </Print>");
+		out.println ("   <ProtectObjects>False</ProtectObjects>");
+		out.println ("   <ProtectScenarios>False</ProtectScenarios>");
+		out.println ("  </WorksheetOptions>");
+		out.println (" </Worksheet>");
+		
+		
+		
+		
+		
+		
+		out.println (" <Worksheet ss:Name='非常態列表'>");
+		out.println ("  <Names>");
+		out.println ("   <NamedRange ss:Name='Print_Titles' ss:RefersTo='=非常態列表!R1'/>");
+		out.println ("  </Names>");
+		out.println ("  <Table ss:ExpandedColumnCount='10' ss:ExpandedRowCount='"+(s.size()+99)+"' x:FullColumns='1'");
+		out.println ("   x:FullRows='1' ss:StyleID='s24' ss:DefaultColumnWidth='54'");
+		out.println ("   ss:DefaultRowHeight='16.5'>");
+		out.println ("   <Column ss:StyleID='s44' ss:AutoFitWidth='0' ss:Width='63.75'/>");
+		out.println ("   <Column ss:StyleID='s45' ss:AutoFitWidth='0' ss:Width='63.75'/>");
+		out.println ("   <Column ss:StyleID='s45' ss:AutoFitWidth='0' ss:Width='48'/>");
+		out.println ("   <Column ss:StyleID='s45' ss:AutoFitWidth='0' ss:Width='75.75'/>");
+		out.println ("   <Column ss:StyleID='s46' ss:AutoFitWidth='0' ss:Width='103.5'/>");
+		out.println ("   <Column ss:StyleID='s44' ss:AutoFitWidth='0' ss:Width='96'/>");
+		out.println ("   <Column ss:StyleID='s46' ss:AutoFitWidth='0' ss:Width='55.5'/>");
+		out.println ("   <Column ss:StyleID='s44' ss:AutoFitWidth='0' ss:Width='21'/>");
+		out.println ("   <Column ss:StyleID='s45' ss:AutoFitWidth='0' ss:Width='23.25'/>");
+		out.println ("   <Column ss:StyleID='s46' ss:AutoFitWidth='0' ss:Width='32.25'/>");
+		out.println ("   <Row>");
+		out.println ("    <Cell ss:StyleID='s161'><Data ss:Type='String'>校區</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s162'><Data ss:Type='String'>學院</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s162'><Data ss:Type='String'>部制</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s162'><Data ss:Type='String'>學制</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s163'><Data ss:Type='String'>系</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s161'><Data ss:Type='String'>班級名稱</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s163'><Data ss:Type='String'>型態</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s161'><Data ss:Type='String'>男</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s162'><Data ss:Type='String'>女</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s163'><Data ss:Type='String'>合計</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("   </Row>");
+		for(int i=0; i<s.size(); i++){
+			if(s.get(i).get("Money")!=null)continue;
+			if(s.get(i).get("Type").toString().equals("E"))continue;
+			out.println ("   <Row>");
+			out.println ("    <Cell><Data ss:Type='String'>"+s.get(i).get("CampusName")+"</Data></Cell>");
+			out.println ("    <Cell><Data ss:Type='String'>"+s.get(i).get("CollegeName")+"</Data></Cell>");
+			out.println ("    <Cell><Data ss:Type='String'>"+s.get(i).get("TypeName")+"</Data></Cell>");
+			out.println ("    <Cell><Data ss:Type='String'>"+s.get(i).get("SchoolName")+"</Data></Cell>");
+			out.println ("    <Cell><Data ss:Type='String'>"+s.get(i).get("DeptName")+"</Data></Cell>");
+			out.println ("    <Cell><Data ss:Type='String'>"+s.get(i).get("ClassName")+"</Data></Cell>");
+			out.println ("    <Cell><Data ss:Type='String'>"+getTypeName(s.get(i).get("Type").toString())+"</Data></Cell>");
+			out.println ("    <Cell><Data ss:Type='Number'>"+(  Integer.parseInt(s.get(i).get("stds").toString()) - Integer.parseInt( s.get(i).get("stds2").toString() )   )+"</Data></Cell>");
+			out.println ("    <Cell><Data ss:Type='Number'>"+s.get(i).get("stds2")+"</Data></Cell>");
+			out.println ("    <Cell><Data ss:Type='Number'>"+s.get(i).get("stds")+"</Data></Cell>");
+			out.println ("   </Row>");
+		}
+		
+		out.println ("  </Table>");
+		out.println ("  <WorksheetOptions xmlns='urn:schemas-microsoft-com:office:excel'>");
+		out.println ("   <PageSetup>");
+		out.println ("    <Header x:Margin='0.31496062992125984' x:Data='&amp;C&amp;20全校班級明細&amp;G'/>");
+		out.println ("    <Footer x:Margin='0.31496062992125984'/>");
+		out.println ("    <PageMargins x:Bottom='0.74803149606299213' x:Left='0.23622047244094491'");
+		out.println ("     x:Right='0.23622047244094491' x:Top='0.74803149606299213'/>");
+		out.println ("   </PageSetup>");
+		out.println ("   <Print>");
+		out.println ("    <ValidPrinterInfo/>");
+		out.println ("    <PaperSizeIndex>9</PaperSizeIndex>");
+		out.println ("    <HorizontalResolution>-1</HorizontalResolution>");
+		out.println ("    <VerticalResolution>-1</VerticalResolution>");
+		out.println ("   </Print>");
+		out.println ("   <ProtectObjects>False</ProtectObjects>");
+		out.println ("   <ProtectScenarios>False</ProtectScenarios>");
+		out.println ("  </WorksheetOptions>");
+		out.println (" </Worksheet>");
+		
+		
+		
+		out.println (" <Worksheet ss:Name='延修列表'>");
+		out.println ("  <Names>");
+		out.println ("   <NamedRange ss:Name='Print_Titles' ss:RefersTo='=延修列表!R1'/>");
+		out.println ("  </Names>");
+		out.println ("  <Table ss:ExpandedColumnCount='10' ss:ExpandedRowCount='"+(s.size()+99)+"' x:FullColumns='1'");
+		out.println ("   x:FullRows='1' ss:StyleID='s24' ss:DefaultColumnWidth='54'");
+		out.println ("   ss:DefaultRowHeight='16.5'>");
+		out.println ("   <Column ss:StyleID='s44' ss:AutoFitWidth='0' ss:Width='63.75'/>");
+		out.println ("   <Column ss:StyleID='s45' ss:AutoFitWidth='0' ss:Width='63.75'/>");
+		out.println ("   <Column ss:StyleID='s45' ss:AutoFitWidth='0' ss:Width='48'/>");
+		out.println ("   <Column ss:StyleID='s45' ss:AutoFitWidth='0' ss:Width='75.75'/>");
+		out.println ("   <Column ss:StyleID='s46' ss:AutoFitWidth='0' ss:Width='103.5'/>");
+		out.println ("   <Column ss:StyleID='s44' ss:AutoFitWidth='0' ss:Width='96'/>");
+		out.println ("   <Column ss:StyleID='s46' ss:AutoFitWidth='0' ss:Width='55.5'/>");
+		out.println ("   <Column ss:StyleID='s44' ss:AutoFitWidth='0' ss:Width='21'/>");
+		out.println ("   <Column ss:StyleID='s45' ss:AutoFitWidth='0' ss:Width='23.25'/>");
+		out.println ("   <Column ss:StyleID='s46' ss:AutoFitWidth='0' ss:Width='32.25'/>");
+		out.println ("   <Row>");
+		out.println ("    <Cell ss:StyleID='s161'><Data ss:Type='String'>校區</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s162'><Data ss:Type='String'>學院</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s162'><Data ss:Type='String'>部制</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s162'><Data ss:Type='String'>學制</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s163'><Data ss:Type='String'>系</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s161'><Data ss:Type='String'>班級名稱</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s163'><Data ss:Type='String'>型態</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s161'><Data ss:Type='String'>男</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s162'><Data ss:Type='String'>女</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s163'><Data ss:Type='String'>合計</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("   </Row>");
+		for(int i=0; i<s.size(); i++){			
+			if(!s.get(i).get("Type").toString().equals("E"))continue;
+			out.println ("   <Row>");
+			out.println ("    <Cell><Data ss:Type='String'>"+s.get(i).get("CampusName")+"</Data></Cell>");
+			out.println ("    <Cell><Data ss:Type='String'>"+s.get(i).get("CollegeName")+"</Data></Cell>");
+			out.println ("    <Cell><Data ss:Type='String'>"+s.get(i).get("TypeName")+"</Data></Cell>");
+			out.println ("    <Cell><Data ss:Type='String'>"+s.get(i).get("SchoolName")+"</Data></Cell>");
+			out.println ("    <Cell><Data ss:Type='String'>"+s.get(i).get("DeptName")+"</Data></Cell>");
+			out.println ("    <Cell><Data ss:Type='String'>"+s.get(i).get("ClassName")+"</Data></Cell>");
+			out.println ("    <Cell><Data ss:Type='String'>"+getTypeName(s.get(i).get("Type").toString())+"</Data></Cell>");
+			out.println ("    <Cell><Data ss:Type='Number'>"+(  Integer.parseInt(s.get(i).get("stds").toString()) - Integer.parseInt( s.get(i).get("stds2").toString() )   )+"</Data></Cell>");
+			out.println ("    <Cell><Data ss:Type='Number'>"+s.get(i).get("stds2")+"</Data></Cell>");
+			out.println ("    <Cell><Data ss:Type='Number'>"+s.get(i).get("stds")+"</Data></Cell>");
+			out.println ("   </Row>");
+		}
+		
+		out.println ("  </Table>");
+		out.println ("  <WorksheetOptions xmlns='urn:schemas-microsoft-com:office:excel'>");
+		out.println ("   <PageSetup>");
+		out.println ("    <Header x:Margin='0.31496062992125984' x:Data='&amp;C&amp;20全校班級明細&amp;G'/>");
+		out.println ("    <Footer x:Margin='0.31496062992125984'/>");
+		out.println ("    <PageMargins x:Bottom='0.74803149606299213' x:Left='0.23622047244094491'");
+		out.println ("     x:Right='0.23622047244094491' x:Top='0.74803149606299213'/>");
+		out.println ("   </PageSetup>");
+		out.println ("   <Print>");
+		out.println ("    <ValidPrinterInfo/>");
+		out.println ("    <PaperSizeIndex>9</PaperSizeIndex>");
+		out.println ("    <HorizontalResolution>-1</HorizontalResolution>");
+		out.println ("    <VerticalResolution>-1</VerticalResolution>");
+		out.println ("   </Print>");
+		out.println ("   <ProtectObjects>False</ProtectObjects>");
+		out.println ("   <ProtectScenarios>False</ProtectScenarios>");
+		out.println ("  </WorksheetOptions>");
+		out.println (" </Worksheet>");
+		
+		
 		out.println ("</Workbook>");
 	}
 	
