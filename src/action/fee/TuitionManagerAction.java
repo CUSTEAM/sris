@@ -161,7 +161,7 @@ public class TuitionManagerAction extends BaseAction{
 		for(int i=0; i<list.size(); i++){
 			
 			if(term.equals("1")){
-				stds=df.sqlGet("SELECT s.student_no, s.student_name FROM stmd s, Class c WHERE "
+				stds=df.sqlGet("SELECT s.student_no, s.student_name, s.idno FROM stmd s, Class c WHERE "
 				+ "s.depart_class=c.ClassNo AND c.CampusNo='"+list.get(i).get("CampusNo")+"'AND SchoolNo='"+list.get(i).get("SchoolNo")+"'AND "
 				+ "DeptNo='"+list.get(i).get("DeptNo")+"'AND Grade='"+(Integer.parseInt(list.get(i).get("Grade").toString())-1)+"'AND SeqNo='"+list.get(i).get("SeqNo")+"'ORDER BY s.student_no");
 			
@@ -169,7 +169,7 @@ public class TuitionManagerAction extends BaseAction{
 					stds=genStds(Integer.parseInt(list.get(i).get("quota").toString()), list.get(i).get("no").toString());
 				}				
 			}else{
-				stds=df.sqlGet("SELECT s.student_no,s.student_name "
+				stds=df.sqlGet("SELECT s.student_no,s.student_name, s.idno "
 				+ "FROM stmd s WHERE s.depart_class='"+list.get(i).get("ClassNo")+"'ORDER BY s.student_no");
 			}			
 			list.get(i).put("stds", stds);
@@ -298,40 +298,33 @@ public class TuitionManagerAction extends BaseAction{
 		List<Map>list=genStds();
 		List<Map>stds;
 		out.println (" <Worksheet ss:Name='SHEET1'>");
-		out.println ("  <Table ss:ExpandedColumnCount='28' ss:ExpandedRowCount='"+(row+1)+"' x:FullColumns='1'");
+		out.println ("  <Table ss:ExpandedColumnCount='19' ss:ExpandedRowCount='"+(row+1)+"' x:FullColumns='1'");
 		out.println ("   x:FullRows='1' ss:DefaultColumnWidth='54' ss:DefaultRowHeight='16.5'>");
-		out.println ("   <Column ss:Index='4' ss:AutoFitWidth='0' ss:Width='147'/>");
-		out.println ("   <Column ss:Index='6' ss:AutoFitWidth='0' ss:Width='141'/>");
+		out.println ("   <Column ss:Index='1' ss:AutoFitWidth='0' ss:Width='66.75'/>");
+		out.println ("   <Column ss:Index='3' ss:AutoFitWidth='0' ss:Width='79.75'/>");
+		out.println ("   <Column ss:Index='7' ss:AutoFitWidth='0' ss:Width='141'/>");
+		out.println ("   <Column ss:Index='11' ss:AutoFitWidth='0' ss:Width='147'/>");
 		out.println ("   <Column ss:AutoFitWidth='0' ss:Width='71.25'/>");
 		out.println ("   <Row>");
-		out.println ("    <Cell><Data ss:Type='String'>部別代號</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s62'><Data ss:Type='String'>部別名稱</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s63'><Data ss:Type='String'>系所代號</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s62'><Data ss:Type='String'>系所名稱</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s62'><Data ss:Type='String'>班級代號</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>班級名稱</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s63'><Data ss:Type='String'>學號</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>身份證字號</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>虛擬帳號</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>存繳代號1</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>存繳代號2</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>姓名</Data></Cell>");
+		out.println ("    <Cell><Data ss:Type='String'>學號</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s62'><Data ss:Type='String'>姓名</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s63'><Data ss:Type='String'>身份證字號</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s62'><Data ss:Type='String'>電話</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s62'><Data ss:Type='String'>通訊地址</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>班級代號</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s63'><Data ss:Type='String'>班級名稱</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>部別代號</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>部別名稱</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>系所代號</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>系所名稱</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>學分費</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>雜費</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>電腦實習費</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>平安保險費</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>助學貸款</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>繳費金額合計</Data></Cell>");
 		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>存款帳號</Data></Cell>");
 		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>家長姓名</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>地址</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>電話</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>身分別</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>減免類別</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>繳款截止日</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s62'><Data ss:Type='String'>實貸金額</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>學分費</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s65'><Data ss:Type='String'>雜費</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>電腦實習費</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>退撫基金</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>平安保險費</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>冷氣使用費</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>助學貸款</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>學雜費合計</Data></Cell>");
 		out.println ("   </Row>");	
 		
 		String ClassName;
@@ -341,23 +334,30 @@ public class TuitionManagerAction extends BaseAction{
 				ClassName=list.get(i).get("CampusName").toString().substring(0, 2)+list.get(i).get("ClassName").toString();
 				if(term.equals("1")&&list.get(i).get("Grade").toString().equals("1")){
 					ClassName=ClassName.substring(0, ClassName.length()-1);
-				}				
+				}		
 				out.println ("   <Row>");
+				out.println ("    <Cell><Data ss:Type='String'>"+stds.get(j).get("student_no")+"</Data></Cell>");
+				out.println ("    <Cell><Data ss:Type='String'>"+stds.get(j).get("student_name")+"</Data></Cell>");
+				if(stds.get(j).get("idno")==null){
+					out.println ("    <Cell></Cell>");
+				}else{
+					out.println ("    <Cell><Data ss:Type='String'>"+stds.get(j).get("idno")+"</Data></Cell>");
+				}
+				out.println ("    <Cell></Cell>");
+				out.println ("    <Cell></Cell>");
+				out.println ("    <Cell><Data ss:Type='String'>"+list.get(i).get("ClassNo")+"</Data></Cell>");
+				out.println ("    <Cell><Data ss:Type='String'>"+ClassName+"</Data></Cell>");
 				out.println ("    <Cell><Data ss:Type='Number'>"+list.get(i).get("CampusNo")+"</Data></Cell>");
 				out.println ("    <Cell><Data ss:Type='String'>"+list.get(i).get("CampusName")+"</Data></Cell>");
 				out.println ("    <Cell><Data ss:Type='String'>"+list.get(i).get("CampusNo")+list.get(i).get("SchoolNo")+list.get(i).get("DeptNo")+"</Data></Cell>");
 				out.println ("    <Cell><Data ss:Type='String'>"+list.get(i).get("fname")+"</Data></Cell>");
-				out.println ("    <Cell><Data ss:Type='String'>"+list.get(i).get("ClassNo")+"</Data></Cell>");
-				out.println ("    <Cell><Data ss:Type='String'>"+ClassName+"</Data></Cell>");
-				out.println ("    <Cell><Data ss:Type='String'>"+stds.get(j).get("student_no")+"</Data></Cell>");
-				out.println ("    <Cell ss:Index='12'><Data ss:Type='String'>"+stds.get(j).get("student_name")+"</Data></Cell>");
-				out.println ("    <Cell ss:Index='19'><Data ss:Type='String'>"+edate+"</Data></Cell>");
+
 				
 				//學分費
 				if(((Map)list.get(i).get("pay1")).get("G")==null){
-					out.println ("    <Cell ss:Index='21'></Cell>");
+					out.println ("    <Cell ss:Index='12'></Cell>");
 				}else{
-					out.println ("    <Cell ss:Index='21'><Data ss:Type='Number'>"+((Map)list.get(i).get("pay1")).get("G")+"</Data></Cell>");
+					out.println ("    <Cell ss:Index='12'><Data ss:Type='Number'>"+((Map)list.get(i).get("pay1")).get("G")+"</Data></Cell>");
 				}
 				
 				if(((Map)list.get(i).get("pay1")).get("F")==null){
@@ -373,12 +373,12 @@ public class TuitionManagerAction extends BaseAction{
 				}				
 				
 				if(((Map)list.get(i).get("pay1")).get("J")==null){
-					out.println ("    <Cell ss:Index='25'></Cell>");
+					out.println ("    <Cell ss:Index='15'></Cell>");
 				}else{
-					out.println ("    <Cell ss:Index='25'><Data ss:Type='Number'>"+((Map)list.get(i).get("pay1")).get("J")+"</Data></Cell>");
+					out.println ("    <Cell ss:Index='15'><Data ss:Type='Number'>"+((Map)list.get(i).get("pay1")).get("J")+"</Data></Cell>");
 				}
 					
-				out.println ("    <Cell ss:Index='28'><Data ss:Type='Number'>"+list.get(i).get("mon1")+"</Data></Cell>");
+				out.println ("    <Cell ss:Index='17'><Data ss:Type='Number'>"+list.get(i).get("mon1")+"</Data></Cell>");
 				out.println ("   </Row>");
 			}
 		}		
@@ -482,46 +482,43 @@ public class TuitionManagerAction extends BaseAction{
 		out.println ("  </Style>");
 		out.println (" </Styles>");
 		out.println (" <Worksheet ss:Name='SHEET1'>");
-		out.println ("  <Table ss:ExpandedColumnCount='27' ss:ExpandedRowCount='"+row+1+"' x:FullColumns='1'");
+		out.println ("  <Table ss:ExpandedColumnCount='20' ss:ExpandedRowCount='"+row+1+"' x:FullColumns='1'");
 		out.println ("   x:FullRows='1' ss:DefaultColumnWidth='54' ss:DefaultRowHeight='16.5'>");
 		out.println ("   <Column ss:AutoFitWidth='0' ss:Width='68.25'/>");
 		out.println ("   <Column ss:AutoFitWidth='0' ss:Width='66.75'/>");
 		out.println ("   <Column ss:AutoFitWidth='0' ss:Width='67.5'/>");
+		out.println ("   <Column ss:AutoFitWidth='0' ss:Width='67.5'/>");
+		out.println ("   <Column ss:AutoFitWidth='0' ss:Width='67.5'/>");
+		out.println ("   <Column ss:AutoFitWidth='0' ss:Width='67.5'/>");
 		out.println ("   <Column ss:AutoFitWidth='0' ss:Width='100.5'/>");
-		out.println ("   <Column ss:AutoFitWidth='0' ss:Width='62.25'/>");
+		out.println ("   <Column ss:AutoFitWidth='0' ss:Width='67.5'/>");
+		out.println ("   <Column ss:AutoFitWidth='0' ss:Width='67.5'/>");
+		out.println ("   <Column ss:AutoFitWidth='0' ss:Width='67.5'/>");
 		out.println ("   <Column ss:AutoFitWidth='0' ss:Width='147'/>");
-		out.println ("   <Column ss:AutoFitWidth='0' ss:Width='123.75'/>");
 		out.println ("   <Column ss:Index='19' ss:AutoFitWidth='0' ss:Width='75'/>");
 		out.println ("   <Row ss:AutoFitHeight='0'>");
-		out.println ("    <Cell><Data ss:Type='String'>部別代號</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s62'><Data ss:Type='String'>部別名稱</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s63'><Data ss:Type='String'>系所代號</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s62'><Data ss:Type='String'>系所名稱</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s62'><Data ss:Type='String'>班級代號</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>班級名稱</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s63'><Data ss:Type='String'>學號</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>身份證字號</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>虛擬帳號</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>存繳代號1</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>存繳代號2</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>姓名</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>存款帳號</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>家長姓名</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>地址</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s65'><Data ss:Type='String'>電話</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>身分別</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>減免類別</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>繳款截止日</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s62'><Data ss:Type='String'>實貸金額</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>刊物費</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>課外活動費</Data></Cell>");
+		out.println ("    <Cell><Data ss:Type='String'>學號</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s62'><Data ss:Type='String'>姓名</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s63'><Data ss:Type='String'>身份證字號</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s62'><Data ss:Type='String'>電話</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s62'><Data ss:Type='String'>通訊地址</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>班級代號</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s63'><Data ss:Type='String'>班級名稱</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>部別代號</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>部別名稱</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>系所代號</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>系所名稱</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s62'><Data ss:Type='String'>刊物費</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s62'><Data ss:Type='String'>課外活動費</Data></Cell>");
 		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>學生手冊費</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s66'><Data ss:Type='String'>健康檢查費</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>學生(聯)會費</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s63'><Data ss:Type='String'>健康檢查費</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>學生(聯)會</Data></Cell>");
 		out.println ("    <Cell ss:StyleID='s67'><ss:Data ss:Type='String'");
 		out.println ("      xmlns='http://www.w3.org/TR/REC-html40'>X<Font html:Face='新細明體'");
 		out.println ("       x:Family='Roman'>光費</Font></ss:Data></Cell>");
 		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>代辦費合計</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>存繳帳號</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>家長姓名</Data></Cell>");
 		out.println ("   </Row>");
 		String ClassName;
 		for(int i=0; i<list.size(); i++){
@@ -535,29 +532,27 @@ public class TuitionManagerAction extends BaseAction{
 			for(int j=0; j<stds.size();j++){
 				if(list.get(i).get("mon2").toString().equals("0"))continue;
 				out.println ("   <Row ss:AutoFitHeight='0'>");
+				out.println ("    <Cell><Data ss:Type='String'>"+stds.get(j).get("student_no")+"</Data></Cell>");
+				out.println ("    <Cell><Data ss:Type='String'>"+stds.get(j).get("student_name")+"</Data></Cell>");
+				if(stds.get(j).get("idno")==null){
+					out.println ("    <Cell></Cell>");
+				}else{
+					out.println ("    <Cell><Data ss:Type='String'>"+stds.get(j).get("idno")+"</Data></Cell>");
+				}
+				out.println ("    <Cell></Cell>");
+				out.println ("    <Cell></Cell>");
+				out.println ("    <Cell><Data ss:Type='String'>"+list.get(i).get("ClassNo")+"</Data></Cell>");
+				out.println ("    <Cell><Data ss:Type='String'>"+ClassName+"</Data></Cell>");
 				out.println ("    <Cell><Data ss:Type='Number'>"+list.get(i).get("CampusNo")+"</Data></Cell>");
 				out.println ("    <Cell><Data ss:Type='String'>"+list.get(i).get("CampusName")+"</Data></Cell>");
 				out.println ("    <Cell><Data ss:Type='String'>"+list.get(i).get("CampusNo")+list.get(i).get("SchoolNo")+list.get(i).get("DeptNo")+"</Data></Cell>");
 				out.println ("    <Cell><Data ss:Type='String'>"+list.get(i).get("fname")+"</Data></Cell>");
-				out.println ("    <Cell><Data ss:Type='String'>"+list.get(i).get("ClassNo")+"</Data></Cell>");
-				out.println ("    <Cell><Data ss:Type='String'>"+ClassName+"</Data></Cell>");
-				out.println ("    <Cell><Data ss:Type='String'>"+stds.get(j).get("student_no")+"</Data></Cell>");
-				out.println ("    <Cell ss:StyleID='s64'/>");
-				out.println ("    <Cell ss:Index='12' ss:StyleID='s64'><Data ss:Type='String'>"+stds.get(j).get("student_name")+"</Data></Cell>");
-				out.println ("    <Cell ss:Index='14' ss:StyleID='s64'/>");
-				out.println ("    <Cell ss:StyleID='s64'/>");
-				out.println ("    <Cell ss:StyleID='s64'/>");
-				out.println ("    <Cell ss:Index='19' ss:StyleID='s64'><Data ss:Type='String'>"+edate+"</Data></Cell>");
-				
-				out.println ("    <Cell><Data ss:Type='String'></Data></Cell>");
-				
-				//if(((Map)list.get(i).get("pay1")).get("S")==null)((Map)list.get(i).get("pay1")).put("S", "");
-				//out.println ("    <Cell><Data ss:Type='Number'>"+((Map)list.get(i).get("pay1")).get("S")+"</Data></Cell>");
 				out.println ("    <Cell></Cell>");
 				
 				//if(((Map)list.get(i).get("pay2")).get("1")==null)((Map)list.get(i).get("pay2")).put("1","");
 				//out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='Number'>"+((Map)list.get(i).get("pay2")).get("1")+"</Data></Cell>");
-				out.println ("    <Cell ss:StyleID='s64'></Cell>");
+				out.println ("    <Cell></Cell>");
+				
 				//if(((Map)list.get(i).get("pay2")).get("8")==null)((Map)list.get(i).get("pay2")).put("8", "");
 				//out.println ("    <Cell><Data ss:Type='Number'>"+((Map)list.get(i).get("pay2")).get("8")+"</Data></Cell>");
 				out.println ("    <Cell></Cell>");
@@ -565,15 +560,19 @@ public class TuitionManagerAction extends BaseAction{
 				//if(((Map)list.get(i).get("pay2")).get("T")==null)((Map)list.get(i).get("pay2")).put("T","");
 				//out.println ("    <Cell><Data ss:Type='Number'>"+((Map)list.get(i).get("pay2")).get("T")+"</Data></Cell>");
 				out.println ("    <Cell></Cell>");
+				
 				if(((Map)list.get(i).get("pay2")).get("N")==null)((Map)list.get(i).get("pay2")).put("N", "");
 				out.println ("    <Cell><Data ss:Type='Number'>"+((Map)list.get(i).get("pay2")).get("N")+"</Data></Cell>");
 				
 				//if(((Map)list.get(i).get("pay2")).get("A")==null)((Map)list.get(i).get("pay2")).put("A", "");
 				//out.println ("    <Cell><Data ss:Type='Number'>"+((Map)list.get(i).get("pay2")).get("A")+"</Data></Cell>");
 				out.println ("    <Cell></Cell>");
+				
 				if(list.get(i).get("mon2")==null)list.get(i).put("mon2", "");
 				out.println ("    <Cell><Data ss:Type='Number'>"+list.get(i).get("mon2")+"</Data></Cell>");	
-					
+				
+				out.println ("    <Cell></Cell>");
+				out.println ("    <Cell></Cell>");
 				out.println ("   </Row>");
 			}
 		}
