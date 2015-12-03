@@ -89,7 +89,7 @@ public class TuitionManagerAction extends BaseAction{
 		//取各項金額	
 		for(int i=0; i<list.size(); i++){			
 			
-			if(Integer.parseInt(list.get(i).get("mon2").toString())<1)continue;//無金額跳過			
+			//if(Integer.parseInt(list.get(i).get("mon2").toString())<1)continue;//無金額跳過			
 			
 			list.get(i).put("pay1", df.sqlGet("SELECT fc.Name, fc.No, fc.No as Fcode, fc.kind,(SELECT Oid FROM FeePay WHERE DepartClass=c.ClassNo AND Fcode=fc.No)as Oid,"
 			+ "(SELECT Money FROM FeePay WHERE DepartClass=c.ClassNo AND Fcode=fc.No)as Money "
@@ -308,7 +308,7 @@ public class TuitionManagerAction extends BaseAction{
 		out.println ("   <Row>");
 		out.println ("    <Cell><Data ss:Type='String'>學號</Data></Cell>");
 		out.println ("    <Cell ss:StyleID='s62'><Data ss:Type='String'>姓名</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s63'><Data ss:Type='String'>身份證字號</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s63'><Data ss:Type='String'>身分證字號</Data></Cell>");
 		out.println ("    <Cell ss:StyleID='s62'><Data ss:Type='String'>電話</Data></Cell>");
 		out.println ("    <Cell ss:StyleID='s62'><Data ss:Type='String'>通訊地址</Data></Cell>");
 		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>班級代號</Data></Cell>");
@@ -499,7 +499,7 @@ public class TuitionManagerAction extends BaseAction{
 		out.println ("   <Row ss:AutoFitHeight='0'>");
 		out.println ("    <Cell><Data ss:Type='String'>學號</Data></Cell>");
 		out.println ("    <Cell ss:StyleID='s62'><Data ss:Type='String'>姓名</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s63'><Data ss:Type='String'>身份證字號</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s63'><Data ss:Type='String'>身分證字號</Data></Cell>");
 		out.println ("    <Cell ss:StyleID='s62'><Data ss:Type='String'>電話</Data></Cell>");
 		out.println ("    <Cell ss:StyleID='s62'><Data ss:Type='String'>通訊地址</Data></Cell>");
 		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>班級代號</Data></Cell>");
@@ -512,7 +512,7 @@ public class TuitionManagerAction extends BaseAction{
 		out.println ("    <Cell ss:StyleID='s62'><Data ss:Type='String'>課外活動費</Data></Cell>");
 		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>學生手冊費</Data></Cell>");
 		out.println ("    <Cell ss:StyleID='s63'><Data ss:Type='String'>健康檢查費</Data></Cell>");
-		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>學生(聯)會</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='String'>學生(聯)會費</Data></Cell>");
 		out.println ("    <Cell ss:StyleID='s67'><ss:Data ss:Type='String'");
 		out.println ("      xmlns='http://www.w3.org/TR/REC-html40'>X<Font html:Face='新細明體'");
 		out.println ("       x:Family='Roman'>光費</Font></ss:Data></Cell>");
