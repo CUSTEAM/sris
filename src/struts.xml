@@ -10,6 +10,7 @@
 	<constant name="struts.convention.result.path" value="/" />
 	<constant name="struts.convention.exclude.packages" value="org.apache.struts.*,org.springframework.web.struts.*,org.springframework.web.struts2.*,org.hibernate.*"/>
 	<constant name="struts.serve.static" value="true" />	
+	<constant name="struts.multipart.maxSize" value="1048576000"/>  
 	<package name="abstract_struts" abstract="true" extends="struts-default" namespace="/">		
 		<interceptors>
 			<interceptor name="loginInterceptor" class="service.interceptor.LoginInterceptor"></interceptor>

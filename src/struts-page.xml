@@ -44,6 +44,10 @@
 			<result>/jsp/student/CountGstmd.jsp</result>
 		</action>
 		
+		<action name="ClassManager" class="action.student.ClassManager">
+			<result>/jsp/student/ClassManager.jsp</result>
+		</action>
+		
 	</package>
 	
 	<package name="PublicPrint" extends="abstract_struts" namespace="/">

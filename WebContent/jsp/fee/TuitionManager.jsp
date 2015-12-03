@@ -11,148 +11,155 @@
 <script src="/eis/inc/js/plugin/jquery-ui-timepicker-addon.js"></script>
 <link href="/eis/inc/css/jquery-ui.css" rel="stylesheet"/>
 <script src="/eis/inc/js/plugin/bootstrap-tooltip.js"></script>
-<script>  
-$(document).ready(function() {	
-	$('.help').popover("show");
-	setTimeout(function() {
-		$('.help').popover("hide");
-	}, 5000);	
-});
-</script>
-
-
 </head>
 <body>    
-<div class="alert">
-<button type="button" class="close" data-dismiss="alert">&times;</button>
-<strong>匯出收費檔</strong> 
-<div rel="popover" title="說明" 
-data-content="收費項目不在報表格式中的情況下,合計金額仍會加總,但報表中無法顯示該收費項目金額" data-placement="right" class="btn btn-warning help">?</div>
+
+<div class="bs-callout bs-callout-info">
+<h4>收費檔學生名冊 - 匯出收費檔</h4> 
+<small>收費項目不在報表格式中的情況下,合計金額仍會加總,但報表中無法顯示該收費項目金額</small>
 </div>
-<form action="TuitionManager" method="post" class="form-horizontal");">
+<form action="TuitionManager" method="post" class="form-horizontal form-inline">
 <table class="table">
 	<tr>
-		<td nowrap>		
-		<div class="input-prepend">
-		<span class="add-on">繳費學期</span>
-		<select name="term">
+		<td>		
+		
+		<div class="input-group">
+		<span class="input-group-addon">繳費學期</span>
+		<select name="term" class="selectpicker" data-width="auto">
 			<option <c:if test="${term eq '1'}">selected</c:if> value="1">第1學期</option>
 			<option <c:if test="${term eq '2'}">selected</c:if> value="2">第2學期</option>
 		</select>
 		</div>
-		<div class="input-prepend">
-		<span class="add-on">繳費對象</span>
-		<select name="scope">
+				
+		<div class="input-group">
+		<span class="input-group-addon">繳費對象</span>
+		<select name="scope" class="selectpicker" data-width="auto">
 			<option <c:if test="${scope eq ''}">selected</c:if> value="">全部</option>
 			<option <c:if test="${scope eq '1'}">selected</c:if> value="1">新生</option>
 			<option <c:if test="${scope eq '2'}">selected</c:if> value="2">舊生</option>
 		</select>
-		</div>		
-		<div class="input-prepend">
-		<span class="add-on">繳費期限</span>
+		</div>
+		
+			
+		<div class="input-group">
+		<span class="input-group-addon">繳費期限</span>
 		<input class="span3" placeholder="期限" name="edate" id="edate" value="${edate}" type="text" style="ime-mode:disabled" autocomplete="Off"/>	
 		</div>	
-		
+				
 		<div class="btn-group">
-	    	<button class="btn" name="method:tuitionPrint">列印學雜費</button>
-	    	<button class="btn" name="method:nottuitionPrint">列印代辦費</button>
+	    	<button class="btn btn-primary" name="method:tuitionPrint">列印學雜費</button>
+	    	<button class="btn btn-default" name="method:nottuitionPrint">列印代辦費</button>
 	    </div>	
 		</td>
 	</tr>
 	<tr>
-		<td nowrap width="100%">
+		<td>
 		<%@ include file="/inc/jsp-kit/grad_selector.jsp"%>	
 		<div class="btn-group">
-		<button class="btn" name="method:search">查詢</button>
-		<button class="btn btn-danger" name="method:add">新增</button>	
+		<button class="btn btn-primary" name="method:search">查詢</button>
+		<button class="btn btn-default" name="method:add">新增</button>	
 		</div>
 		</td>
 	</tr>
 </table>
+
+
+
 <c:if test="${!empty fee}">
-<div class="accordion" id="accordion">	
+<div class="accordion" id="accordion">
+	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 	<c:forEach items="${fee}" var="f">
-	<c:if test="${f.mon1>0||f.mon2>0}">
-	<div class="accordion-group">
-		<div class="accordion-heading">
-			<div class="accordion-toggle" >
+		<c:if test="${f.mon1>0||f.mon2>0}">
+		<div class="panel panel-default">
+			<div class="panel-heading" role="tab" id="heading${f.ClassNo}">			
 			<table>
 				<tr>
-					<td width="50%" data-toggle="collapse" data-parent="#accordion" href="#collapse${f.ClassNo}">${f.ClassName}: ${f.cnt}人</td>
-					<td>
+					<td width="50%" data-toggle="collapse" data-parent="#accordion" href="#collapse${f.ClassNo}">
+					${f.ClassName}: ${f.cnt}人</td>
+					<td nowrap>
+					<div>
 						<input type="hidden" name="ClassNo" id="ClassNo${f.ClassNo}" value="" />
 						<c:if test="${term eq'1' && f.Grade eq'1'}">						
-						<div class="input-prepend">
-							<span class="add-on">名額</span>
-							<input type="text" name="quota" class="span1" value="${f.quota}" style="ime-mode:disabled" autocomplete="Off"/>
+						<div class="input-group">
+							<span class="input-group-addon">名額</span>
+							<input type="text" name="quota" class="form-control form-width-1" value="${f.quota}" style="ime-mode:disabled" autocomplete="Off"/>
 						</div>						
-						<div class="input-prepend input-append">
-							<span class="add-on">學號起始自</span>
-							<input type="text" name="no" class="span2" value="${f.no}" style="ime-mode:disabled" autocomplete="Off"/>
-							<button class="btn" onClick="$('#ClassNo${f.ClassNo}').val('${f.ClassNo}')" name="method:save">儲存</button>
-						</div>					
-						</c:if>					
+						<div class="input-group">
+							<span class="input-group-addon">學號起始自</span>
+							<input type="text" name="no" class="form-control form-width-2" value="${f.no}" style="ime-mode:disabled" autocomplete="Off"/>
+							<span class="input-group-btn">
+						        <button class="btn btn-danger" onClick="$('#ClassNo${f.ClassNo}').val('${f.ClassNo}')" name="method:save">儲存</button>
+						    </span>
+						</div>	
+										
+						</c:if>	
+						</div>				
 					</td>
 				</tr>
-			</table>			
+			</table>
+			</div>
 			
+			<div id="collapse${f.ClassNo}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading${f.ClassNo}">
+				<div class="panel-body">	
+					<table>
+						<tr>
+							<td valign="top" style="padding:5px;">
+							<c:forEach items="${f.pay1}" var="p">	
+												
+							<div class="input-group">
+								<span class="input-group-addon" style="width:100px">${p.Name}</span>
+								<input type="hidden" name="Fcode" id="Fcode${p.Oid}" value="${p.Fcode}" />
+								<input type="text" class="form-control" id="Money${f.ClassNo}${p.No}" value="${p.Money}"/>											
+								<span class="input-group-btn">
+								<button class="btn btn-warning" type="button" 
+								onClick="edit('${p.Oid}', $('#Money${f.ClassNo}${p.No}').val(), '1', '${f.ClassNo}','${p.No}')">修改</button>
+								</span>
+							</div>		
+							<p></p>			
+							</c:forEach>
+							<div class="input-group">
+								<span class="input-group-addon" style="width:100px">合計</span>
+								<input type="text" id="cnt1${f.ClassNo}" class="form-control" value="${f.mon1}" />
+								<span class="input-group-btn">
+								<button class="btn btn-danger" 
+								onClick="confirmDel('${f.ClassNo}','${f.ClassName}')" 
+								name="method:del">刪除</button>
+								</span>
+							</div>
+							</td>
+							
+							<td valign="top" style="padding:5px;">							
+							<c:forEach items="${f.pay2}" var="p">							
+							<input type="hidden" name="Fcode" id="Oid${p.Oid}" value="${p.Fcode}" />							
+							<div class="input-group">
+								<span class="input-group-addon" style="width:100px">${p.Name}</span>
+								<input type="hidden" id="Fcode${p.Oid}" value="${p.Oid}" />
+								<input type="text" class="form-control" id="Money${f.ClassNo}${p.No}" value="${p.Money}"/>											
+								<span class="input-group-btn">
+								<button class="btn btn-warning" type="button" onClick="edit('${p.Oid}', $('#Money${f.ClassNo}${p.No}').val(),'2','${f.ClassNo}','${p.No}')">修改</button>
+								</span>
+							</div>	
+							<p></p>
+							</c:forEach>
+							<div class="input-group">
+								<span class="input-group-addon" style="width:100px">合計</span>
+								<input type="text" id="cnt2${f.ClassNo}" class="form-control" value="${f.mon2}" />
+								<span class="input-group-btn">
+								<button class="btn btn-danger fee2" onClick="confirmDel('${f.ClassNo}','${f.ClassName}')" name="method:del">刪除</button>
+								</span>
+							</div>
+							</td>
+						</tr>
+					</table>
+								
+				</div>
 			</div>
-		</div>
-		<div id="collapse${f.ClassNo}" class="accordion-body collapse">
-			<div class="accordion-inner">			
-			<table>
-				<tr>
-					<td valign="top" style="padding:5px;">
-					<c:forEach items="${f.pay1}" var="p">
-					
-					<p><div class="input-prepend input-append">
-						<span class="add-on" style="width:100px">${p.Name}</span>
-						<input type="hidden" name="Fcode" id="Fcode${p.Oid}" value="${p.Fcode}" />
-						<input type="text" class="span1" id="Money${f.ClassNo}${p.No}" value="${p.Money}" 
-						rel="popover" title="" data-placement="bottom"/>											
-						<button class="btn fee1" type="button" 
-						onClick="edit('${p.Oid}', $('#Money${f.ClassNo}${p.No}').val(), '1', '${f.ClassNo}','${p.No}')">修改</button>
-					</div></p>
-					
-					</c:forEach>
-					<p><div class="input-prepend input-append">
-						<span class="add-on" style="width:100px">合計</span>
-						<input type="text" id="cnt1${f.ClassNo}" class="span1" value="${f.mon1}" />
-						<button class="btn btn-danger fee1" 
-						onClick="confirmDel('${f.ClassNo}','${f.ClassName}')" 
-						name="method:del">刪除</button>
-					</div></p>
-					</td>
-					
-					<td valign="top" style="padding:5px;">
-					
-					<c:forEach items="${f.pay2}" var="p">
-					<p>
-					<input type="hidden" name="Fcode" id="Oid${p.Oid}" value="${p.Fcode}" />
-					<div class="input-prepend input-append">
-						<span class="add-on" style="width:100px">${p.Name}</span>
-						<input type="hidden" id="Fcode${p.Oid}" value="${p.Oid}" />
-						<input type="text" class="span1" id="Money${f.ClassNo}${p.No}" value="${p.Money}" 
-						rel="popover" title="" data-placement="bottom"/>											
-						<button class="btn fee2" type="button" onClick="edit('${p.Oid}', $('#Money${f.ClassNo}${p.No}').val(),'2','${f.ClassNo}','${p.No}')">修改</button>
-					</div>
-					</p>
-					
-					</c:forEach>
-					<p><div class="input-prepend input-append">
-						<span class="add-on" style="width:100px">合計</span>
-						<input type="text" id="cnt2${f.ClassNo}" class="span1" value="${f.mon2}" />
-						<button class="btn btn-danger fee2" onClick="confirmDel('${f.ClassNo}','${f.ClassName}')" name="method:del">刪除</button>
-					</div></p>
-					</td>
-				</tr>
-			</table>			
-			</div>
-		</div>
-	</div>
-	</c:if>	
+		</div>	
+		</c:if>
 	</c:forEach>
+	</div>
 </div>
+
 </c:if>
 </form>
 <script>

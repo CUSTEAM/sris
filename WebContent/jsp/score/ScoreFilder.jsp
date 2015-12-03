@@ -4,34 +4,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-<script src="/eis/inc/js/plugin/bootstrap-typeahead.js" type="text/javascript"></script>
-<script src="/eis/inc/js/plugin/bootstrap-tooltip.js" type="text/javascript"></script>
-<script>  
-$(document).ready(function() {	
-	$('#funbtn').popover("show");
-	setTimeout(function() {
-		$('#funbtn').popover("hide");
-	}, 5000);
-	
-	//$("#selectClass").load("/eis/inc/jsp-kit/classSelector.jsp?r="+Math.floor(Math.random()*11));	
-});
-</script>
+<title>期末成績整合併入歷年成績</title>
 </head>
-<body>    
-<div class="alert">
-<button type="button" class="close" data-dismiss="alert">&times;</button>
-<strong>儲存歷年成績</strong> 
-<div id="funbtn" rel="popover" title="說明" 
-data-content="包含學科、平均、操行、全勤、評語、獎懲、體育、軍訓等獨立成績資料一併做歷年儲存，當學期可重複執行，以最後儲存的資料為準" data-placement="right" class="btn btn-warning">?</div>
+<body>
+<div class="bs-callout bs-callout-info">
+<h4>期末成績整合併入歷年成績</h4> 
+<small>包含學科、平均、操行、全勤、評語、獎懲、體育、軍訓等獨立成績轉換為歷年成績記錄，<br>當學期可重複執行，以最後儲存的資料為準。</small>
 </div>
-<form action="ScoreFilder" method="post" class="form-horizontal" onSubmit="$.blockUI({message:null});">
+<form action="ScoreFilder" method="post" class="form-horizontal form-inline" onSubmit="$.blockUI({message:null});">
 <table class="table">
 	<tr>
-		<td class="text-info" nowrap>班級範圍</td>
-		<td class="control-group info" nowrap>
+		<td nowrap>班級範圍</td>
+		<td nowrap>
 			<%@ include file="/inc/jsp-kit/dhnSelector.jsp"%>
-			<select name="grade">
+			<select name="grade" class="selectpicker" data-width="auto">
 				<option <c:if test="${grade eq ''}">selected</c:if> value="">全部</option>
 				<option <c:if test="${grade eq '0'}">selected</c:if> value="0">非畢業班</option>
 				<option <c:if test="${grade eq '1'}">selected</c:if> value="1">畢業班</option>
@@ -59,14 +45,14 @@ data-content="包含學科、平均、操行、全勤、評語、獎懲、體育
 		<td>${c.school_year}</td>
 		<td>${c.school_term}</td>
 		<td>				
-		<select name="allCampus" style="font-size:18px;" disabled>
+		<select name="allCampus" disabled class="form-control">
 			<c:forEach items="${allCampus}" var="a">
 			<option  <c:if test="${c.CampuseNo==a.idno}">selected</c:if> value="${a.idno}">${a.name}</option>
 			</c:forEach>
 		</select>
 		</td>
 		<td>
-		<select name="allSchool" style="font-size:18px;" disabled>
+		<select name="allSchool" disabled class="form-control">
 			<c:forEach items="${allSchoolType}" var="t">
 			<option <c:if test="${c.SchoolType==t.idno}">selected</c:if> value="${t.idno}">${t.name}</option>
 			</c:forEach>
@@ -76,7 +62,7 @@ data-content="包含學科、平均、操行、全勤、評語、獎懲、體育
 		
 		<td nowrap>${c.cname}</td>
 		<td nowrap>${c.checkDate}</td>
-		<td width="100%"></td>
+		<td ></td>
 	</tr>
 	</c:forEach>
 </table>

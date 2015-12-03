@@ -21,7 +21,7 @@ $(document).ready(function() {
 <body>    
 <div class="alert">
 <button type="button" class="close" data-dismiss="alert">&times;</button>
-<strong>學生批次升級</strong> 
+<strong>學生批次升級 - 已停止由行政端操作</strong> 
 <div id="funbtn" rel="popover" title="說明" 
 data-content="將範圍內學生批次升級, 請在成績匯入歷年後進行" data-placement="right" class="btn btn-warning">?</div>
 </div>
@@ -31,7 +31,7 @@ data-content="將範圍內學生批次升級, 請在成績匯入歷年後進行"
 		<td class="text-info" nowrap>班級範圍</td>
 		<td class="control-group info" nowrap>
 			<%@ include file="/inc/jsp-kit/dhnSelector.jsp"%>			
-			<button class="btn btn-danger" name="method:confirm" type="submit" 
+			<button disabled class="btn btn-danger" name="method:confirm" type="submit" 
 			onClick="$.blockUI({message:null});">執行</button>
 		</td>
 		<td width="100%"></td>
