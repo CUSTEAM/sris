@@ -89,7 +89,7 @@ public class TuitionManagerAction extends BaseAction{
 		//取各項金額	
 		for(int i=0; i<list.size(); i++){			
 			
-			//if(Integer.parseInt(list.get(i).get("mon2").toString())<1)continue;//無金額跳過			
+			if(Integer.parseInt(list.get(i).get("mon2").toString())<1)continue;//無金額跳過			
 			
 			list.get(i).put("pay1", df.sqlGet("SELECT fc.Name, fc.No, fc.No as Fcode, fc.kind,(SELECT Oid FROM FeePay WHERE DepartClass=c.ClassNo AND Fcode=fc.No)as Oid,"
 			+ "(SELECT Money FROM FeePay WHERE DepartClass=c.ClassNo AND Fcode=fc.No)as Money "
