@@ -12,8 +12,7 @@
 <link href="/eis/inc/css/wizard-step.css" rel="stylesheet"/>
 <link href="/eis/inc/css/bootstrap-fileupload.css" rel="stylesheet">
 </head>
-<body>    
-
+<body>
 <div class="bs-callout bs-callout-info">
 <h4>學生填報基本資料審核</h4> 
 <small>請選擇審核範圍後查詢</small>

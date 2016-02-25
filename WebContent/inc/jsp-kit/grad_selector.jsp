@@ -13,12 +13,7 @@
 	<option <c:if test="${tno eq 'H'}">selected</c:if> value="H">進修學院</option>
 </select>
 
-<select name="sno" class="selectpicker" data-width="auto">
-	<option value="">所有學制</option>
-	<c:forEach items="${CODE_SCHOOL}" var="c">
-	<option <c:if test="${c.id eq sno}">selected</c:if> value="${c.id}">${c.name}</option>
-	</c:forEach>
-</select>
+
 
 <select name="dno" class="selectpicker" data-width="auto">
 	<option value="">所有科系</option>
@@ -33,10 +28,4 @@
 	<c:forEach var="g" begin="1" end="6">
 	<option <c:if test="${gno eq g}">selected</c:if> value="${g}">${g}年級</option>
 	</c:forEach>
-</select>
-<select name="zno" class="selectpicker" data-width="auto">
-	<option value="">所有班級</option>
-	<option <c:if test="${zno eq '1'}">selected</c:if> value="1">甲班</option>
-	<option <c:if test="${zno eq '2'}">selected</c:if> value="2">乙班</option>
-	<option <c:if test="${zno eq '3'}">selected</c:if> value="3">丙班</option>
 </select>

@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import model.Message;
 import model.Stmd;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -42,6 +43,13 @@ public class DumpNewStmdAction extends BaseAction{
 	
 	
 	public String upload() throws IOException{
+		
+		if(upload==null){
+			Message msg=new Message();
+			msg.setError("未指定檔案");
+			this.savMessage(msg);
+			return SUCCESS;
+		}
 		
 		FileInputStream fis = new FileInputStream(upload);
 		//FileReader fr = new FileReader(fis.getFD());

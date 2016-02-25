@@ -13,7 +13,12 @@
 		</action>		
 	</package>
 	
-	<package name="Score" extends="abstract_struts" namespace="/">		
+	<package name="Score" extends="abstract_struts" namespace="/">			
+		
+		<action name="ScoreViewManager" class="action.score.ScoreViewManagerAction">
+			<result>/jsp/score/ScoreViewManager.jsp</result>
+		</action>
+		
 		<action name="ScorePrint" class="action.score.ScorePrintAction">
 			<result>/jsp/score/ScorePrint.jsp</result>
 		</action>

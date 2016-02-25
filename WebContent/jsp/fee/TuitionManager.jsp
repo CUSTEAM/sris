@@ -54,7 +54,7 @@
 	</tr>
 	<tr>
 		<td>
-		<%@ include file="/inc/jsp-kit/grad_selector.jsp"%>	
+		<%@ include file="/inc/jsp-kit/fullSelector.jsp"%>	
 		<div class="btn-group">
 		<button class="btn btn-primary" name="method:search">查詢</button>
 		<button class="btn btn-default" name="method:add">新增</button>	
