@@ -40,7 +40,9 @@ public class TuitionAjax extends BaseAction{
 				
 				m.put("msg", "已儲存"+Money);
 			}			
-			m.put("cnt", df.sqlGetStr("SELECT SUM(Money)FROM FeePay WHERE Kind='"+kind+"'AND DepartClass='"+ClassNo+"'"));
+			//m.put("cnt", df.sqlGetStr("SELECT SUM(Money)FROM FeePay WHERE Kind='"+kind+"'AND DepartClass='"+ClassNo+"'"));
+			//電腦實習費排除
+			m.put("cnt", df.sqlGetStr("SELECT SUM(Money)FROM FeePay WHERE Kind='"+kind+"'AND Fcode!='H'AND DepartClass='"+ClassNo+"'"));
 			this.setMsg(m);
 		
 		

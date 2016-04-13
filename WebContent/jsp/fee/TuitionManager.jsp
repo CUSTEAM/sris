@@ -19,6 +19,8 @@
 <small>收費項目不在報表格式中的情況下,合計金額仍會加總,但報表中無法顯示該收費項目金額</small>
 </div>
 <form action="TuitionManager" method="post" class="form-horizontal form-inline">
+<div class="panel panel-primary">  
+<div class="panel-heading">查詢或新增收費班級</div> 
 <table class="table">
 	<tr>
 		<td>		
@@ -47,8 +49,11 @@
 		</div>	
 				
 		<div class="btn-group">
-	    	<button class="btn btn-primary" name="method:tuitionPrint">列印學雜費</button>
-	    	<button class="btn btn-default" name="method:nottuitionPrint">列印代辦費</button>
+			<button type="button" class="btn btn-default" disabled>列印</button>
+	    	<button class="btn btn-default" name="method:tuitionPrint">學雜費</button>
+	    	<button class="btn btn-default" name="method:nottuitionPrint">代辦費</button>
+	    	<button class="btn btn-default" name="method:useComPrint">電腦實習費</button>
+	    	
 	    </div>	
 		</td>
 	</tr>
@@ -56,13 +61,13 @@
 		<td>
 		<%@ include file="/inc/jsp-kit/fullSelector.jsp"%>	
 		<div class="btn-group">
-		<button class="btn btn-primary" name="method:search">查詢</button>
-		<button class="btn btn-default" name="method:add">新增</button>	
+		<button class="btn btn-default" name="method:search">查詢收費班級</button>
+		<button class="btn btn-danger" name="method:add">新增收費班級</button>	
 		</div>
 		</td>
 	</tr>
 </table>
-
+</div>
 
 
 <c:if test="${!empty fee}">
@@ -70,7 +75,12 @@
 	<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 	<c:forEach items="${fee}" var="f">
 		<c:if test="${f.mon1>0||f.mon2>0}">
+		<c:if test="${term eq'1' && f.Grade eq'1'}">
 		<div class="panel panel-default">
+		</c:if>
+		<c:if test="${f.Grade !='1'}">
+		<div class="panel panel-primary">
+		</c:if>
 			<div class="panel-heading" role="tab" id="heading${f.ClassNo}">			
 			<table>
 				<tr>
@@ -206,7 +216,6 @@ function callback(b, kind, ClassNo, Fcode){
 		$("#Money"+ClassNo+Fcode).tooltip("hide");
 	}, 1000);	
 }
-
 </script>
 </body>
 </html>
