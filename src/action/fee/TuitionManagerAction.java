@@ -382,7 +382,7 @@ public class TuitionManagerAction extends BaseAction{
 				}
 					
 				out.println ("    <Cell ss:Index='17'><Data ss:Type='Number'>"+list.get(i).get("mon1")+"</Data></Cell>");
-				out.println ("    <Cell ss:Index='20'><Data ss:Type='String'>"+bl.getWeekOfDay4Zh(Integer.parseInt(list.get(i).get("Grade").toString()), null)+"年級</Data></Cell>");
+				out.println ("    <Cell ss:Index='20'><Data ss:Type='String'>"+bl.getWeekOfDay4Zh(Integer.parseInt(list.get(i).get("Grade").toString()), null)+"</Data></Cell>");
 				out.println ("   </Row>");
 			}
 		}		
@@ -564,7 +564,7 @@ public class TuitionManagerAction extends BaseAction{
 					out.println ("    <Cell ss:Index='17'><Data ss:Type='Number'>"+((Map)list.get(i).get("pay1")).get("H")+"</Data></Cell>");
 				}
 				
-				out.println ("    <Cell ss:Index='20'><Data ss:Type='String'>"+bl.getWeekOfDay4Zh(Integer.parseInt(list.get(i).get("Grade").toString()), null)+"年級</Data></Cell>");
+				out.println ("    <Cell ss:Index='20'><Data ss:Type='String'>"+bl.getWeekOfDay4Zh(Integer.parseInt(list.get(i).get("Grade").toString()), null)+"</Data></Cell>");
 				out.println ("   </Row>");
 			}
 		}		
@@ -761,7 +761,7 @@ public class TuitionManagerAction extends BaseAction{
 				
 				out.println ("    <Cell></Cell>");
 				out.println ("    <Cell></Cell>");
-				out.println ("    <Cell><Data ss:Type='String'>"+bl.getWeekOfDay4Zh(Integer.parseInt(list.get(i).get("Grade").toString()), null)+"年級</Data></Cell>");
+				out.println ("    <Cell><Data ss:Type='String'>"+bl.getWeekOfDay4Zh(Integer.parseInt(list.get(i).get("Grade").toString()), null)+"</Data></Cell>");
 				out.println ("   </Row>");
 			}
 		}
