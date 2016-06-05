@@ -144,6 +144,12 @@ function getSeldHist(stdNo){
 		<td nowrap>指定班級</td>
 		<td width="100%">
 		<%@ include file="/inc/jsp-kit/classSelector.jsp"%>
+		<select name="graduate" class="selectpicker" data-width="auto">
+			<option value="">全部學生</option>
+			<option <c:if test="${graduate eq '1'}">selected</c:if> value="1">畢業班學生</option>
+			<option <c:if test="${graduate eq '0'}">selected</c:if> value="0">非畢業班學生</option>
+		</select>
+		
 		<button class="btn btn-primary" name="method:searchClass" type="submit">查詢班級課程</button>
 		</td>
 	</tr>
@@ -184,6 +190,7 @@ function getSeldHist(stdNo){
 		<th nowrap data-sort="string">開課班級</th>
 		<th nowrap data-sort="string">課程名稱</th>
 		<th nowrap data-sort="string">授課教師</th>
+		<th nowrap data-sort="string">授課教師</th>
 		<th nowrap data-sort="string">選別</th>
 		<th nowrap data-sort="float">學分</th>
 		<th nowrap data-sort="int">時數</th>
@@ -200,6 +207,7 @@ function getSeldHist(stdNo){
 		<td nowrap>${c.ClassName}</td>
 		<td nowrap>${c.cscode}${c.chi_name}</td>
 		<td nowrap>${c.cname}</td>
+		<td nowrap>${c.CellPhone}</td>
 		<td nowrap>${c.opt}</td>
 		<td nowrap>${c.credit}</td>
 		<td nowrap>${c.thour}</td>

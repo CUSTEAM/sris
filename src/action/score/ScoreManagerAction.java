@@ -33,6 +33,7 @@ public class ScoreManagerAction extends BaseAction{
 	public String cscode[];
 	public String opt[];
 	public String credit[];
+	public String graduate;
 	
 	public String execute(){
 		
@@ -52,7 +53,7 @@ public class ScoreManagerAction extends BaseAction{
 			return SUCCESS;
 		}
 		StringBuilder sql=new StringBuilder("SELECT d.Oid, o.name as opt, d.thour, d.credit, d.Select_Limit,cs.cscode,"
-		+ "c.ClassName, cs.chi_name, IFNULL(e.cname,'')as cname, (SELECT COUNT(*)FROM Seld WHERE Dtime_oid=d.Oid)as cnt,"
+		+ "c.ClassName, e.CellPhone, cs.chi_name, IFNULL(e.cname,'')as cname, (SELECT COUNT(*)FROM Seld WHERE Dtime_oid=d.Oid)as cnt,"
 		+ "(SELECT COUNT(*)FROM Seld WHERE Dtime_oid=d.Oid AND score2 IS NULL)as score2,(SELECT COUNT(*)FROM Seld WHERE Dtime_oid=d.Oid AND score IS NULL)as score FROM "
 		+ "CODE_DTIME_OPT o,Dtime d LEFT OUTER JOIN empl e ON d.techid=e.idno, Class c, Csno cs WHERE ");
 		
@@ -94,16 +95,17 @@ public class ScoreManagerAction extends BaseAction{
 	 */
 	public String searchClass(){
 		
-		StringBuilder sql=new StringBuilder("SELECT d.Oid, o.name as opt, d.thour, d.credit, d.Select_Limit,cs.cscode,"
+		StringBuilder sql=new StringBuilder("SELECT e.CellPhone, d.Oid, o.name as opt, d.thour, d.credit, d.Select_Limit,cs.cscode,"
 		+ "c.ClassName, cs.chi_name, IFNULL(e.cname,'')as cname, (SELECT COUNT(*)FROM Seld WHERE Dtime_oid=d.Oid)as cnt,"
 		+ "(SELECT COUNT(*)FROM Seld WHERE Dtime_oid=d.Oid AND score2 IS NULL)as score2,(SELECT COUNT(*)FROM Seld WHERE Dtime_oid=d.Oid AND score IS NULL)as score FROM "
 		+ "CODE_DTIME_OPT o,Dtime d LEFT OUTER JOIN empl e ON d.techid=e.idno, Class c, Csno cs WHERE "
-		+ "cs.cscode=d.cscode AND o.id=d.opt AND d.depart_class=c.ClassNo AND d.Sterm='"+getContext().getAttribute("school_term")+"'");
+		+ "cs.cscode=d.cscode AND o.id=d.opt AND d.depart_class=c.ClassNo AND d.cscode!='50000'AND d.Sterm='"+getContext().getAttribute("school_term")+"'");
 		if(!cno.equals(""))sql.append("AND c.CampusNo='"+cno+"'");
 		if(!sno.equals(""))sql.append("AND c.SchoolNo='"+sno+"'");
 		if(!dno.equals(""))sql.append("AND c.DeptNo='"+dno+"'");
 		if(!gno.equals(""))sql.append("AND c.Grade='"+gno+"'");
 		if(!zno.equals(""))sql.append("AND c.SeqNo='"+zno+"'");
+		if(!graduate.equals(""))sql.append("AND c.graduate='"+graduate+"'");
 		
 		request.setAttribute("css", df.sqlGet(sql.toString()));
 		return SUCCESS;
