@@ -25,6 +25,7 @@ public class ScoreManagerAction extends BaseAction{
 	public String sOid[];
 	public String score[];
 	public String score2[];
+	public String score3[];
 	
 	public String school_year[];
 	public String school_term[];
@@ -139,7 +140,7 @@ public class ScoreManagerAction extends BaseAction{
 	 */
 	public String editSeld(){
 		request.setAttribute("selds", df.sqlGet("SELECT s.Oid, st.student_no, st.student_name, c.cscode, c.chi_name, "
-		+ "s.score,s.score2, co.name as optName,d.thour,s.credit FROM CODE_DTIME_OPT co, Seld s, Dtime d, stmd st, "
+		+ "s.score,s.score2, s.score3, co.name as optName,d.thour,s.credit FROM CODE_DTIME_OPT co, Seld s, Dtime d, stmd st, "
 		+ "Csno c WHERE st.student_no=s.student_no AND c.cscode=d.cscode AND co.id=d.opt AND s.Dtime_oid=d.Oid AND "
 		+ "d.Oid="+dOid+" ORDER BY s.student_no"));
 		
@@ -193,10 +194,11 @@ public class ScoreManagerAction extends BaseAction{
 			if(!sOid[i].equals("")){
 				cnt++;
 				if(score2[i].equals(""))score2[i]=null;
+				if(score3[i].equals(""))score3[i]=null;
 				if(score[i].equals(""))score[i]=null;				
-				df.exSql("UPDATE Seld SET score2="+score2[i]+", score="+score[i]+" WHERE Oid="+sOid[i]);				
-				df.exSql("INSERT INTO SeldHist(StudentNo,depart_class,cscode,idno,type)VALUES('"+df.sqlGetStr("SELECT student_no FROM Seld WHERE Oid="+sOid[i])+
-				"','"+Dtime.get("depart_class")+"','"+Dtime.get("cscode")+"','"+getSession().getAttribute("userid")+"','E');");
+				df.exSql("UPDATE Seld SET score3="+score3[i]+", score2="+score2[i]+", score="+score[i]+" WHERE Oid="+sOid[i]);				
+				//df.exSql("INSERT INTO SeldHist(StudentNo,depart_class,cscode,idno,type)VALUES('"+df.sqlGetStr("SELECT student_no FROM Seld WHERE Oid="+sOid[i])+
+				//"','"+Dtime.get("depart_class")+"','"+Dtime.get("cscode")+"','"+getSession().getAttribute("userid")+"','E');");
 			}
 		}		
 		Message msg=new Message();

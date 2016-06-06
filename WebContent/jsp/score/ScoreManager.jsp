@@ -134,8 +134,7 @@ function getSeldHist(stdNo){
 <body>
 <div class="bs-callout bs-callout-info">
 <h4>成績管理</h4> 
-<small>依班級範圍列出各班課程成績輸入狀況，或指定課程編輯學生成績。<br>
-依學號列出學生成績，新增或修改成績記錄。<br>
+<small>依班級、課程或學號範圍列出成績輸入狀況，查詢結果所有欄位可排序。<br>
 可單筆修改或點選列表下方<button type="button" class="btn btn-danger btn-xs">全部儲存</button>批次修改</small>
 </div>
 <form action="ScoreManager" method="post" class="form-horizontal" onSubmit="$.blockUI({message:null});">
@@ -190,35 +189,43 @@ function getSeldHist(stdNo){
 		<th nowrap data-sort="string">開課班級</th>
 		<th nowrap data-sort="string">課程名稱</th>
 		<th nowrap data-sort="string">授課教師</th>
-		<th nowrap data-sort="string">授課教師</th>
 		<th nowrap data-sort="string">選別</th>
 		<th nowrap data-sort="float">學分</th>
 		<th nowrap data-sort="int">時數</th>
 		<th nowrap data-sort="string">人數</th>
 		<th nowrap data-sort="float">期中 /</th>
 		<th nowrap data-sort="float">期末無成績</th>
-		<!--td></td-->
-		<td></td>
+		
+		<th></th>
 	</tr>
 	</thead>
 	<c:forEach items="${css}" var="c">
 	<tr>
 		<td nowrap>${c.Oid}</td>
 		<td nowrap>${c.ClassName}</td>
-		<td nowrap>${c.cscode}${c.chi_name}</td>
-		<td nowrap>${c.cname}</td>
-		<td nowrap>${c.CellPhone}</td>
+		<td nowrap>${c.cscode}${c.chi_name}<br>
+		<small>成績冊:</small>
+		<div class="btn-group">
+		<a href="/CIS/Print/teacher/NorRat.do?level=m&dtimeOid=${c.Oid}" class="btn btn-default btn-xs">期中</a>
+		<a href="/CIS/Print/teacher/NorRat.do?level=f&dtimeOid=${c.Oid}" class="btn btn-danger btn-xs">期末</a>
+		</div>
+		</td>
+		<td nowrap>
+		${c.cname}<br>
+		<small><abbr title="Phone">P:</abbr> ${c.CellPhone}</small>
+		</td>
+		
 		<td nowrap>${c.opt}</td>
 		<td nowrap>${c.credit}</td>
 		<td nowrap>${c.thour}</td>
-		<td nowrap>${c.cnt}/${c.Select_Limit}</td>
-		<td>${c.score2}</td>
-		<td>${c.score}</td>
+		<td nowrap>${c.cnt}</td>
+		<td nowrap>${c.score2}</td>
+		<td nowrap>${c.score}</td>
 		<td class="text-info" nowrap width="100%">		
 		<div class="btn-group" onClick="$('#dOid').val('${c.Oid}')">
-		<button class="btn btn-danger" name="method:editSeld">修改</button>
-		<button class="btn btn-default" name="method:clearSeld" onClick="javascript:return(confirm('確定刪除本班學生所有選課?')); void($(''))" type="submit">清除</button>
-		</div>
+		<button class="btn btn-default" name="method:editSeld">修改</button>
+		<button class="btn btn-danger" name="method:clearSeld" onClick="javascript:return(confirm('確定刪除本班學生所有選課?')); void($(''))" type="submit">清除</button>
+		</div>		
 		</td>
 	</tr>
 	</c:forEach>
@@ -239,6 +246,7 @@ function getSeldHist(stdNo){
 		<th nowrap data-sort="string">選別</th>
 		<th nowrap data-sort="float">期中成績</th>
 		<th nowrap data-sort="float">期末成績</th>
+		<th nowrap data-sort="float">學期成績</th>
 		<th nowrap></th>
 	</tr>
 	</thead>
@@ -249,7 +257,6 @@ function getSeldHist(stdNo){
 		<button type="button" class="btn btn-default btn-xs" onClick="getSeldHist('${s.student_no}')" 
 		data-toggle="modal" data-target="#scoreHist">加退選</button>
 		</td>
-		
 		<td nowrap>${s.cscode}</td>
 		<td nowrap>${s.chi_name}</td>
 		<td nowrap>${s.credit}</td>
@@ -260,15 +267,21 @@ function getSeldHist(stdNo){
 		<input type="text" autocomplete="off" onKeyDown="$('#sOid${s.Oid}').val('${s.Oid}')" class="form-control" name="score2" value="${s.score2}" />
 		
 		</td>
-		<td class="text-info">
+		<td>
+		<input type="text" autocomplete="off" onKeyDown="$('#sOid${s.Oid}').val('${s.Oid}')" class="form-control" name="score3" value="${s.score3}"/>
+		</td>
+		<td>
 		<input type="text" autocomplete="off" onKeyDown="$('#sOid${s.Oid}').val('${s.Oid}')" class="form-control" name="score" value="${s.score}"/>
 		<input type="hidden" name="sOid" id="sOid${s.Oid}" />
 		</td>
 		<td width="100%"><button class="btn btn-danger" onClick="$('#sOid${s.Oid}').val('${s.Oid}')" name="method:saveSeld">修改</button></td>
 	</tr>
 	</c:forEach>
+	<tr>
+		<td colspan="10"><button class="btn btn-danger" name="method:saveSeld">全部儲存</button></td>
+	</tr>
 </table>
-<button class="btn btn-danger" name="method:saveSeld">全部儲存</button>
+
 <script>$("#table").stupidtable();</script>
 </c:if>
 
