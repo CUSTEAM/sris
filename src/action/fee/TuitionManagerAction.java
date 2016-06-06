@@ -91,7 +91,7 @@ public class TuitionManagerAction extends BaseAction{
 		//取各項金額	
 		for(int i=0; i<list.size(); i++){			
 			
-			if(Integer.parseInt(list.get(i).get("mon2").toString())<1)continue;//無金額跳過			
+			//if(Integer.parseInt(list.get(i).get("mon2").toString())<1)continue;//無金額跳過			
 			
 			list.get(i).put("pay1", df.sqlGet("SELECT fc.Name, fc.No, fc.No as Fcode, fc.kind,(SELECT Oid FROM FeePay WHERE DepartClass=c.ClassNo AND Fcode=fc.No)as Oid,"
 			+ "(SELECT Money FROM FeePay WHERE DepartClass=c.ClassNo AND Fcode=fc.No)as Money "
@@ -358,13 +358,13 @@ public class TuitionManagerAction extends BaseAction{
 				
 				//學分費
 				if(((Map)list.get(i).get("pay1")).get("G")==null){
-					out.println ("    <Cell ss:Index='12'></Cell>");
+					out.println ("    <Cell ss:Index='12'><Data ss:Type='Number'>0</Data></Cell>");
 				}else{
 					out.println ("    <Cell ss:Index='12'><Data ss:Type='Number'>"+((Map)list.get(i).get("pay1")).get("G")+"</Data></Cell>");
 				}
 				
 				if(((Map)list.get(i).get("pay1")).get("F")==null){
-					out.println ("    <Cell></Cell>");
+					out.println ("    <Cell><Data ss:Type='Number'>0</Data></Cell>");
 				}else{
 					out.println ("    <Cell><Data ss:Type='Number'>"+((Map)list.get(i).get("pay1")).get("F")+"</Data></Cell>");
 				}	
@@ -374,15 +374,16 @@ public class TuitionManagerAction extends BaseAction{
 				}else{
 					out.println ("    <Cell><Data ss:Type='Number'>"+((Map)list.get(i).get("pay1")).get("H")+"</Data></Cell>");
 				}*/				
-				out.println ("    <Cell></Cell>");
+				out.println ("    <Cell><Data ss:Type='Number'>0</Data></Cell>");
 				if(((Map)list.get(i).get("pay1")).get("J")==null){
-					out.println ("    <Cell ss:Index='15'></Cell>");
+					out.println ("    <Cell ss:Index='15'><Data ss:Type='Number'>0</Data></Cell>");
 				}else{
 					out.println ("    <Cell ss:Index='15'><Data ss:Type='Number'>"+((Map)list.get(i).get("pay1")).get("J")+"</Data></Cell>");
 				}
-					
+				out.println ("    <Cell><Data ss:Type='Number'>0</Data></Cell>");	
 				out.println ("    <Cell ss:Index='17'><Data ss:Type='Number'>"+list.get(i).get("mon1")+"</Data></Cell>");
-				out.println ("    <Cell ss:Index='20'><Data ss:Type='String'>"+bl.getWeekOfDay4Zh(Integer.parseInt(list.get(i).get("Grade").toString()), null)+"年級</Data></Cell>");
+				out.println ("    <Cell ss:Index='20'><Data ss:Type='String'>"+Integer.parseInt(list.get(i).get("Grade").toString())+"</Data></Cell>");
+				//out.println ("    <Cell ss:Index='20'><Data ss:Type='String'>"+bl.getWeekOfDay4Zh(Integer.parseInt(list.get(i).get("Grade").toString()), null)+"</Data></Cell>");
 				out.println ("   </Row>");
 			}
 		}		
@@ -535,17 +536,17 @@ public class TuitionManagerAction extends BaseAction{
 				}else{
 					out.println ("    <Cell ss:Index='12'><Data ss:Type='Number'>"+((Map)list.get(i).get("pay1")).get("G")+"</Data></Cell>");
 				}*/
-				out.println ("    <Cell ss:Index='12'></Cell>");
+				out.println ("    <Cell ss:Index='12'><Data ss:Type='Number'>0</Data></Cell>");
 				
 				/*if(((Map)list.get(i).get("pay1")).get("F")==null){
 					out.println ("    <Cell></Cell>");
 				}else{
 					out.println ("    <Cell><Data ss:Type='Number'>"+((Map)list.get(i).get("pay1")).get("F")+"</Data></Cell>");
 				}*/	
-				out.println ("    <Cell></Cell>");
+				out.println ("    <Cell><Data ss:Type='Number'>0</Data></Cell>");
 				//電腦實習費
 				if(((Map)list.get(i).get("pay1")).get("H")==null){
-					out.println ("    <Cell></Cell>");
+					out.println ("    <Cell><Data ss:Type='Number'>0</Data></Cell>");
 				}else{
 					out.println ("    <Cell><Data ss:Type='Number'>"+((Map)list.get(i).get("pay1")).get("H")+"</Data></Cell>");
 				}			
@@ -555,8 +556,8 @@ public class TuitionManagerAction extends BaseAction{
 				}else{
 					out.println ("    <Cell ss:Index='15'><Data ss:Type='Number'>"+((Map)list.get(i).get("pay1")).get("J")+"</Data></Cell>");
 				}*/
-				out.println ("    <Cell ss:Index='15'></Cell>");
-					
+				out.println ("    <Cell ss:Index='15'><Data ss:Type='Number'>0</Data></Cell>");
+				out.println ("    <Cell ss:Index='16'><Data ss:Type='Number'>0</Data></Cell>");	
 				
 				if(((Map)list.get(i).get("pay1")).get("H")==null){
 					out.println ("    <Cell ss:Index='17'><Data ss:Type='Number'>0</Data></Cell>");
@@ -564,7 +565,8 @@ public class TuitionManagerAction extends BaseAction{
 					out.println ("    <Cell ss:Index='17'><Data ss:Type='Number'>"+((Map)list.get(i).get("pay1")).get("H")+"</Data></Cell>");
 				}
 				
-				out.println ("    <Cell ss:Index='20'><Data ss:Type='String'>"+bl.getWeekOfDay4Zh(Integer.parseInt(list.get(i).get("Grade").toString()), null)+"年級</Data></Cell>");
+				out.println ("    <Cell ss:Index='20'><Data ss:Type='String'>"+list.get(i).get("Grade").toString()+"</Data></Cell>");
+				//out.println ("    <Cell ss:Index='20'><Data ss:Type='String'>"+bl.getWeekOfDay4Zh(Integer.parseInt(list.get(i).get("Grade").toString()), null)+"</Data></Cell>");
 				out.println ("   </Row>");
 			}
 		}		
@@ -735,33 +737,34 @@ public class TuitionManagerAction extends BaseAction{
 				out.println ("    <Cell><Data ss:Type='String'>"+list.get(i).get("CampusName")+"</Data></Cell>");
 				out.println ("    <Cell><Data ss:Type='String'>"+list.get(i).get("CampusNo")+list.get(i).get("SchoolNo")+list.get(i).get("DeptNo")+"</Data></Cell>");
 				out.println ("    <Cell><Data ss:Type='String'>"+list.get(i).get("fname")+"</Data></Cell>");
-				out.println ("    <Cell></Cell>");
+				out.println ("    <Cell><Data ss:Type='Number'>0</Data></Cell>");
 				
 				//if(((Map)list.get(i).get("pay2")).get("1")==null)((Map)list.get(i).get("pay2")).put("1","");
 				//out.println ("    <Cell ss:StyleID='s64'><Data ss:Type='Number'>"+((Map)list.get(i).get("pay2")).get("1")+"</Data></Cell>");
-				out.println ("    <Cell></Cell>");
+				out.println ("    <Cell><Data ss:Type='Number'>0</Data></Cell>");
 				
 				//if(((Map)list.get(i).get("pay2")).get("8")==null)((Map)list.get(i).get("pay2")).put("8", "");
 				//out.println ("    <Cell><Data ss:Type='Number'>"+((Map)list.get(i).get("pay2")).get("8")+"</Data></Cell>");
-				out.println ("    <Cell></Cell>");
+				out.println ("    <Cell><Data ss:Type='Number'>0</Data></Cell>");
 				
 				//if(((Map)list.get(i).get("pay2")).get("T")==null)((Map)list.get(i).get("pay2")).put("T","");
 				//out.println ("    <Cell><Data ss:Type='Number'>"+((Map)list.get(i).get("pay2")).get("T")+"</Data></Cell>");
-				out.println ("    <Cell></Cell>");
+				out.println ("    <Cell><Data ss:Type='Number'>0</Data></Cell>");
 				
 				if(((Map)list.get(i).get("pay2")).get("N")==null)((Map)list.get(i).get("pay2")).put("N", "");
 				out.println ("    <Cell><Data ss:Type='Number'>"+((Map)list.get(i).get("pay2")).get("N")+"</Data></Cell>");
 				
 				//if(((Map)list.get(i).get("pay2")).get("A")==null)((Map)list.get(i).get("pay2")).put("A", "");
 				//out.println ("    <Cell><Data ss:Type='Number'>"+((Map)list.get(i).get("pay2")).get("A")+"</Data></Cell>");
-				out.println ("    <Cell></Cell>");
+				out.println ("    <Cell><Data ss:Type='Number'>0</Data></Cell>");
 				
 				if(list.get(i).get("mon2")==null)list.get(i).put("mon2", "");
 				out.println ("    <Cell><Data ss:Type='Number'>"+list.get(i).get("mon2")+"</Data></Cell>");	
 				
 				out.println ("    <Cell></Cell>");
 				out.println ("    <Cell></Cell>");
-				out.println ("    <Cell><Data ss:Type='String'>"+bl.getWeekOfDay4Zh(Integer.parseInt(list.get(i).get("Grade").toString()), null)+"年級</Data></Cell>");
+				out.println ("    <Cell><Data ss:Type='String'>"+list.get(i).get("Grade").toString()+"</Data></Cell>");
+				//out.println ("    <Cell><Data ss:Type='String'>"+bl.getWeekOfDay4Zh(Integer.parseInt(list.get(i).get("Grade").toString()), null)+"</Data></Cell>");
 				out.println ("   </Row>");
 			}
 		}
