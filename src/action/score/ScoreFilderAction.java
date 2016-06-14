@@ -139,7 +139,7 @@ public class ScoreFilderAction extends BaseAction{
 		List<Map>stds=df.sqlGet("SELECT s.student_no,(SELECT COUNT(*)FROM Seld se, Dtime d, Class cl WHERE "
 				+ "se.Dtime_oid=d.Oid AND d.depart_class=cl.ClassNo AND se.student_no=s.student_no AND "
 				+ "cl.graduate='0')as cnt FROM stmd s, Class c WHERE s.depart_class=c.ClassNo AND "
-				+ "c.CampusNo='1' AND c.SchoolType='D' AND c.graduate='1'");
+				+ "c.CampusNo='"+cno+"' AND c.SchoolType='"+tno+"' AND c.graduate='1'");
 		for(int i=0; i<stds.size(); i++){			
 			if(Integer.parseInt(stds.get(i).get("cnt").toString())>0){
 				//刪除scoreHist
