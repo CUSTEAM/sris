@@ -11,6 +11,7 @@ import javax.servlet.ServletContext;
 import service.impl.DataFinder;
 import action.score.scorePrint.avgScorePrint;
 import action.score.scorePrint.csPrint;
+import action.score.scorePrint.gradCreditCount;
 import action.score.scorePrint.honorPrint;
 import action.score.scorePrint.mailPrint;
 import action.score.scorePrint.scorePrintBase;
@@ -657,4 +658,42 @@ public class ScorePrintAction extends scorePrintBase{
 		p.print(response, year, term, stmds, schoolAddr);
 		return null;
 	}	
+	
+	public String gradCredit() throws IOException{
+		
+		List<Map>list=new ArrayList();
+		int start=Integer.parseInt(getContext().getAttribute("school_year").toString());
+		
+		StringBuilder sql;
+		for(int i=(start-10); i<start; i++){
+			sql=new StringBuilder("SELECT '"+i+"'as year,ROUND(AVG(credit.all_credit),2)as all_credit,"
+			+ "ROUND(AVG(credit.dept_credit),2)as dept_credit,"
+			+ "ROUND(AVG(credit.inst_credit),2)as inst_credit "
+			+ "FROM(SELECT(SELECT SUM(credit)FROM ScoreHist WHERE student_no=st.student_no AND "
+			+ "(score IS NULL OR score='' OR score>=60))as all_credit,"
+			+ "(SELECT SUM(credit)FROM ScoreHist s1, Class c1 WHERE "
+			+ "c1.DeptNo!=c.DeptNo AND c1.ClassNo=s1.stdepart_class AND "
+			+ "s1.student_no=st.student_no AND c1.Dept!='0' AND"
+			+ "(s1.score IS NULL OR s1.score='' OR s1.score>=60))as dept_credit,"
+			+ "(SELECT SUM(credit)FROM ScoreHist s2, Class c2 WHERE "
+			+ "c2.InstNo!=c.InstNo AND c2.ClassNo=s2.stdepart_class AND "
+			+ "s2.student_no=st.student_no AND(s2.score IS NULL OR s2.score='' "
+			+ "OR s2.score>=60))as inst_credit FROM Gstmd st, Class c WHERE st.depart_class=c.ClassNo "
+			+ "AND st.occur_status='6'AND st.occur_year='"+i+"'");
+			if(!cno.equals(""))sql.append("AND c.CampusNo='"+cno+"'");
+			if(!tno.equals(""))sql.append("AND c.SchoolType='"+tno+"'");
+			if(!sno.equals(""))sql.append("AND c.SchoolNo='"+sno+"'");
+			if(!dno.equals(""))sql.append("AND c.DeptNo='"+dno+"'");
+			if(!gno.equals(""))sql.append("AND c.Grade='"+gno+"'");
+			if(!zno.equals(""))sql.append("AND c.SeqNo='"+zno+"'");
+			sql.append(")as credit");
+			
+			list.add(df.sqlGetMap(sql.toString()));
+		}
+		
+		
+		gradCreditCount p=new gradCreditCount();
+		p.print(response, list, null);
+		return null;
+	}
 }

@@ -73,7 +73,14 @@
 			<button class="btn btn-default" name="method:mail" type="submit">郵寄成績通知單</button>	
 		    <button class="btn btn-danger" name="method:yeaReach" type="submit">連續1/2不及格</button>	    
 		</div>
-				
+		</td>
+	</tr>
+	<tr>
+		<td nowrap>統計列印</td>
+		<td nowrap width="100%">
+		<div class="btn-group" style="float:left">
+		    <button class="btn btn-default" name="method:gradCredit" type="submit">畢業學分數</button>    
+		</div>
 		</td>
 	</tr>
 </table>
