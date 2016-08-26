@@ -659,12 +659,16 @@ public class ScorePrintAction extends scorePrintBase{
 		return null;
 	}	
 	
+	/**
+	 * 畢業學分下限
+	 * @return
+	 * @throws IOException
+	 */
 	public String gradCredit() throws IOException{
-		
-		List<Map>list=new ArrayList();
 		int start=Integer.parseInt(getContext().getAttribute("school_year").toString());
-		
 		StringBuilder sql;
+		List<Map>list=new ArrayList();
+		List<Map>schools=new ArrayList();		
 		for(int i=(start-10); i<start; i++){
 			sql=new StringBuilder("SELECT '"+i+"'as year,ROUND(AVG(credit.all_credit),2)as all_credit,"
 			+ "ROUND(AVG(credit.dept_credit),2)as dept_credit,"
@@ -687,13 +691,39 @@ public class ScorePrintAction extends scorePrintBase{
 			if(!gno.equals(""))sql.append("AND c.Grade='"+gno+"'");
 			if(!zno.equals(""))sql.append("AND c.SeqNo='"+zno+"'");
 			sql.append(")as credit");
-			
 			list.add(df.sqlGetMap(sql.toString()));
 		}
 		
+		List<Map>s=df.sqlGet("SELECT cs.id, cs.name,(COUNT(*))as cnt FROM Gstmd s, Class c, CODE_SCHOOL cs "
+		+ "WHERE s.depart_class=c.ClassNo AND c.SchoolNo=cs.id AND s.occur_status='6'GROUP BY cs.id");
+		List tmp;
+		for(int i=0; i<s.size(); i++){
+			
+			tmp=new ArrayList();
+			for(int j=(start-10); j<start; j++){
+				tmp.add(df.sqlGetMap("SELECT ROUND(AVG(credit.all_credit),2)as all_credit,"
+				+ "ROUND(AVG(credit.dept_credit),2)as dept_credit,"
+				+ "ROUND(AVG(credit.inst_credit),2)as inst_credit "
+				+ "FROM(SELECT(SELECT SUM(credit)FROM ScoreHist WHERE "
+				+ "student_no=st.student_no AND "
+				+ "(score IS NULL OR score='' OR score>=60))as all_credit,"
+				+ "(SELECT SUM(credit)FROM ScoreHist s1, Class c1 WHERE c1.DeptNo!=c.DeptNo AND c1.ClassNo=s1.stdepart_class "
+				+ "AND s1.student_no=st.student_no AND c1.Dept!='0' AND(s1.score IS NULL OR s1.score='' OR s1.score>=60))as dept_credit,"
+				+ "(SELECT SUM(credit)FROM ScoreHist s2, Class c2 WHERE c2.InstNo!=c.InstNo "
+				+ "AND c2.ClassNo=s2.stdepart_class AND s2.student_no=st.student_no "
+				+ "AND(s2.score IS NULL OR s2.score='' OR s2.score>=60))as inst_credit "
+				+ "FROM Gstmd st, Class c WHERE "
+				+ "st.depart_class=c.ClassNo "
+				+ "AND st.occur_year='"+j+"' AND st.occur_status='6'"
+				+ "AND c.SchoolNo='"+s.get(i).get("id")+"')as credit"));				
+			}
+			
+			s.get(i).put("cnt", tmp);
+			
+		}
 		
 		gradCreditCount p=new gradCreditCount();
-		p.print(response, list, null);
+		p.print(response, list, s);
 		return null;
 	}
 }
