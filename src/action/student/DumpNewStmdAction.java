@@ -101,10 +101,10 @@ public class DumpNewStmdAction extends BaseAction{
 					continue;
 				}
 				
-				if(idno.length()<10){
+				/*if(idno.length()<10){
 					fail.add(setMsg(student_no, "身份證欄位格式有誤"));
 					continue;
-				}
+				}*/
 
 				//生日檢核
 				try{
