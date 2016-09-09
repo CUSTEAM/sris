@@ -10,14 +10,11 @@
 	<package name="fee" extends="abstract_struts" namespace="/">		
 		<action name="TuitionManager" class="action.fee.TuitionManagerAction">
 			<result>/jsp/fee/TuitionManager.jsp</result>
-		</action>	
-		
+		</action>		
 		<action name="PayAccountManager" class="action.fee.PayAccountManager">
 			<result>/jsp/fee/PayAccountManager.jsp</result>
-		</action>	
+		</action>
 	</package>
-	
-	
 	
 	<package name="Score" extends="abstract_struts" namespace="/">			
 		
