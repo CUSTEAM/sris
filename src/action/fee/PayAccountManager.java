@@ -40,17 +40,29 @@ public class PayAccountManager extends BaseAction{
 	}
 	
 	public String search(){
+		
 		StringBuilder sql=new StringBuilder("SELECT d.Oid,s.student_no, s.student_name, "
 		+ "c.ClassName, cd.name, d.OfficeNo, d.AcctNo,d.Money, d.LastModified, d.SchoolYear, d.SchoolTerm, d.occur_month FROM "
 		+ "stmd s, Dipost d, Class c, CODE_DIPOST cd WHERE cd.id=d.Kind AND "
 		+ "s.student_no=d.StudentNo AND s.depart_class=c.ClassNo AND "
 		+ "d.SchoolYear='"+year+"' AND c.CampusNo='"+cno+"'"
 		+ "AND c.SchoolType='"+tno+"'AND d.Kind='"+Kind+"'");		
-		if(StudentNo.indexOf(",")>0)sql.append("AND StudentNo LIKE'"+StudentNo.substring(0, StudentNo.indexOf(","))+"'");
-		if(!occur_month.equals(""))sql.append("AND occur_month='"+occur_month+"'");
-		if(!term.equals(""))sql.append("AND d.SchoolTerm='"+term+"'");
+		if(StudentNo.indexOf(",")>0)sql.append("AND StudentNo ='"+StudentNo.substring(0, StudentNo.indexOf(","))+"'");
+		//if(!occur_month.equals(""))sql.append("AND occur_month='"+occur_month+"'");
+		if(Kind.equals("3"))sql.append("AND occur_month LIKE'"+occur_month+"%'");
+		if(!term.equals(""))sql.append("AND d.SchoolTerm='"+term+"'");		
 		request.setAttribute("dipost", df.sqlGet(sql.toString()));
 		return SUCCESS;
+	}
+	
+	private List subSearch(){	
+		SimpleDateFormat sf1=new SimpleDateFormat("yyyy-MM-dd");
+		
+		
+		return df.sqlGet("SELECT d.Oid,s.student_no, s.student_name, c.ClassName, "
+		+ "cd.name, d.OfficeNo, d.AcctNo,d.Money, d.LastModified, d.SchoolYear, d.SchoolTerm, "
+		+ "d.occur_month FROM stmd s, Dipost d, Class c, CODE_DIPOST cd WHERE cd.id=d.Kind AND "
+		+ "s.student_no=d.StudentNo AND s.depart_class=c.ClassNo AND d.LastModified LIKE'"+sf1.format(new Date())+"%' ORDER BY d.LastModified DESC");
 	}
 	
 	public String del(){
@@ -86,11 +98,14 @@ public class PayAccountManager extends BaseAction{
 			}			
 			msg.setSuccess("新增完成");
 			this.savMessage(msg);
-			return search();
+			request.setAttribute("dipost", subSearch());
+			return SUCCESS;
 		}catch(Exception e){
+			e.printStackTrace();
 			msg.setError("請檢查是否為重複資料");
-			this.savMessage(msg);
-			return search();
+			this.savMessage(msg);	
+			request.setAttribute("dipost", subSearch());
+			return SUCCESS;
 		}
 	}
 	

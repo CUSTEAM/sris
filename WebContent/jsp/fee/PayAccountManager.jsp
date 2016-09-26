@@ -19,7 +19,9 @@
 }
 </style>
 <script src="/eis/inc/js/plugin/stupidtable.min.js"></script>
-<script>$("#table").stupidtable();</script>
+<script>
+$("#table").stupidtable();
+</script>
 </head>
 <body>    
 <div class="bs-callout bs-callout-info">
@@ -84,7 +86,7 @@
 		</select>
 		<div class="input-group">
 			<span class="input-group-addon" id="sizing-addon2">金額</span>
-			<input type="text" class="form-control" placeholder="$$$" name="Money" />
+			<input type="text" class="form-control" placeholder="$$$" name="Money" value="${Money}"/>
 			<span class="input-group-btn">
 			<button class="btn btn-danger" name="method:add">新增</button>	
 			
@@ -194,8 +196,13 @@ $(document).ready(function() {
 			$("#occur_month").hide("slow");
 		}
 	});*/
-	
-	$("#StudentNo").typeahead({
+	$("#StudentNo" ).focus();
+		
+});
+//document.getElementById("StudentNo").focus();
+//$("#StudentNo" ).focus();
+
+$("#StudentNo").typeahead({
 		//remote:"#student_no",
 		source : [],
 		items : 10,
@@ -210,8 +217,7 @@ $(document).ready(function() {
 				}
 			});
 		}		
-	});	
-});
+	});
 </script>
 </body>
 </html>
