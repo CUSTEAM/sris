@@ -136,47 +136,49 @@ public class PayAccountManager extends BaseAction{
 		String mm;
 		for (int i = sheet.getFirstRowNum(); i <= sheet.getPhysicalNumberOfRows(); i++) {				
 			row = sheet.getRow(i);
-			if(row!=null){	
-				if(i==0)
+			if(row.getCell(0)==null)break;	
+				/*if(i==0)
 				try{//檢查標題
+					
 					Integer.parseInt(row.getCell(0).toString());
 				}catch(Exception e){
 					msg.setError("發現標題欄位, 已跳過讀取<br>");
 					continue;
-				}
+				}*/
 				
-				for(int j=0; j<=6; j++){//檢查欄位null					
+				/*for(int j=0; j<=6; j++){//檢查欄位null
 					if(String.valueOf(row.getCell(j)).trim().equals("")||row.getCell(j)==null){	
 						msg.addError("第"+i+"行發現空白");
 						b=true;
 					}
-				}
-				
+				}				
 				if(b==true){
 					msg.addError("<br>發現嚴重問題, 文件未匯入");
 					this.savMessage(msg);
 					return SUCCESS;
-				}
-				y=readCellAsString(row.getCell(0));
-				t=readCellAsString(row.getCell(1));
-				k=readCellAsString(row.getCell(2));
-				s=readCellAsString(row.getCell(3));
-				o=readCellAsString(row.getCell(4));
-				a=readCellAsString(row.getCell(5));
-				m=readCellAsString(row.getCell(6));	
-				mm=readCellAsString(row.getCell(7));
+				}*/
+				
+				
 				try{
+					y=readCellAsString(row.getCell(0));
+					t=readCellAsString(row.getCell(1));
+					k=readCellAsString(row.getCell(2));
+					s=readCellAsString(row.getCell(3));
+					o=readCellAsString(row.getCell(4));
+					a=readCellAsString(row.getCell(5));
+					m=readCellAsString(row.getCell(6));	
+					mm=readCellAsString(row.getCell(7));
 					//試刪除原資料
 					df.exSql("DELETE FROM Dipost WHERE Kind='"+k+"'AND StudentNo='"+s+"' AND SchoolYear='"+y+"' AND SchoolTerm='"+t+"'");
+					//建立
 					df.exSql("INSERT INTO Dipost(StudentNo,OfficeNo,AcctNo,Money,Kind,Modifier,SchoolYear,SchoolTerm,occur_month)"
 					+ "VALUES('"+s+"', '"+o+"', '"+a+"', '"+m+"', '"+k+"', '"+getSession().getAttribute("userid")+"', '"+y+"', '"+t+"','"+mm+"');");
 					check+=1;
-					
 				}catch(Exception e){
 					msg.addError("第"+i+"行在儲存中發生錯誤");
 					continue;
 				}										
-			}			
+						
 		}
 		
 		fis.close();
