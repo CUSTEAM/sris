@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>學生填報基本資料審核</title>
 <script src="/eis/inc/js/plugin/bootstrap-fileupload.js"></script>
 <script src="/eis/inc/js/plugin/jquery-ui.js"></script>
 <link href="/eis/inc/css/jquery-ui.css" rel="stylesheet"/>

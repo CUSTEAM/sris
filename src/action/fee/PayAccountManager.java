@@ -40,28 +40,37 @@ public class PayAccountManager extends BaseAction{
 	}
 	
 	public String search(){
+		List list=mainSearch("stmd");
+		list.addAll(mainSearch("Gstmd"));
 		
+		request.setAttribute("dipost", list);
+		return SUCCESS;
+	}
+	
+	private List mainSearch(String target){
+		List list;
 		StringBuilder sql=new StringBuilder("SELECT d.Oid,s.student_no, s.student_name, "
 		+ "c.ClassName, cd.name, d.OfficeNo, d.AcctNo,d.Money, d.LastModified, d.SchoolYear, d.SchoolTerm, d.occur_month FROM "
-		+ "stmd s, Dipost d, Class c, CODE_DIPOST cd WHERE cd.id=d.Kind AND "
+		+target+ " s, Dipost d, Class c, CODE_DIPOST cd WHERE cd.id=d.Kind AND "
 		+ "s.student_no=d.StudentNo AND s.depart_class=c.ClassNo AND "
 		+ "d.SchoolYear='"+year+"' AND c.CampusNo='"+cno+"'"
 		+ "AND c.SchoolType='"+tno+"'AND d.Kind='"+Kind+"'");		
 		if(StudentNo.indexOf(",")>0)sql.append("AND StudentNo ='"+StudentNo.substring(0, StudentNo.indexOf(","))+"'");
 		//if(!occur_month.equals(""))sql.append("AND occur_month='"+occur_month+"'");
 		if(Kind.equals("3"))sql.append("AND occur_month LIKE'"+occur_month+"%'");
-		if(!term.equals(""))sql.append("AND d.SchoolTerm='"+term+"'");		
-		request.setAttribute("dipost", df.sqlGet(sql.toString()));
-		return SUCCESS;
+		if(!term.equals(""))sql.append("AND d.SchoolTerm='"+term+"'");
+		list=df.sqlGet(sql.toString());
+		
+		return list;
 	}
 	
-	private List subSearch(){	
+	private List subSearch(String target){	
 		SimpleDateFormat sf1=new SimpleDateFormat("yyyy-MM-dd");
 		
 		
 		return df.sqlGet("SELECT d.Oid,s.student_no, s.student_name, c.ClassName, "
 		+ "cd.name, d.OfficeNo, d.AcctNo,d.Money, d.LastModified, d.SchoolYear, d.SchoolTerm, "
-		+ "d.occur_month FROM stmd s, Dipost d, Class c, CODE_DIPOST cd WHERE cd.id=d.Kind AND "
+		+ "d.occur_month FROM "+target+" s, Dipost d, Class c, CODE_DIPOST cd WHERE cd.id=d.Kind AND "
 		+ "s.student_no=d.StudentNo AND s.depart_class=c.ClassNo AND d.LastModified LIKE'"+sf1.format(new Date())+"%' ORDER BY d.LastModified DESC");
 	}
 	
@@ -86,6 +95,7 @@ public class PayAccountManager extends BaseAction{
 			this.savMessage(msg);
 			return SUCCESS;
 		}
+		List list;
 		try{
 			if(Kind.equals("3")){
 				df.exSql("INSERT INTO Dipost(StudentNo,OfficeNo,AcctNo,Money,Kind,Modifier,SchoolYear,SchoolTerm,occur_month)"
@@ -98,13 +108,17 @@ public class PayAccountManager extends BaseAction{
 			}			
 			msg.setSuccess("新增完成");
 			this.savMessage(msg);
-			request.setAttribute("dipost", subSearch());
+			list=subSearch("stmd");
+			list.addAll(subSearch("Gstmd"));
+			request.setAttribute("dipost", list);
 			return SUCCESS;
 		}catch(Exception e){
 			e.printStackTrace();
 			msg.setError("請檢查是否為重複資料");
 			this.savMessage(msg);	
-			request.setAttribute("dipost", subSearch());
+			list=subSearch("stmd");
+			list.addAll(subSearch("Gstmd"));
+			request.setAttribute("dipost", list);
 			return SUCCESS;
 		}
 	}
