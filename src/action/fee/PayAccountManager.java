@@ -150,7 +150,7 @@ public class PayAccountManager extends BaseAction{
 		String mm;
 		for (int i = sheet.getFirstRowNum(); i <= sheet.getPhysicalNumberOfRows(); i++) {				
 			row = sheet.getRow(i);
-			if(row.getCell(0)==null)break;	
+			//if(row.getCell(0)==null)break;	
 				/*if(i==0)
 				try{//檢查標題
 					
