@@ -222,7 +222,7 @@ public class ScoreManagerAction extends BaseAction{
 		request.setAttribute("hist", true);
 		stNo=new String(student_no.substring(0, student_no.indexOf(",")));
 		request.setAttribute("scoreHist", df.sqlGet("SELECT cs.chi_name, s.*, c.ClassNo, c.ClassName FROM "
-		+ "ScoreHist s LEFT OUTER JOIN Class c ON c.ClassNo=s.stdepart_class, Csno cs WHERE s.cscode=cs.cscode AND "
+		+ "(ScoreHist s LEFT OUTER JOIN Class c ON c.ClassNo=s.stdepart_class)LEFT OUTER JOIN Csno cs ON s.cscode=cs.cscode WHERE "
 		+ "s.student_no='"+stNo+"' ORDER BY s.school_year, s.school_term"));		
 		return SUCCESS;
 	}

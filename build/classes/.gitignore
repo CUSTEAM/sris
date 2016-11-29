@@ -1,1 +1,5 @@
 /action/
+/decorators/
+/struts-ajax.xml
+/struts-page.xml
+/struts.xml
