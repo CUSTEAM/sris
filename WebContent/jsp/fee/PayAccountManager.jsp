@@ -37,7 +37,7 @@ $("#table").stupidtable();
 <table class="table">
 	<tr>
 		<td>
-		<%@ include file="/inc/jsp-kit/dhnSelector.jsp"%>	
+		<%@ include file="/inc/jsp-kit/dhnFullSelector.jsp"%>	
 		<%int y=Integer.parseInt(request.getServletContext().getAttribute("school_year").toString()); %>
 		<select class="selectpicker" data-width="fit" name="year">			
 			<%for(int i=y; i>=y-4; i--){%>
@@ -49,12 +49,21 @@ $("#table").stupidtable();
 			<option <c:if test="${term =='1'}">selected</c:if> value="1">第1學期</option>
 			<option <c:if test="${term =='2'}">selected</c:if> value="2">第2學期</option>
 		</select>
+		<select class="selectpicker" data-width="fit" name=occur_month id="occur_month">			
+			<option value="">選擇月份</option>
+			<c:forEach begin="1" end="12" varStatus="i">
+			<option <c:if test="${i.index == occur_month}">selected</c:if> value="${i.index}">${i.index}月份</option>
+			</c:forEach>
+		</select>
 		<select class="selectpicker" data-width="fit" name="Kind" id="Kind">			
 			<c:forEach items="${CODE_DIPOST}" var="c">
 			<option <c:if test="${Kind == c.id}">selected</c:if> value="${c.id}">${c.name}</option>
 			</c:forEach>
 		</select>
-		<button class="btn btn-danger" name="method:search">查詢</button>
+		<div class="btn-group">
+		<button class="btn btn-default" name="method:search">查詢</button>
+		<button class="btn btn-danger" name="method:print">列印 </button>
+		</div>
 		</td>
 	</tr>
 	<tr>
@@ -78,23 +87,21 @@ $("#table").stupidtable();
 	
 	<tr>
 		<td>
-		<select class="form-control" data-width="fit" name=occur_month id="occur_month">			
-			<option value="">選擇月份</option>
-			<c:forEach begin="1" end="12" varStatus="i">
-			<option <c:if test="${i.index == occur_month}">selected</c:if> value="${i.index}">${i.index}月份</option>
-			</c:forEach>
-		</select>
+		
 		<div class="input-group">
 			<span class="input-group-addon" id="sizing-addon2">金額</span>
 			<input type="text" class="form-control" placeholder="$$$" name="Money" value="${Money}"/>
 			<span class="input-group-btn">
-			<button class="btn btn-danger" name="method:add">新增</button>	
+			<button class="btn btn-primary" name="method:add">新增單筆</button>	
 			
 			</span>
+			
+			
 		</div>
-		<div class="btn-group">		
+		
+		
 		<a href="PayAccountManager" class="btn btn-default">重設條件</a>
-		</div>
+		
 		</td>
 	</tr>
 	<tr>

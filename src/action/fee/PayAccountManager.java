@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -49,25 +50,25 @@ public class PayAccountManager extends BaseAction{
 	
 	private List mainSearch(String target){
 		List list;
-		StringBuilder sql=new StringBuilder("SELECT d.Oid,s.student_no, s.student_name, "
+		StringBuilder sql=new StringBuilder("SELECT d.Oid,s.student_no,s.idno, s.student_name, "
 		+ "c.ClassName, cd.name, d.OfficeNo, d.AcctNo,d.Money, d.LastModified, d.SchoolYear, d.SchoolTerm, d.occur_month FROM "
 		+target+ " s, Dipost d, Class c, CODE_DIPOST cd WHERE cd.id=d.Kind AND "
 		+ "s.student_no=d.StudentNo AND s.depart_class=c.ClassNo AND "
-		+ "d.SchoolYear='"+year+"' AND c.CampusNo='"+cno+"'"
-		+ "AND c.SchoolType='"+tno+"'AND d.Kind='"+Kind+"'");		
+		+ "d.SchoolYear='"+year+"'"
+		+ "AND d.Kind='"+Kind+"'");		
+		
+		if(!tno.equals(""))sql.append("AND c.SchoolType='"+tno+"'");
+		if(!cno.equals(""))sql.append("AND c.CampusNo='"+cno+"'");
 		if(StudentNo.indexOf(",")>0)sql.append("AND StudentNo ='"+StudentNo.substring(0, StudentNo.indexOf(","))+"'");
-		//if(!occur_month.equals(""))sql.append("AND occur_month='"+occur_month+"'");
+		if(!occur_month.equals(""))sql.append("AND occur_month='"+occur_month+"'");
 		if(Kind.equals("3"))sql.append("AND occur_month LIKE'"+occur_month+"%'");
 		if(!term.equals(""))sql.append("AND d.SchoolTerm='"+term+"'");
 		list=df.sqlGet(sql.toString());
-		
 		return list;
 	}
 	
 	private List subSearch(String target){	
-		SimpleDateFormat sf1=new SimpleDateFormat("yyyy-MM-dd");
-		
-		
+		SimpleDateFormat sf1=new SimpleDateFormat("yyyy-MM-dd");		
 		return df.sqlGet("SELECT d.Oid,s.student_no, s.student_name, c.ClassName, "
 		+ "cd.name, d.OfficeNo, d.AcctNo,d.Money, d.LastModified, d.SchoolYear, d.SchoolTerm, "
 		+ "d.occur_month FROM "+target+" s, Dipost d, Class c, CODE_DIPOST cd WHERE cd.id=d.Kind AND "
@@ -123,8 +124,11 @@ public class PayAccountManager extends BaseAction{
 		}
 	}
 	
-	
-	
+	/**
+	 * upload
+	 * @return
+	 * @throws IOException
+	 */
 	public String upload() throws IOException{
 		Message msg=new Message();
 		if(upload==null){			
@@ -170,9 +174,7 @@ public class PayAccountManager extends BaseAction{
 					msg.addError("<br>發現嚴重問題, 文件未匯入");
 					this.savMessage(msg);
 					return SUCCESS;
-				}*/
-				
-				
+				}*/				
 				try{
 					y=readCellAsString(row.getCell(0));
 					t=readCellAsString(row.getCell(1));
@@ -342,6 +344,242 @@ public class PayAccountManager extends BaseAction{
 		m.put("stdNo", stdNo);
 		m.put("msg", msg);
 		return m;
+	}
+	
+	/**
+	 * 列印
+	 * @return
+	 * @throws IOException 
+	 */
+	public String print() throws IOException{
+		Date date=new Date();
+		SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd");
+		response.setContentType("text/html; charset=UTF-8");
+		response.setContentType("application/vnd.ms-excel");
+		response.setHeader("Content-disposition","attachment;filename="+date.getTime()+".xls");		
+		PrintWriter out=response.getWriter();
+		
+		List<Map>list=mainSearch("stmd");
+		list.addAll(mainSearch("Gstmd"));
+		
+		out.println ("<?xml version='1.0'?>");
+		out.println ("<?mso-application progid='Excel.Sheet'?>");
+		out.println ("<Workbook xmlns='urn:schemas-microsoft-com:office:spreadsheet'");
+		out.println (" xmlns:o='urn:schemas-microsoft-com:office:office'");
+		out.println (" xmlns:x='urn:schemas-microsoft-com:office:excel'");
+		out.println (" xmlns:ss='urn:schemas-microsoft-com:office:spreadsheet'");
+		out.println (" xmlns:html='http://www.w3.org/TR/REC-html40'>");
+		out.println (" <DocumentProperties xmlns='urn:schemas-microsoft-com:office:office'>");
+		out.println ("  <Author>user</Author>");
+		out.println ("  <LastAuthor>John</LastAuthor>");
+		out.println ("  <LastPrinted>2016-12-05T01:10:12Z</LastPrinted>");
+		out.println ("  <Created>2009-12-23T01:19:55Z</Created>");
+		out.println ("  <LastSaved>2016-12-01T02:12:35Z</LastSaved>");
+		out.println ("  <Company>chit</Company>");
+		out.println ("  <Version>15.00</Version>");
+		out.println (" </DocumentProperties>");
+		out.println (" <OfficeDocumentSettings xmlns='urn:schemas-microsoft-com:office:office'>");
+		out.println ("  <AllowPNG/>");
+		out.println (" </OfficeDocumentSettings>");
+		out.println (" <ExcelWorkbook xmlns='urn:schemas-microsoft-com:office:excel'>");
+		out.println ("  <WindowHeight>12390</WindowHeight>");
+		out.println ("  <WindowWidth>28800</WindowWidth>");
+		out.println ("  <WindowTopX>0</WindowTopX>");
+		out.println ("  <WindowTopY>0</WindowTopY>");
+		out.println ("  <ProtectStructure>False</ProtectStructure>");
+		out.println ("  <ProtectWindows>False</ProtectWindows>");
+		out.println (" </ExcelWorkbook>");
+		out.println (" <Styles>");
+		out.println ("  <Style ss:ID='Default' ss:Name='Normal'>");
+		out.println ("   <Alignment ss:Vertical='Center'/>");
+		out.println ("   <Borders/>");
+		out.println ("   <Font ss:FontName='新細明體' x:CharSet='136' x:Family='Roman' ss:Size='12'/>");
+		out.println ("   <Interior/>");
+		out.println ("   <NumberFormat/>");
+		out.println ("   <Protection/>");
+		out.println ("  </Style>");
+		out.println ("  <Style ss:ID='s62'>");
+		out.println ("   <Alignment ss:Horizontal='Center' ss:Vertical='Center'/>");
+		out.println ("   <Font ss:FontName='微軟正黑體' x:CharSet='136' x:Family='Swiss' ss:Size='12'/>");
+		out.println ("   <NumberFormat ss:Format='@'/>");
+		out.println ("  </Style>");
+		out.println ("  <Style ss:ID='s63'>");
+		out.println ("   <Alignment ss:Horizontal='Right' ss:Vertical='Center'/>");
+		out.println ("   <Font ss:FontName='微軟正黑體' x:CharSet='136' x:Family='Swiss' ss:Size='12'/>");
+		out.println ("   <NumberFormat ss:Format='0.00_ '/>");
+		out.println ("  </Style>");
+		out.println ("  <Style ss:ID='s64'>");
+		out.println ("   <Alignment ss:Horizontal='Distributed' ss:Vertical='Center'/>");
+		out.println ("   <Font ss:FontName='微軟正黑體' x:CharSet='136' x:Family='Swiss' ss:Size='12'/>");
+		out.println ("   <NumberFormat ss:Format='@'/>");
+		out.println ("  </Style>");
+		out.println ("  <Style ss:ID='s65'>");
+		out.println ("   <Alignment ss:Horizontal='Distributed' ss:Vertical='Center'/>");
+		out.println ("   <Borders>");
+		out.println ("    <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Left' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Right' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("   </Borders>");
+		out.println ("   <Font ss:FontName='微軟正黑體' x:CharSet='136' x:Family='Swiss' ss:Size='12'/>");
+		out.println ("   <NumberFormat ss:Format='@'/>");
+		out.println ("  </Style>");
+		out.println ("  <Style ss:ID='s66'>");
+		out.println ("   <Alignment ss:Horizontal='Distributed' ss:Vertical='Center' ss:WrapText='1'/>");
+		out.println ("   <Borders>");
+		out.println ("    <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Left' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Right' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("   </Borders>");
+		out.println ("   <Font ss:FontName='微軟正黑體' x:CharSet='136' x:Family='Swiss' ss:Size='12'/>");
+		out.println ("   <NumberFormat ss:Format='@'/>");
+		out.println ("  </Style>");
+		out.println ("  <Style ss:ID='s67'>");
+		out.println ("   <Alignment ss:Horizontal='Right' ss:Vertical='Center'/>");
+		out.println ("   <Borders>");
+		out.println ("    <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Left' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Right' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("   </Borders>");
+		out.println ("   <Font ss:FontName='微軟正黑體' x:CharSet='136' x:Family='Swiss' ss:Size='12'/>");
+		out.println ("   <NumberFormat ss:Format='0.00_ '/>");
+		out.println ("  </Style>");
+		out.println ("  <Style ss:ID='s68'>");
+		out.println ("   <Alignment ss:Horizontal='Distributed' ss:Vertical='Center'/>");
+		out.println ("   <Borders/>");
+		out.println ("   <Font ss:FontName='微軟正黑體' x:CharSet='136' x:Family='Swiss' ss:Size='12'/>");
+		out.println ("   <NumberFormat ss:Format='@'/>");
+		out.println ("  </Style>");
+		out.println ("  <Style ss:ID='s69'>");
+		out.println ("   <Alignment ss:Horizontal='Center' ss:Vertical='Center'/>");
+		out.println ("   <Borders>");
+		out.println ("    <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Left' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Right' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("   </Borders>");
+		out.println ("   <Font ss:FontName='微軟正黑體' x:CharSet='136' x:Family='Swiss' ss:Size='12'/>");
+		out.println ("   <NumberFormat ss:Format='@'/>");
+		out.println ("  </Style>");
+		out.println ("  <Style ss:ID='s70'>");
+		out.println ("   <Alignment ss:Horizontal='Right' ss:Vertical='Center'/>");
+		out.println ("   <Borders>");
+		out.println ("    <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Left' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Right' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("   </Borders>");
+		out.println ("   <Font ss:FontName='微軟正黑體' x:CharSet='136' x:Family='Swiss' ss:Size='12'/>");
+		out.println ("   <NumberFormat ss:Format='#,##0'/>");
+		out.println ("  </Style>");
+		out.println (" </Styles>");
+		out.println (" <Worksheet ss:Name='學生轉帳帳號資料'>");
+		out.println ("  <Names>");
+		out.println ("   <NamedRange ss:Name='Print_Titles' ss:RefersTo='=學生轉帳帳號資料!R1'/>");
+		out.println ("  </Names>");
+		out.println ("  <Table ss:ExpandedColumnCount='13' ss:ExpandedRowCount='"+(list.size()+999)+"' x:FullColumns='1'");
+		out.println ("   x:FullRows='1' ss:StyleID='s62' ss:DefaultColumnWidth='54'");
+		out.println ("   ss:DefaultRowHeight='15.75'>");
+		out.println ("   <Column ss:StyleID='s62' ss:AutoFitWidth='0' ss:Width='116.25'/>");
+		out.println ("   <Column ss:StyleID='s62' ss:AutoFitWidth='0' ss:Width='68.25'/>");
+		out.println ("   <Column ss:StyleID='s62' ss:AutoFitWidth='0' ss:Width='52.5'/>");
+		out.println ("   <Column ss:StyleID='s62' ss:Width='63' ss:Span='1'/>");
+		out.println ("   <Column ss:Index='6' ss:StyleID='s62' ss:AutoFitWidth='0' ss:Width='81.75'/>");
+		out.println ("   <Column ss:StyleID='s63' ss:AutoFitWidth='0' ss:Width='52.5'/>");
+		out.println ("   <Column ss:StyleID='s62' ss:AutoFitWidth='0' ss:Width='75'/>");
+		out.println ("   <Row ss:AutoFitHeight='0' ss:Height='37.5' ss:StyleID='s64'>");
+		out.println ("    <Cell ss:StyleID='s65'><Data ss:Type='String'>班級</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s65'><Data ss:Type='String'>學號</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s66'><Data ss:Type='String'>姓名</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s65'><Data ss:Type='String'>立帳局號</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s65'><Data ss:Type='String'>儲戶帳號</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s65'><Data ss:Type='String'>身份證號</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s67'><Data ss:Type='String'>轉帳金額</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s65'><Data ss:Type='String'>種類</Data><NamedCell");
+		out.println ("      ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s68'><NamedCell ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s68'><NamedCell ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s68'><NamedCell ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s68'><NamedCell ss:Name='Print_Titles'/></Cell>");
+		out.println ("    <Cell ss:StyleID='s68'><NamedCell ss:Name='Print_Titles'/></Cell>");
+		out.println ("   </Row>");
+		
+		int sum=0;
+		for(int i=0; i<list.size(); i++){
+			sum+=Integer.parseInt(list.get(i).get("Money").toString());
+			out.println ("   <Row ss:AutoFitHeight='0'>");
+			out.println ("    <Cell ss:StyleID='s69'><Data ss:Type='String'>"+list.get(i).get("ClassName")+"</Data></Cell>");
+			out.println ("    <Cell ss:StyleID='s69'><Data ss:Type='String'>"+list.get(i).get("student_no")+"</Data></Cell>");
+			out.println ("    <Cell ss:StyleID='s69'><Data ss:Type='String'>"+list.get(i).get("student_name")+"</Data></Cell>");
+			out.println ("    <Cell ss:StyleID='s69'><Data ss:Type='String'>"+list.get(i).get("OfficeNo")+"</Data></Cell>");
+			out.println ("    <Cell ss:StyleID='s69'><Data ss:Type='String'>"+list.get(i).get("AcctNo")+"</Data></Cell>");
+			out.println ("    <Cell ss:StyleID='s69'><Data ss:Type='String'>"+list.get(i).get("idno")+"</Data></Cell>");
+			out.println ("    <Cell ss:StyleID='s70'><Data ss:Type='Number'>"+list.get(i).get("Money")+"</Data></Cell>");
+			out.println ("    <Cell ss:StyleID='s69'><Data ss:Type='String'>"+list.get(i).get("name")+"</Data></Cell>");
+			out.println ("   </Row>");
+		}
+		
+		
+		
+		out.println ("  </Table>");
+		out.println ("  <WorksheetOptions xmlns='urn:schemas-microsoft-com:office:excel'>");
+		out.println ("   <PageSetup>");
+		out.println ("    <Header x:Margin='0.31496062992125984'");
+		
+		if(occur_month.equals("")){
+			out.println ("     x:Data='&#10;&amp;L&#10;"+(list.size()+1)+"筆, "+sum+"元 &amp;C&amp;&quot;微軟正黑體,粗體&quot;&amp;16 "+year+"學年第"+term+"學期轉帳清冊      &#10;&amp;R&#10;&amp;D&amp;T'/>");
+		}else{
+			out.println ("     x:Data='&#10;&amp;L&#10;"+(list.size()+1)+"筆, "+sum+"元 &amp;C&amp;&quot;微軟正黑體,粗體&quot;&amp;16 "+year+"學年"+occur_month+"月份轉帳清冊      &#10;&amp;R&#10;&amp;D&amp;T'/>");
+		}
+		
+		
+		
+		out.println ("    <Footer x:Margin='0.31496062992125984' x:Data='&amp;R&amp;P/&amp;N'/>");
+		out.println ("    <PageMargins x:Bottom='0.74803149606299213' x:Left='0.23622047244094491'");
+		out.println ("     x:Right='0.23622047244094491' x:Top='0.74803149606299213'/>");
+		out.println ("   </PageSetup>");
+		out.println ("   <Unsynced/>");
+		out.println ("   <Print>");
+		out.println ("    <ValidPrinterInfo/>");
+		out.println ("    <PaperSizeIndex>9</PaperSizeIndex>");
+		out.println ("    <HorizontalResolution>600</HorizontalResolution>");
+		out.println ("    <VerticalResolution>600</VerticalResolution>");
+		out.println ("   </Print>");
+		out.println ("   <Selected/>");
+		out.println ("   <FreezePanes/>");
+		out.println ("   <FrozenNoSplit/>");
+		out.println ("   <SplitHorizontal>1</SplitHorizontal>");
+		out.println ("   <TopRowBottomPane>1</TopRowBottomPane>");
+		out.println ("   <ActivePane>2</ActivePane>");
+		out.println ("   <Panes>");
+		out.println ("    <Pane>");
+		out.println ("     <Number>3</Number>");
+		out.println ("    </Pane>");
+		out.println ("    <Pane>");
+		out.println ("     <Number>2</Number>");
+		out.println ("     <ActiveRow>0</ActiveRow>");
+		out.println ("     <ActiveCol>6</ActiveCol>");
+		out.println ("     <RangeSelection>C7</RangeSelection>");
+		out.println ("    </Pane>");
+		out.println ("   </Panes>");
+		out.println ("   <ProtectObjects>False</ProtectObjects>");
+		out.println ("   <ProtectScenarios>False</ProtectScenarios>");
+		out.println ("  </WorksheetOptions>");
+		out.println (" </Worksheet>");
+		out.println ("</Workbook>");
+		out.close();
+		out.flush();
+		
+		return null;
 	}
 
 }

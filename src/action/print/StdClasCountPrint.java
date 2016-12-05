@@ -1152,7 +1152,8 @@ public class StdClasCountPrint extends BaseAction{
 		
 		out.println ("</Workbook>");
 		
-		
+		out.close();
+		out.flush();
 		
 	}
 	
