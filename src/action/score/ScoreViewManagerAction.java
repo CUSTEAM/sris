@@ -36,7 +36,8 @@ public class ScoreViewManagerAction extends BaseAction{
 		+ "s1.student_no=st.student_no AND st.depart_class=c1.ClassNo AND "
 		+ "c1.graduate='1'AND s1.Dtime_oid=d.Oid)as cnt FROM Dtime d LEFT "
 		+ "OUTER JOIN ScoreOdDate s ON d.Oid=s.DtimeOid, Class c,Csno cs,"
-		+ "CODE_DTIME_OPT o WHERE d.stu_select>0 AND o.id=d.opt AND cs.cscode=d.cscode AND "
+		//+ "CODE_DTIME_OPT o WHERE d.stu_select>0 AND o.id=d.opt AND cs.cscode=d.cscode AND "
+		+ "CODE_DTIME_OPT o WHERE o.id=d.opt AND cs.cscode=d.cscode AND "
 		+ "c.ClassNo=d.depart_class ");
 		if(!cno.equals(""))sql.append("AND c.CampusNo='"+cno+"'");
 		if(!tno.equals(""))sql.append("AND c.SchoolType='"+tno+"'");
@@ -46,7 +47,7 @@ public class ScoreViewManagerAction extends BaseAction{
 		//if(!zno.equals(""))sql.append("AND c.SeqNo='"+zno+"'");
 		if(only.equals("1")){
 			sql.append("HAVING cnt>0");
-		}		
+		}
 		request.setAttribute("cls",df.sqlGet(sql.toString()));
 		
 		

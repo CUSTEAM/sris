@@ -60,6 +60,10 @@
 	
 	<package name="PublicPrint" extends="abstract_struts" namespace="/">
 		<action name="StdClasCount" class="action.print.StdClasCountPrint"/>
+		
+		<action name="DocPrint" class="action.print.DocPrintAction">
+			<result>/jsp/DocPrint.jsp</result>
+		</action>
 	</package>
 	
 	
