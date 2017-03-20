@@ -38,9 +38,11 @@
 <div class="panel panel-primary">
 	<div class="panel-heading">列印項目</div>
   		<div class="panel-body">  
-  		<!-- select onChange="changType(this.value);" class="selectpicker show-tick" title="中文畢業證書">
+  		
+  		<!-- select id="cd" onChange="changType(this.value, this.id);" class="selectpicker show-tick" title="中文畢業證書">
+			<option value="">中文畢業證書</option>
 			<optgroup label="日間部">
-				<option disabled value="CDAD" data-subtext="無對應範本">副學士</option>
+				<option value="CDAD" data-subtext="無對應範本">副學士</option>
 				<option disabled value="CDBD" data-subtext="無對應範本">學士</option>
 				<option disabled value="CDMD" data-subtext="無對應範本">碩士</option>
 			</optgroup>
@@ -56,16 +58,17 @@
 			</optgroup>
 		</select--> 
 		
-		<select onChange="changType(this.value);" class="selectpicker show-tick" title="英文畢業證書">
+		<select id="ed" onChange="changType(this.value, this.id);" class="selectpicker show-tick" title="英文畢業證書">
+			<option value="">英文畢業證書</option>
 			<optgroup label="日間部">
 				<option value="EDAD">副學士</option>
 				<option value="EDBD">學士</option>
 				<option value="EDMD">碩士</option>
 			</optgroup>
 			<optgroup label="進修部">
-				<option disabled value="dAD" data-subtext="無對應範本">副學士</option>
-				<option disabled value="dBD" data-subtext="無對應範本">學士</option>
-				<option disabled value="dMD" data-subtext="無對應範本">碩士</option>
+				<option value="ENAD">副學士</option>
+				<option value="ENBD">學士</option>
+				<option value="ENMD">碩士</option>
 			</optgroup>
 			<optgroup label="進修學院">
 				<option disabled value="dAD" data-subtext="無對應範本">副學士</option>
@@ -76,18 +79,29 @@
 		
 		
 		
-  		<button class="btn btn-default" name="method:print">列印</button>
+  		<button class="btn btn-primary" name="method:print">列印</button>
   		</div>  
 </div>
 
 </form>
 <script src="/eis/inc/bootstrap/plugin/bootstrap-typeahead.js"></script>
 <script>
-function changType(val){
+function changType(val, id){
+	
+	$('.selectpicker').val('');
 	$("#type").val(val);
+	$("#"+id).val(val);
+	
+	$('.selectpicker').selectpicker('refresh');
+	
 }
 
+
+
+
+
 $(document).ready(function() {
+	
 	$("#student_no").typeahead({
 		remote:"#student_no",
 		source : [],

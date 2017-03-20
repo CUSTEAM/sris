@@ -9,6 +9,9 @@ import model.Message;
 import print.diploma.eng.day.AssociateDegree;
 import print.diploma.eng.day.BachelorDegree;
 import print.diploma.eng.day.MasterDegree;
+import print.diploma.eng.night.AssociateDegreeNight;
+import print.diploma.eng.night.BachelorDegreeNight;
+import print.diploma.eng.night.MasterDegreeNight;
 
 public class DocPrintAction extends BaseAction{
 	
@@ -71,6 +74,25 @@ public class DocPrintAction extends BaseAction{
             //英文日間碩士
             MasterDegree md=new MasterDegree();
             md.print(response, stds);
+            break;
+            
+            
+        case"ENAD":
+            //英文夜間副學士
+            AssociateDegreeNight adn=new AssociateDegreeNight();
+            adn.print(response, stds);
+            break;
+            
+        case"ENMD":
+            //英文夜間碩士
+            MasterDegreeNight mdn=new MasterDegreeNight();
+            mdn.print(response, stds);
+            break;
+            
+        case"ENBD":
+            //英文夜間學士
+            BachelorDegreeNight bdn=new BachelorDegreeNight();
+            bdn.print(response, stds);
             break;
     }
 		

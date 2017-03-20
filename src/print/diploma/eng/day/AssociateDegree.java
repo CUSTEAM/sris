@@ -308,7 +308,7 @@ public class AssociateDegree extends BaseAction{
 			out.println ("                <w:sz w:val='32'/>");
 			out.println ("                <w:szCs w:val='28'/>");
 			out.println ("              </w:rPr>");
-			out.println ("              <w:t>In witness whereof, this diploma is granted bearing the seal of the University</w:t>");
+			out.println ("              <w:t>In witness where of, this diploma is granted bearing the seal of the University</w:t>");
 			out.println ("            </w:r>");
 			out.println ("          </w:p>");
 			out.println ("          <w:p w:rsidR='0009089B' w:rsidRPr='0003768D' w:rsidRDefault='0009089B' w:rsidP='0003768D'>");
