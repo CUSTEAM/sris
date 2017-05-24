@@ -138,9 +138,17 @@ public class PayAccountManager extends BaseAction{
 			return SUCCESS;
 		}
 		
-		FileInputStream fis = new FileInputStream(upload);		
-		XSSFWorkbook xwb = new XSSFWorkbook(fis);
-		XSSFSheet sheet = xwb.getSheetAt(0);
+		FileInputStream fis = new FileInputStream(upload);
+		XSSFSheet sheet;
+		try{
+			XSSFWorkbook xwb = new XSSFWorkbook(fis);
+			sheet = xwb.getSheetAt(0);
+		}catch(Exception e){
+			msg.setError("請另存為xlsx檔案重新上傳");
+			this.savMessage(msg);
+			return SUCCESS;
+		}
+		
 		XSSFRow row;	
 		
 		int check=0;
@@ -192,7 +200,8 @@ public class PayAccountManager extends BaseAction{
 					+ "VALUES('"+s+"', '"+o+"', '"+a+"', '"+m+"', '"+k+"', '"+getSession().getAttribute("userid")+"', '"+y+"', '"+t+"','"+mm+"');");
 					check+=1;
 				}catch(Exception e){
-					msg.addError("第"+i+"行在儲存中發生錯誤");
+					e.printStackTrace();
+					msg.addError("第"+(i+1)+"行在儲存中發生錯誤");
 					continue;
 				}										
 						

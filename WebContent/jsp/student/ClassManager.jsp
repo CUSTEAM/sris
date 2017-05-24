@@ -13,12 +13,14 @@
 <small>請選擇審核範圍後查詢</small>
 </div>
 
+<form action="ClassManager" method="post" class="form-inline">
+
+</form>
 <table class="table">
 	<tr>
 		<td>
 		
-		<select name="DeptNo" class="selectpicker" data-width="18%" 
-		onChange="if(this.value=='*')location.replace('/eis/CampusManager');">
+		<select name="DeptNo" class="selectpicker" data-width="auto">
 			<option value="">所有類型</option>
 			<option data-divider="true"></option>
 			<c:forEach items="${CODE_CLASS_TYPE}" var="c">
@@ -28,7 +30,7 @@
 			<option value="*">建立新類型</option>
 		</select>
 		
-		<select name="CampusNo" class="selectpicker" data-width="80%"
+		<select name="CampusNo" class="selectpicker" data-width="auto"
 		onChange="if(this.value=='*')location.replace('/eis/CampusManager');">
 			<option value="">所有校區</option>
 			<option data-divider="true"></option>
@@ -39,12 +41,8 @@
 			<option value="*">建立新校區</option>
 		</select>
 		
-		</td>
-	</tr>
-	<tr>
-		<td>
 		
-		<select name="InstNo" class="selectpicker" data-width="100%"
+		<select name="InstNo" class="selectpicker" data-width="auto"
 		onChange="if(this.value=='*')location.replace('/eis/CampusManager');">
 			<option value="">所有學院</option>
 			<option data-divider="true"></option>
@@ -54,12 +52,17 @@
 			<option data-divider="true"></option>
 			<option value="*">建立新學院</option>
 		</select>
+		
+		
+		
+		
 		</td>
 	</tr>
 	<tr>
 		<td>
 		
-		<select name="SchoolType" class="selectpicker" data-width="100%"
+		
+		<select name="SchoolType" class="selectpicker" data-width="auto"
 		onChange="if(this.value=='*')location.replace('/eis/CampusManager');">
 			<option value="">所有部制</option>
 			<option data-divider="true"></option>
@@ -70,12 +73,9 @@
 			<option value="*">建立新部制</option>
 		</select>	
 		
-		</td>
-	</tr>
-	<tr>
-		<td>	
 		
-		<select name="SchoolNo" class="selectpicker" data-width="100%"
+		
+		<select name="SchoolNo" class="selectpicker" data-width="auto" data-header="選擇學制"
 		onChange="if(this.value=='*')location.replace('/eis/CampusManager');">
 			<option value="">所有學制</option>
 			<c:forEach items="${CODE_SCHOOL}" var="c">
@@ -85,12 +85,7 @@
 			<option value="*">建立新學制</option>
 		</select>
 		
-		</td>
-	</tr>
-	<tr>
-		<td>
-		
-		<select name="DeptNo" class="selectpicker" data-width="100%" 
+		<select name="DeptNo" class="selectpicker" data-width="auto" 
 		onChange="if(this.value=='*')location.replace('/eis/CampusManager');">
 			<option value="">所有科系</option>
 			<option data-divider="true"></option>
@@ -101,14 +96,7 @@
 			<option value="*">建立新科系</option>
 		</select>
 		
-		</td>
-	</tr>
-	
-	
-	<tr>
-		<td>
-		
-		<select name="Grade" class="selectpicker" data-width="100%"
+		<select name="Grade" class="selectpicker" data-width="auto"
 		onChange="if(this.value=='*')location.replace('/eis/CampusManager');">
 			<option value="">所有年級</option>
 			<option value="1">1</option>
@@ -117,14 +105,9 @@
 			<option value="4">4</option>
 			<option value="0">延修</option>
 		</select>
-		</td>
-	</tr>
-	
-	
-	<tr>
-		<td>
 		
-		<select name="SeqNo" class="selectpicker" data-width="100%"
+		
+		<select name="SeqNo" class="selectpicker" data-width="auto"
 		onChange="if(this.value=='*')location.replace('/eis/CampusManager');">
 			<option value="">所有班級</option>
 			<option value="1">甲班</option>
