@@ -64,6 +64,10 @@ public class PayAccountManager extends BaseAction{
 		if(Kind.equals("3"))sql.append("AND occur_month LIKE'"+occur_month+"%'");
 		if(!term.equals(""))sql.append("AND d.SchoolTerm='"+term+"'");
 		sql.append("ORDER BY c.ClassNo, d.studentNo");
+		
+		
+		
+		
 		list=df.sqlGet(sql.toString());
 		return list;
 	}

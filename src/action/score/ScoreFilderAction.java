@@ -164,12 +164,12 @@ public class ScoreFilderAction extends BaseAction{
 	private void saveCondToScoreHist(String year, String term){
 		
 		List<Map>c=df.sqlGet("SELECT ClassNo FROM Class WHERE CampusNo='"+cno+"'AND SchoolType='"+tno+"'");
-	
+		//小心轉到無成績
 		for(int i=0; i<c.size(); i++){			
 			df.exSql("INSERT INTO ScoreHist(student_no, school_year, school_" +
 			"term, stdepart_class, evgr_type, cscode, opt, credit, score)SELECT j.student_no,"
 			+ "'"+year+"','"+term+"', st.depart_class, '1', '99999', '1', '0', j.total_score FROM Just j, stmd st "
-			+ "WHERE j.student_no=st.student_no AND st.depart_class='"+c.get(i).get("ClassNo")+"'");			
+			+ "WHERE j.total_score IS NOT NULL AND j.student_no=st.student_no AND st.depart_class='"+c.get(i).get("ClassNo")+"'");			
 		}
 		
 	}

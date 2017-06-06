@@ -8,7 +8,7 @@
 </select>
 
 <select name="tno" class="selectpicker" data-width="auto">
-	<option <c:if test="${tno eq ''}">selected</c:if> value="D">所有部制</option>
+	<option <c:if test="${tno eq ''}">selected</c:if> value="">所有部制</option>
 	<option <c:if test="${tno eq 'D'}">selected</c:if> value="D">日間部</option>
 	<option <c:if test="${tno eq 'N'}">selected</c:if> value="N">進修部</option>
 	<option <c:if test="${tno eq 'H'}">selected</c:if> value="H">進修學院</option>
