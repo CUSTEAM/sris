@@ -28,22 +28,10 @@
 <script src="/eis/inc/bootstrap/plugin/bootstrap-submenu/js/bootstrap-submenu.min.js" defer></script>
 <script src="/eis/inc/bootstrap/plugin/silviomoreto-bootstrap-select/js/bootstrap-select.min.js"></script>
 <script src="/eis/inc/bootstrap/plugin/silviomoreto-bootstrap-select/js/i18n/defaults-zh_TW.min.js"></script>
-<script>
-$.ajaxSetup ({ 
-	cache: false 
-});
-window.onbeforeunload = function() {
-	$.unblockUI();
-};
-</script>
 <decorator:head />
 </head>
-<body <decorator:getProperty property="body.onload" writeEntireProperty="true" />>
-	
+<body <decorator:getProperty property="body.onload" writeEntireProperty="true" />>	
 	<div id="mainmenu" style="height:40px;"></div>
-	<script>
-	$("#mainmenu").load("/eis/jsp/decorators/menu_3.jsp?r="+Math.floor(Math.random()*11));
-	</script>
 	<div class="content-page-3">
 		<decorator:body />
 	</div>

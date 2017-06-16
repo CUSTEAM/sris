@@ -21,29 +21,13 @@
 <link rel="stylesheet" href="/eis/inc/css/advance.css" />
 <link href="/eis/inc/bootstrap/css/docs.min.css" rel="stylesheet"/>
 <link href="/eis/inc/bootstrap/plugin/silviomoreto-bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet"/>
-<script src="/eis/inc/js/jquery.js"></script>
-<script src="/eis/inc/bootstrap/js/bootstrap.js"></script>
-<script src="/eis/inc/js/plugin/jquery.blockUI.js"></script>
 <link rel="stylesheet" href="/eis/inc/bootstrap/plugin/bootstrap-submenu/css/bootstrap-submenu.min.css">
-<script src="/eis/inc/bootstrap/plugin/bootstrap-submenu/js/bootstrap-submenu.min.js" defer></script>
-<script src="/eis/inc/bootstrap/plugin/silviomoreto-bootstrap-select/js/bootstrap-select.min.js"></script>
-<script src="/eis/inc/bootstrap/plugin/silviomoreto-bootstrap-select/js/i18n/defaults-zh_TW.min.js"></script>
-<script>
-$.ajaxSetup ({ 
-	cache: false 
-});
-window.onbeforeunload = function() {
-	$.unblockUI();
-};
-</script>
+<script src="/eis/inc/js/jquery.js"></script>
 <decorator:head />
 </head>
 <body <decorator:getProperty property="body.onload" writeEntireProperty="true" />>
 	
 	<div id="mainmenu" style="height:40px;"></div>
-	<script>
-	$("#mainmenu").load("/eis/jsp/decorators/menu_3.jsp?r="+Math.floor(Math.random()*11));
-	</script>
 	<div class="content-page-3">
 		<decorator:body />
 	</div>
@@ -80,6 +64,11 @@ window.onbeforeunload = function() {
 			</div>
 		</div>
 	</c:if>	
-
+<script src="/eis/inc/bootstrap/js/bootstrap.js"></script>
+<script src="/eis/inc/js/plugin/jquery.blockUI.js"></script>
+<script src="/eis/inc/bootstrap/plugin/bootstrap-submenu/js/bootstrap-submenu.min.js" defer></script>
+<script src="/eis/inc/bootstrap/plugin/silviomoreto-bootstrap-select/js/bootstrap-select.min.js"></script>
+<script src="/eis/inc/bootstrap/plugin/silviomoreto-bootstrap-select/js/i18n/defaults-zh_TW.min.js"></script>
+<script src="/eis/inc/js/advance.js"></script>
 </body>
 </html>
