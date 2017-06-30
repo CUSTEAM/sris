@@ -197,11 +197,13 @@ public class ScoreFilderAction extends BaseAction{
 	/**
 	 * 刪除範圍中evgr_type!=3,4,5,6的成績 (不包含暑修3,跨校4,待補5,抵免6)
 	 * 刪除範圍中evgr_type IN('1', '2', '7')批次產生的成績
+	 * 刪除範圍中"校外"2字的成績
 	 */
 	private void delScoreHist(String year, String term){			
 		df.exSql("DELETE FROM ScoreHist WHERE school_year='"+year+"' AND " +
 		"school_term='"+term+"' AND evgr_type IN('1', '2', '7') AND " +
-		"student_no IN(SELECT student_no FROM stmd s, Class c WHERE " +
+		"student_no IN(SELECT student_no FROM stmd s, Class c WHERE "
+		+ "cscode NOT IN(SELECT cscode FROM Csno WHERE chi_name LIKE'校外%')AND " +
 		"s.depart_class=c.ClassNo AND c.CampusNo='"+cno+"' AND " +
 		"c.SchoolType='"+tno+"' AND c.graduate LIKE'"+grade+"%')");
 	}
