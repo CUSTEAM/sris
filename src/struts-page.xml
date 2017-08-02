@@ -22,6 +22,10 @@
 			<result>/jsp/score/ScoreViewManager.jsp</result>
 		</action>
 		
+		<action name="ScoreMasterManager" class="action.score.ScoreMasterManagerAction">
+			<result>/jsp/score/ScoreMasterManager.jsp</result>
+		</action>		
+		
 		<action name="ScorePrint" class="action.score.ScorePrintAction">
 			<result>/jsp/score/ScorePrint.jsp</result>
 		</action>

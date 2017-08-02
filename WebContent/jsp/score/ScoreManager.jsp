@@ -6,14 +6,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>成績管理</title>
 <script src="/eis/inc/bootstrap/plugin/bootstrap-typeahead.js"></script>
-<script src="/eis/inc/js/plugin/json2.js"></script>
 <link href="/eis/inc/css/jquery-ui.css" rel="stylesheet"/>
 <script src="/eis/inc/js/plugin/jquery-ui.js"></script>
 <script src="/eis/inc/js/plugin/bootstrap-tooltip.js"></script>
 <script src="/eis/inc/js/plugin/stupidtable.min.js"></script>
-
-
-
 
 <script>  
 $(document).ready(function() {
@@ -138,6 +134,8 @@ function getSeldHist(stdNo){
 可單筆修改或點選列表下方<button type="button" class="btn btn-danger btn-xs">全部儲存</button>批次修改</small>
 </div>
 <form action="ScoreManager" method="post" class="form-horizontal" onSubmit="$.blockUI({message:null});">
+<div class="panel panel-primary">
+<div class="panel-heading">新增或查詢</div>
 <table class="table">
 	<tr>
 		<td nowrap>指定班級</td>
@@ -178,10 +176,13 @@ function getSeldHist(stdNo){
 		 
 	</tr>
 </table>
+</div>
 
 <input type="hidden" name="dOid" value="${dOid}" id="dOid"/>
 <input type="hidden" name="stNo" value="${stNo}" id="stNo"/>
 <c:if test="${!empty css}">
+<div class="panel panel-primary">
+<div class="panel-heading">新增或查詢</div>
 <table id="table" class="table table-hover">
 	<thead>
 	<tr class="text-info">
@@ -230,10 +231,13 @@ function getSeldHist(stdNo){
 	</tr>
 	</c:forEach>
 </table>
+</div>
 <script>$("#table").stupidtable();</script>
 </c:if>
 <c:if test="${!empty selds}">
 <!-- 班級 -->
+<div class="panel panel-primary">
+<div class="panel-heading">新增或查詢</div>
 <table id="table" class="table table-hover">
 	<thead>
 	<tr class="text-info">
@@ -281,7 +285,7 @@ function getSeldHist(stdNo){
 		<td colspan="10"><button class="btn btn-danger" name="method:saveSeld">全部儲存</button></td>
 	</tr>
 </table>
-
+</div>
 <script>$("#table").stupidtable();</script>
 </c:if>
 
@@ -292,6 +296,8 @@ function getSeldHist(stdNo){
 本學期應修 ${info.credit}學分 ${info.thour}時數, 不及格 ${info.dcredit}學分 查看
 <button type="button" class="btn btn-default" onClick="getSeldHist('${info.student_no}')" data-toggle="modal" data-target="#scoreHist">加退選</button> 歷程
 </div>
+<div class="panel panel-primary">
+<div class="panel-heading">新增或查詢</div>
 <table class="table table-hover">
 	<tr class="text-info">
 		<td>學號</td>
@@ -335,12 +341,15 @@ function getSeldHist(stdNo){
 	</tr>
 	</c:forEach>
 </table>
+</div>
 <button class="btn btn-danger" name="method:saveStSeld">全部儲存</button>
 </c:if>
 
 <c:if test="${!empty hist}">
 <div class="alert alert-warning">應修 ${info.credit}學分, 不及格 ${info.dcredit}學分 查看
 <button type="button" class="btn btn-default" onClick="getSeldHist('${info.student_no}')" data-toggle="modal" data-target="#scoreHist">加退選</button> 歷程</div>
+<div class="panel panel-primary">
+<div class="panel-heading">新增或查詢</div>
 <table class="table table-hover">
 	<tr class="text-info">		
 		<td nowrap>學年</td>
@@ -409,6 +418,7 @@ function getSeldHist(stdNo){
 	</tr>
 	</c:forEach>
 </table>
+</div>
 <button class="btn btn-warning" name="method:saveScoreHist">全部儲存</button>
 </c:if>
 

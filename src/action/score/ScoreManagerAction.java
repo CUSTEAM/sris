@@ -96,6 +96,14 @@ public class ScoreManagerAction extends BaseAction{
 	 */
 	public String searchClass(){
 		
+		if(sno.equals("")){
+			Message msg=new Message();
+			msg.setError("指定範圍過大");
+			this.savMessage(msg);
+			return SUCCESS;
+			
+		}
+		
 		StringBuilder sql=new StringBuilder("SELECT e.CellPhone, d.Oid, o.name as opt, d.thour, d.credit, d.Select_Limit,cs.cscode,"
 		+ "c.ClassName, cs.chi_name, IFNULL(e.cname,'')as cname, (SELECT COUNT(*)FROM Seld WHERE Dtime_oid=d.Oid)as cnt,"
 		+ "(SELECT COUNT(*)FROM Seld WHERE Dtime_oid=d.Oid AND score2 IS NULL)as score2,(SELECT COUNT(*)FROM Seld WHERE Dtime_oid=d.Oid AND score IS NULL)as score FROM "
