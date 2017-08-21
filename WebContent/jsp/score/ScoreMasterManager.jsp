@@ -39,7 +39,7 @@ $(document).ready(function() {
 <body>
 <div class="bs-callout bs-callout-info">
 <h4>論文成績管理</h4> 
-<small>依學號 <button type="button" class="btn btn-primary btn-xs">查詢</button> 論文成績輸入狀況, 在校生與離校生均可查詢</small><br>
+<small>依學號 <button type="button" class="btn btn-primary btn-xs">查詢</button> 在校生或離校生的論文成績輸入狀況</small><br>
 <small>滿足所有欄位點選列表下方 <button type="button" class="btn btn-danger btn-xs">儲存</button> 即可新增或修改</small>
 </div>
 <form action="ScoreMasterManager" method="post" class="form-inline" onSubmit="$.blockUI({message:null});">

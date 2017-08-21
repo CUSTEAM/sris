@@ -54,25 +54,25 @@ public class ScoreMasterManagerAction extends BaseAction{
 			msg.setError("輸入不完整");
 			this.savMessage(msg);
 			return SUCCESS;
-		}
+		}		
 		
-		
-			
-		if(Oid.equals("")){
-			
-		df.exSql("INSERT INTO MasterData "
-				+ "(school_year,school_term,student_no,theses_chiname,theses_engname,theses_score,evgr1_score,graduate_score,remark,onlineFileDate)VALUES"
-				+ "('"+school_year+"','"+school_term+"','"+student_no.substring(0, student_no.indexOf(","))+"','"+theses_chiname+"','"+theses_engname+"','"+theses_score+"','"+evgr1_score+"','"+graduate_score+"','"+remark+"','"+onlineFileDate+"')");
-		msg.setError("已建立論文");
-		this.savMessage(msg);
-		}else{
-			df.exSql("UPDATE MasterData SET school_year='"+school_year+"',school_term='"+school_term+"',theses_chiname='"+theses_chiname+"',theses_engname='"+theses_engname+"',theses_score='"+theses_score+"',evgr1_score='"+evgr1_score+"',graduate_score='"+graduate_score+"',remark='"+remark+"',onlineFileDate='"+onlineFileDate+"'WHERE Oid="+Oid);
-			msg.setError("已修改論文");
+		try{
+			if(Oid.equals("")){
+				
+				df.exSql("INSERT INTO MasterData "
+						+ "(school_year,school_term,student_no,theses_chiname,theses_engname,theses_score,evgr1_score,graduate_score,remark,onlineFileDate)VALUES"
+						+ "('"+school_year+"','"+school_term+"','"+student_no.substring(0, student_no.indexOf(","))+"','"+theses_chiname+"','"+theses_engname+"','"+theses_score+"','"+evgr1_score+"','"+graduate_score+"','"+remark+"','"+onlineFileDate+"')");
+				msg.setError("已建立論文");
+				this.savMessage(msg);
+			}else{
+					df.exSql("UPDATE MasterData SET school_year='"+school_year+"',school_term='"+school_term+"',theses_chiname='"+theses_chiname+"',theses_engname='"+theses_engname+"',theses_score='"+theses_score+"',evgr1_score='"+evgr1_score+"',graduate_score='"+graduate_score+"',remark='"+remark+"',onlineFileDate='"+onlineFileDate+"'WHERE Oid="+Oid);
+					msg.setError("已修改論文");
+					this.savMessage(msg);
+			}
+		}catch(Exception e){
+			msg.setError("儲存中發現錯誤");
 			this.savMessage(msg);
-		}
-		
-		
+		}		
 		return search();
 	}
-
 }

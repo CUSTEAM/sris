@@ -13,10 +13,12 @@
 	<constant name="struts.multipart.maxSize" value="1048576000"/>  
 	<package name="abstract_struts" abstract="true" extends="struts-default" namespace="/">		
 		<interceptors>
-			<interceptor name="loginInterceptor" class="service.interceptor.LoginInterceptor"></interceptor>
+			<interceptor name="loginInterceptor" class="service.interceptor.LoginInterceptor"></interceptor>	
+			<interceptor name="unitmoduleInterceptor" class="service.interceptor.UnitmoduleInterceptor"></interceptor>		
 			<interceptor-stack name="loginDefaultStack">
 			    <interceptor-ref name="defaultStack"></interceptor-ref><!-- struts標準攔截器 -->
-				<interceptor-ref name="loginInterceptor"></interceptor-ref><!-- 登入驗證攔截器 -->				
+				<interceptor-ref name="loginInterceptor"></interceptor-ref><!-- 登入驗證攔截器 -->	
+				<interceptor-ref name="unitmoduleInterceptor"></interceptor-ref><!-- 動作驗證攔截器 -->						
 			</interceptor-stack>
 		</interceptors>
 		

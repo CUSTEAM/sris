@@ -5,7 +5,7 @@
 		<action name="Logout" class="action.Logout">
 			<result name="logout">/index.jsp</result>
 		</action>		
-	</package>
+	</package>	
 	
 	<package name="fee" extends="abstract_struts" namespace="/">		
 		<action name="TuitionManager" class="action.fee.TuitionManagerAction">
