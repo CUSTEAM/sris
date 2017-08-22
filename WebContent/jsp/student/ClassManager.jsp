@@ -14,7 +14,7 @@
 <small></small>
 </div>
 
-<form action="ClassManager" method="post" class="form-inline">
+<form action="ClassManager" method="post" class="form-inline" onSubmin="$.blockUI(); ">
 <input type="hidden" id="Oid" name="Oid" value="${Oid}"/>
 
 
@@ -128,7 +128,7 @@
 	<tr>
 		<td>
 		<div class="btn-group" role="group" aria-label="...">
-		<button class="btn btn-primary" name="method:search">查詢班級</button>
+		<button class="btn btn-primary" name="method:search" onClick="jQuery.blockUI();">查詢班級</button>
 		<a class="btn btn-default" href="ClassManager">重新查詢</a>
 		</div>
 		<button class="btn btn-success" name="method:add">建立新班級</button>

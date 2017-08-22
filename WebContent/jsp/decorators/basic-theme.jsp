@@ -23,6 +23,7 @@
 <link href="/eis/inc/bootstrap/plugin/silviomoreto-bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet"/>
 <link rel="stylesheet" href="/eis/inc/bootstrap/plugin/bootstrap-submenu/css/bootstrap-submenu.min.css">
 <script src="/eis/inc/js/jquery.js"></script>
+<script src="/eis/inc/js/plugin/jquery.blockUI.js"></script>
 <decorator:head />
 </head>
 <body <decorator:getProperty property="body.onload" writeEntireProperty="true" />>
@@ -65,7 +66,7 @@
 		</div>
 	</c:if>	
 <script src="/eis/inc/bootstrap/js/bootstrap.js"></script>
-<script src="/eis/inc/js/plugin/jquery.blockUI.js"></script>
+
 <script src="/eis/inc/bootstrap/plugin/bootstrap-submenu/js/bootstrap-submenu.min.js" defer></script>
 <script src="/eis/inc/bootstrap/plugin/silviomoreto-bootstrap-select/js/bootstrap-select.min.js"></script>
 <script src="/eis/inc/bootstrap/plugin/silviomoreto-bootstrap-select/js/i18n/defaults-zh_TW.min.js"></script>

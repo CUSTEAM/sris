@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import action.BaseAction;
+import model.Classes;
 import model.Message;
 
 /**
@@ -24,8 +25,7 @@ public class ClassManager extends BaseAction{
 		return SUCCESS;
 	}
 	
-	public String search(){
-		
+	public String search(){		
 		
 		StringBuilder sb=new StringBuilder("SELECT e1.cname as editname, e.cname, e.CellPhone, cct.name as typeName, c.* FROM (Class c LEFT OUTER JOIN empl e ON c.tutor=e.idno)LEFT OUTER JOIN empl e1 ON e1.idno=c.editor, CODE_CLASS_TYPE cct WHERE c.Type=cct.id ");
 		if(!Type.equals(""))sb.append("AND c.Type='"+Type+"'");
@@ -53,7 +53,7 @@ public class ClassManager extends BaseAction{
 	
 	public String save(){
 		Message msg=new Message();
-		SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		if(Type1.equals("")||CampusNo1.equals("")||InstNo1.equals("")||graduate1.equals("")||
 		SchoolType1.equals("")||SchoolNo1.equals("")||DeptNo1.equals("")||Grade1.equals("")||	
 		SeqNo1.equals("")||ClassNo.equals("")||ClassName.equals("")||ShortName.equals("")){
@@ -84,8 +84,45 @@ public class ClassManager extends BaseAction{
 	}
 	
 	public String add(){
+		Message msg=new Message();
+		if(Type.equals("")||CampusNo.equals("")||InstNo.equals("")||graduate.equals("")||
+		SchoolType.equals("")||SchoolNo.equals("")||DeptNo.equals("")||Grade.equals("")){
+			msg.setError("欄位不得空白");
+			this.savMessage(msg);
+			return SUCCESS;
+		}
 		
-		return search();
+		try{			
+			Classes c=new Classes();
+			c.setType(Type);			
+			c.setCampusNo(CampusNo);
+			c.setClassName("名稱未設定");
+			c.setClassNo(CampusNo+SchoolNo+DeptNo+Grade+SeqNo);
+			c.setDept(CampusNo+SchoolNo+DeptNo);
+			c.setDeptNo(DeptNo);
+			c.setEditime(new Date());			
+			c.setEditor(getSession().getAttribute("userid").toString());			
+			c.setGrade(Integer.parseInt(Grade));
+			c.setGraduate(graduate);
+			c.setInstNo(InstNo);
+			c.setSchNo(df.sqlGetStr("SELECT schNo FROM CODE_SCHOOL WHERE id='"+SchoolNo+"'"));
+			c.setSchoolNo(SchoolNo);
+			c.setSchoolType(SchoolType);
+			c.setSeqNo(SeqNo);
+			c.setShortName("未定");			
+			df.update(c);
+			Oid=String.valueOf(c.getOid());
+			nobody="";
+			return edit();
+			
+			
+		}catch(Exception e){
+			//e.printStackTrace();
+			msg.setError("重複開班或欄位格式有誤");
+			this.savMessage(msg);
+			return SUCCESS;
+		}
+		
 	}
 
 }

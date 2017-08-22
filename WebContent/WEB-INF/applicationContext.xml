@@ -30,6 +30,7 @@
             	<value>model/Dilg.hbm.xml</value>
             	<value>model/DilgApply.hbm.xml</value>
             	<value>model/Stmd.hbm.xml</value>
+            	<value>model/Classes.hbm.xml</value>
             </list>
         </property>
     </bean>
