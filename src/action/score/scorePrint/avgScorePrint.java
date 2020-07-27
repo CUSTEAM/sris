@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import action.BasePrintXmlAction;
 import service.impl.DataFinder;
 
 /**
@@ -16,14 +17,12 @@ import service.impl.DataFinder;
  * @author John
  *
  */
-public class avgScorePrint {
+public class avgScorePrint extends BasePrintXmlAction{
 	
 	public void print(HttpServletResponse response, List<Map>cls, Map info) throws IOException{
 		
 		Date date=new Date();
-		response.setContentType("text/html; charset=UTF-8");
-		response.setContentType("application/vnd.ms-excel");
-		response.setHeader("Content-disposition","attachment;filename="+date.getTime()+".xls");		
+		xml2ods(response, getRequest(), date);
 		PrintWriter out=response.getWriter();
 		
 		out.print ("<?xml version='1.0'?>");
@@ -143,13 +142,10 @@ public class avgScorePrint {
 			
 			for(int j=0; j<stds.size(); j++){
 				
-				score=(List)stds.get(j).get("scores");
-				
-				
+				score=(List)stds.get(j).get("scores");				
 				out.print ("   <Row>");
 				out.print ("    <Cell><Data ss:Type='String'>"+stds.get(j).get("student_no")+"</Data></Cell>");
 				out.print ("    <Cell><Data ss:Type='String'>"+stds.get(j).get("student_name")+"</Data></Cell>");
-				
 				
 				for(int k=0; k<8; k++){
 					try{if(score.get(k).get("score")!=null){
@@ -196,15 +192,7 @@ public class avgScorePrint {
 			out.print ("   <ProtectObjects>False</ProtectObjects>");
 			out.print ("   <ProtectScenarios>False</ProtectScenarios>");
 			out.print ("  </WorksheetOptions>");
-			out.print (" </Worksheet>");
-			
-			
-			
-			
-			
-			
-			
-			
+			out.print (" </Worksheet>");			
 			
 		}
 		

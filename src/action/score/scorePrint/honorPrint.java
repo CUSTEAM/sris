@@ -2,29 +2,25 @@ package action.score.scorePrint;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import service.impl.DataFinder;
+import action.BasePrintXmlAction;
 
 /**
  * 學優
  * @author John
  *
  */
-public class honorPrint {
+public class honorPrint extends BasePrintXmlAction{
 	
 	public void print(HttpServletResponse response, List<Map>cls, Map info) throws IOException{
 		
 		Date date=new Date();
-		response.setContentType("text/html; charset=UTF-8");
-		response.setContentType("application/vnd.ms-excel");
-		response.setHeader("Content-disposition","attachment;filename="+date.getTime()+".xls");			
-		
+		xml2ods(response, getRequest(), date);
 		PrintWriter out=response.getWriter();
 		out.println ("<?xml version='1.0'?>");
 		out.println ("<?mso-application progid='Excel.Sheet'?>");

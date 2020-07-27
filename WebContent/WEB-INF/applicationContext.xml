@@ -31,6 +31,20 @@
             	<value>model/DilgApply.hbm.xml</value>
             	<value>model/Stmd.hbm.xml</value>
             	<value>model/Classes.hbm.xml</value>
+            	<value>model/Dipost.hbm.xml</value>
+            	
+            	<value>model/Enroll.hbm.xml</value>
+            	<value>model/EnrollAttach.hbm.xml</value>
+            	<value>model/EnrollDept.hbm.xml</value>
+            	
+            	<value>model/EnrollRegist.hbm.xml</value>
+            	<value>model/EnrollRegistAttach.hbm.xml</value>
+            	<value>model/EnrollRegistDept.hbm.xml</value>
+            	
+            	<value>model/EnrollRegistHist.hbm.xml</value>
+            	<value>model/EnrollStmd.hbm.xml</value>
+            	<value>model/SysLogSecurity.hbm.xml</value>
+            	<value>model/gradresu.hbm.xml</value>
             </list>
         </property>
     </bean>

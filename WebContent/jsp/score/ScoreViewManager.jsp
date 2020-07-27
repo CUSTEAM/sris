@@ -97,7 +97,10 @@
 
 </form>
 <script>
-$(".date" ).datetimepicker();
+$(".date" ).datetimepicker({
+	changeMonth: true,
+	changeYear: true
+});
 
 function autoset(Oid){
 	$("#fin_view"+Oid).val("${exam_grad_view}");

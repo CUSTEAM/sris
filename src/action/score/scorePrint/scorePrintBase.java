@@ -19,6 +19,55 @@ public class scorePrintBase extends BaseAction{
 	
 	protected DataFinder df = (DataFinder) get("DataFinder");
 	protected BaseMathImpl mi= (BaseMathImpl) get("BaseMathImpl");
+	
+	/**
+	 * 以班級範圍找學生
+	 * @param cno
+	 * @param tno
+	 * @param sno
+	 * @param dno
+	 * @param gno
+	 * @param zno
+	 * @param grade
+	 * @return
+	 */
+	protected List getStds(String cno, String tno, String sno, String dno, String gno, String zno, String grade){
+		//StringBuilder sb=new StringBuilder("SELECT (SELECT COUNT(DISTINCT school_year) FROM ScoreHist WHERE student_no=s.student_no)as year, s.student_no, c.ClassName, s.idno, s.student_name FROM Class c, stmd s WHERE s.depart_class=c.ClassNo AND c.CampusNo='"+cno+"'");
+		StringBuilder sb=new StringBuilder("SELECT c.graduate, c.SchNo, s.student_no, cs.name as SchoolName, cd.name as DeptName, s.idno, s.student_name FROM CODE_DEPT cd, CODE_SCHOOL cs, Class c, stmd s WHERE cs.id=c.SchoolNo AND c.DeptNo=cd.id AND s.depart_class=c.ClassNo AND c.CampusNo='"+cno+"'");
+		//if(!cno.equals(""))sb.append("AND c.CampusNo='"+cno+"'");
+		if(!tno.equals(""))sb.append("AND c.SchoolType='"+tno+"'");
+		if(!sno.equals(""))sb.append("AND c.SchoolNo='"+sno+"'");
+		if(!dno.equals(""))sb.append("AND c.DeptNo='"+dno+"'");
+		if(!gno.equals(""))sb.append("AND c.Grade='"+gno+"'");
+		if(!zno.equals(""))sb.append("AND c.SeqNo='"+zno+"'");
+		if(!grade.equals("")){			
+			if(grade.equals("0"))sb.append("AND graduate='0'");
+			if(grade.equals("1"))sb.append("AND graduate='1'");
+			if(grade.equals("2"))sb.append("AND Type='E'");
+			if(grade.equals("3"))sb.append("AND Type='C'");
+			if(grade.equals("4"))sb.append("AND Type='N'");
+		}else{
+			sb.append("AND (Type='P'||Type='E'||Type='C'||Type='N')");
+		}		
+		sb.append("ORDER BY c.ClassNo, s.student_no");
+		//System.out.println(sb);
+		return df.sqlGet(sb.toString());
+	}
+	
+	protected List<Map>getStd(String stdNo){
+		List stds;
+		//StringBuilder sb=new StringBuilder("SELECT (SELECT COUNT(DISTINCT school_year) FROM ScoreHist WHERE student_no=s.student_no)as year, s.student_no, c.ClassName, s.idno, s.student_name FROM Class c, stmd s WHERE s.depart_class=c.ClassNo AND c.CampusNo='"+cno+"'");
+		StringBuilder sb=new StringBuilder("SELECT c.graduate, c.SchNo, s.student_no, cs.name as SchoolName, cd.name as DeptName, s.idno, s.student_name FROM CODE_DEPT cd, CODE_SCHOOL cs, Class c, stmd s WHERE cs.id=c.SchoolNo AND c.DeptNo=cd.id AND s.depart_class=c.ClassNo AND s.student_no='"+stdNo+"'");
+		
+		stds=df.sqlGet(sb.toString());
+		if(stds.size()<1){
+			sb=new StringBuilder("SELECT c.graduate, c.SchNo, s.student_no, cs.name as SchoolName, cd.name as DeptName, s.idno, s.student_name FROM CODE_DEPT cd, CODE_SCHOOL cs, Class c, Gstmd s WHERE cs.id=c.SchoolNo AND c.DeptNo=cd.id AND s.depart_class=c.ClassNo AND s.student_no='"+stdNo+"'");
+			stds=df.sqlGet(sb.toString());
+		}
+		
+		return stds;
+	}
+	
 	/**
 	 * 取班級
 	 * @return

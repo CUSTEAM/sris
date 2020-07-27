@@ -232,6 +232,8 @@ public class ScoreManagerAction extends BaseAction{
 		request.setAttribute("scoreHist", df.sqlGet("SELECT cs.chi_name, s.*, c.ClassNo, c.ClassName FROM "
 		+ "(ScoreHist s LEFT OUTER JOIN Class c ON c.ClassNo=s.stdepart_class)LEFT OUTER JOIN Csno cs ON s.cscode=cs.cscode WHERE "
 		+ "s.student_no='"+stNo+"' ORDER BY s.school_year, s.school_term"));		
+		request.setAttribute("ScoreHistEditLog", df.sqlGet("SELECT e.cname, s.* FROM empl e LEFT OUTER JOIN ScoreHistEditLog s ON e.idno=s.editor WHERE s.student_no='"+stNo+"'"));
+		
 		return SUCCESS;
 	}
 	
@@ -241,12 +243,16 @@ public class ScoreManagerAction extends BaseAction{
 	 */
 	public String saveScoreHist(){
 		cnt=0;
+		int err=0;
 		String ClassNo;
 		for(int i=0; i<sOid.length; i++){
 			
 			if(!sOid[i].equals("")){
 				//無年度、課程、成績不予修改
-				if(school_year[i].equals("")||school_term[i].equals("")||cscode[i].indexOf(",")<1)continue;
+				if(school_year[i].equals("")||school_term[i].equals("")||cscode[i].indexOf(",")<1){
+					err+=1;
+					continue;
+				}
 				
 				//抵免班級為空
 				if(stdepart_class[i].indexOf(",")<1){
@@ -271,8 +277,10 @@ public class ScoreManagerAction extends BaseAction{
 				cscode[i].substring(0, cscode[i].indexOf(","))+"',opt='"+opt[i]+"',credit="+credit[i]+",score="+score[i]+" WHERE Oid="+sOid[i]);
 				
 			}
+			
 			Message msg=new Message();
-			msg.setSuccess("已修改"+cnt+"筆成績");
+			msg.setSuccess("已修改 "+cnt+"筆成績");
+			if(err>0)msg.addSuccess(", 失敗 "+err+"筆");
 			savMessage(msg);
 		}		
 		return searchScoreHist();

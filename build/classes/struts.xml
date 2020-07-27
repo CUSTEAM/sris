@@ -5,7 +5,9 @@
     <constant name="struts.devMode" value="false" />
     <constant name="struts.configuration.xml.reload" value="false" />
     <!-- constant name="struts.custom.i18n.resources" value="globalMessages" /-->
-    <!-- constant name="struts.action.extension" value="jspxx" /-->
+    <!-- constant name="struts.action.extension" value="jspxx" /-->    
+    <constant name="struts.action.extension" value="print,," />
+    
 	<constant name="struts.i18n.encoding" value="UTF-8" />
 	<constant name="struts.convention.result.path" value="/" />
 	<constant name="struts.convention.exclude.packages" value="org.apache.struts.*,org.springframework.web.struts.*,org.springframework.web.struts2.*,org.hibernate.*"/>

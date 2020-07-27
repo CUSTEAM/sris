@@ -2,31 +2,27 @@ package action.score.scorePrint;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import service.impl.DataFinder;
+import action.BasePrintXmlAction;
 
 /**
- * 報表2
+ * 期中成績總表
  * @author John
  *
  */
-public class totalPrint {
+public class totalPrint extends BasePrintXmlAction{
 	
 	public void print(HttpServletResponse response, List<Map>cls, Map info) throws IOException{
 		
 		
 		
 		Date date=new Date();
-		response.setContentType("text/html; charset=UTF-8");
-		response.setContentType("application/vnd.ms-excel");
-		response.setHeader("Content-disposition","attachment;filename="+date.getTime()+".xls");
-		
+		xml2ods(response, getRequest(), date);
 		PrintWriter out=response.getWriter();
 		
 		out.println ("<?xml version='1.0'?>");
@@ -100,6 +96,8 @@ public class totalPrint {
 		
 		float total,pass,avg,total_score;
 		
+		int dtimeSize;
+		
 		for(int i=0; i<cls.size(); i++){
 			total=0;pass=0;avg=0;total_score=0;
 			stds=(List)cls.get(i).get("stds");
@@ -108,6 +106,9 @@ public class totalPrint {
 			if(stds.size()<1){
 				continue;
 			}
+			
+			dtimeSize=dtimes.size();
+			if(dtimes.size()>=16)dtimeSize=16;
 			
 			out.println (" <Worksheet ss:Name='"+cls.get(i).get("ClassName")+"'>");
 			out.println ("  <Names>");			
@@ -123,7 +124,7 @@ public class totalPrint {
 			out.println ("    <Cell><Data ss:Type='String'></Data><NamedCell ss:Name='Print_Titles'/></Cell>");
 			out.println ("    <Cell><Data ss:Type='String'></Data><NamedCell ss:Name='Print_Titles'/></Cell>");
 			
-			for(int j=0; j<dtimes.size(); j++){
+			for(int j=0; j<dtimeSize; j++){
 				dtimes.get(j).put("score", 0.0f);
 				out.println ("    <Cell><Data ss:Type='String'>"+dtimes.get(j).get("chi_name")+"</Data><NamedCell ss:Name='Print_Titles'/></Cell>");
 			}
@@ -139,7 +140,7 @@ public class totalPrint {
 			out.println ("   <Row ss:AutoFitHeight='0' ss:Height='12' ss:StyleID='s17'>");
 			out.println ("    <Cell><Data ss:Type='String'>學號</Data><NamedCell ss:Name='Print_Titles'/></Cell>");
 			out.println ("    <Cell><Data ss:Type='String'>姓名</Data><NamedCell ss:Name='Print_Titles'/></Cell>");			
-			for(int j=0; j<dtimes.size(); j++){				
+			for(int j=0; j<dtimeSize; j++){				
 				out.println ("    <Cell><Data ss:Type='String'>"+dtimes.get(j).get("oName")+","+dtimes.get(j).get("credit")+"</Data><NamedCell ss:Name='Print_Titles'/></Cell>");
 			}			
 			out.println ("    <Cell ss:Index='19'><Data ss:Type='String'></Data><NamedCell ss:Name='Print_Titles'/></Cell>");
@@ -157,7 +158,7 @@ public class totalPrint {
 				out.println ("    <Cell><Data ss:Type='String'>"+stds.get(j).get("student_no")+"</Data></Cell>");
 				out.println ("    <Cell><Data ss:Type='String'>"+stds.get(j).get("student_name")+"</Data></Cell>");				
 				
-				for(int k=0; k<dtimes.size(); k++){
+				for(int k=0; k<dtimeSize; k++){
 					//System.out.println(dtimes.get(k));
 					match=false;
 					for(int l=0; l<selds.size(); l++){		
@@ -213,7 +214,7 @@ public class totalPrint {
 			out.println ("   <Row ss:AutoFitHeight='0'>");				
 			out.println ("    <Cell><Data ss:Type='String'></Data></Cell>");
 			out.println ("    <Cell><Data ss:Type='String'>平均</Data></Cell>");			
-			for(int k=0; k<dtimes.size(); k++){		
+			for(int k=0; k<dtimeSize; k++){		
 				match=false;
 				for(int l=0; l<dtimeInfo.size(); l++){
 					//白痴要改的
@@ -239,7 +240,7 @@ public class totalPrint {
 			out.println ("   <Row ss:AutoFitHeight='0'>");				
 			out.println ("    <Cell><Data ss:Type='String'></Data></Cell>");
 			out.println ("    <Cell><Data ss:Type='String'>不及格</Data></Cell>");			
-			for(int k=0; k<dtimes.size(); k++){
+			for(int k=0; k<dtimeSize; k++){
 				match=false;
 				for(int l=0; l<dtimeInfo.size(); l++){
 					//白痴要改的

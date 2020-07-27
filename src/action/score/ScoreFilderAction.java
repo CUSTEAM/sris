@@ -4,11 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.ServletContext;
-
 import model.Message;
-
 import service.impl.DataFinder;
 
 import action.BaseAction;
@@ -26,9 +22,9 @@ public class ScoreFilderAction extends BaseAction{
 	}
 	
 	public String confirm(){
-		ServletContext servletContext = request.getServletContext();		
-		String term=(String)servletContext.getAttribute("school_term");
-		String year=(String)servletContext.getAttribute("school_year");		
+		
+		String term=(String)getContext().getAttribute("school_term");
+		String year=(String)getContext().getAttribute("school_year");		
 		Message msg=new Message();
 		
 		del50000();
@@ -49,7 +45,8 @@ public class ScoreFilderAction extends BaseAction{
 		writeSavedesd(year, term);		
 		savMessage(msg);
 		//寫標記
-		SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd");				
+		SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd");		
+		System.out.println(getSession().getAttribute("userid"));
 		df.exSql("INSERT INTO ScoreHistLog(school_year, school_term, CampuseNo, SchoolType, checkDate, cname)VALUES" +
 		"('"+year+"', '"+term+"', '"+cno+"', '"+tno+"', '"+sf.format(new Date())+"', '"+df.sqlGetStr("SELECT cname FROM empl WHERE idno='"+getSession().getAttribute("userid")+"'")+"')");
 		return execute();
@@ -197,13 +194,15 @@ public class ScoreFilderAction extends BaseAction{
 	/**
 	 * 刪除範圍中evgr_type!=3,4,5,6的成績 (不包含暑修3,跨校4,待補5,抵免6)
 	 * 刪除範圍中evgr_type IN('1', '2', '7')批次產生的成績
-	 * 刪除範圍中"校外"2字的成績
+	 * 刪除範圍中"校外"2字的成績2017-5-x
+	 * 去他媽要轉校外實習但不可清除手輸2018-2-1,
+	 * 增加evgr_type:8幹要注意後續影響
 	 */
 	private void delScoreHist(String year, String term){			
 		df.exSql("DELETE FROM ScoreHist WHERE school_year='"+year+"' AND " +
 		"school_term='"+term+"' AND evgr_type IN('1', '2', '7') AND " +
-		"student_no IN(SELECT student_no FROM stmd s, Class c WHERE "
-		+ "cscode NOT IN(SELECT cscode FROM Csno WHERE chi_name LIKE'校外%')AND " +
+		"student_no IN(SELECT student_no FROM stmd s, Class c WHERE "+
+		//+ "cscode NOT IN(SELECT cscode FROM Csno WHERE chi_name LIKE'校外%')AND " +
 		"s.depart_class=c.ClassNo AND c.CampusNo='"+cno+"' AND " +
 		"c.SchoolType='"+tno+"' AND c.graduate LIKE'"+grade+"%')");
 	}
@@ -253,7 +252,7 @@ public class ScoreFilderAction extends BaseAction{
 		+ "SUM(s.credit)as credit FROM stmd st, ScoreHist s, Class c WHERE s.evgr_type!='6'AND "
 		+ "s.school_year='"+year+"'AND s.school_term='"+term+"'AND st.student_no=s.student_no AND "
 		+ "c.ClassNo=st.depart_class AND c.CampusNo='"+cno+"' AND c.SchoolType='"+tno+"'"
-		+ "AND c.graduate LIKE'"+grade+"%' GROUP BY s.student_no HAVING score IS NOT NULL");		
+		+ "AND c.graduate LIKE'"+grade+"%' GROUP BY s.student_no HAVING score IS NOT NULL ON DUPLICATE KEY UPDATE Oid=Oid");		
 	}
 	
 	private void delData(String year, String term, String table){

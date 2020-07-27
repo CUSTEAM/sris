@@ -39,7 +39,7 @@ public class BachelorDegree extends BaseAction{
 		
 		
 		Date date=new Date();
-		response.setContentType("application/vnd.ms-word; charset=UTF-8");
+		response.setContentType("application/msword; charset=UTF-8");
 		response.setHeader("Content-disposition","attachment;filename="+date.getTime()+".doc");		
 		PrintWriter out=response.getWriter();
 		

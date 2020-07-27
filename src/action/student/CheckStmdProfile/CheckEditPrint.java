@@ -8,20 +8,19 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import action.BasePrintXmlAction;
+
 /**
  * 新生填報統計
  * @author John
  *
  */
-public class CheckEditPrint {
+public class CheckEditPrint extends BasePrintXmlAction{
 	
 	public void print(HttpServletResponse response, List<Map>cls) throws IOException{
 		
 		Date date=new Date();
-		response.setContentType("text/html; charset=UTF-8");
-		response.setContentType("application/vnd.ms-excel");
-		response.setHeader("Content-disposition","attachment;filename="+date.getTime()+".xls");			
-		
+		xml2ods(response, getRequest(), date);
 		PrintWriter out=response.getWriter();
 		
 		

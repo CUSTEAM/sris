@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 
 import service.impl.DataFinder;
+import action.score.scorePrint.ScoreHistPrint;
 import action.score.scorePrint.avgScorePrint;
 import action.score.scorePrint.csPrint;
 import action.score.scorePrint.gradCreditCount;
@@ -19,6 +20,8 @@ import action.score.scorePrint.stdsClsPrint;
 import action.score.scorePrint.stdsPrint;
 import action.score.scorePrint.totalPrint;
 import action.score.scorePrint.yeaReach;
+import action.score.scorePrint.signFormPrint;
+import model.Message;
 public class ScorePrintAction extends scorePrintBase{
 	
 	public String cno;
@@ -27,9 +30,20 @@ public class ScorePrintAction extends scorePrintBase{
 	public String dno;
 	public String gno;
 	public String zno;	
-	public String grade;		
+	public String grade, student_no;		
 
-	public String execute(){
+	public String execute() throws IOException{
+		//成績單外部單筆進入點
+		if(request.getParameter("scoreHist")!=null){
+			List<Map>stds=getStd(request.getParameter("scoreHist"));			
+			for(int i=0; i<stds.size(); i++){		
+				stds.get(i).put("MasterData", df.sqlGetMap("SELECT*FROM MasterData WHERE student_no='"+stds.get(i).get("student_no")+"'"));
+				stds.get(i).put("years", getScoreHist(stds.get(i).get("graduate").toString(), stds.get(i).get("student_no").toString(), stds.get(i).get("SchNo").toString()));			
+			}		
+			ScoreHistPrint p=new ScoreHistPrint();
+			p.print(response, stds);
+			return null;
+		}
 		
 		return SUCCESS;
 	}	
@@ -622,7 +636,7 @@ public class ScorePrintAction extends scorePrintBase{
 			selds = manager.sqlGet("SELECT o.name as optName, IF(s.status='1',0,s.score)as score, c.chi_name, s.credit, d.opt " +
 			"FROM Seld s, Csno c, Dtime d, CODE_DTIME_OPT o WHERE "
 			+ "o.id=d.opt AND s.Dtime_oid=d.Oid AND s.Dtime_oid=d.Oid AND c.cscode=d.cscode AND s.student_no='"+ 
-			stmds.get(i).get("student_no")+ "' AND d.Sterm='"+term+"' AND s.cscode!='50000'");
+			stmds.get(i).get("student_no")+ "' AND d.Sterm='"+term+"' AND s.cscode!='50000' AND c.chi_name NOT LIKE'%論文%'");
 
 			total = 0;
 			nopa = 0;
@@ -725,5 +739,151 @@ public class ScorePrintAction extends scorePrintBase{
 		gradCreditCount p=new gradCreditCount();
 		p.print(response, list, s);
 		return null;
+	}
+	
+	/**
+	 * 成績單批次
+	 * @return
+	 * @throws IOException
+	 */
+	public String scoreHist() throws IOException{
+		List<Map>stds=getStds(cno, tno, sno, dno, gno, zno, grade);
+		
+		for(int i=0; i<stds.size(); i++){
+			//System.out.println(stds.get(i));
+			stds.get(i).put("MasterData", df.sqlGetMap("SELECT*FROM MasterData WHERE student_no='"+stds.get(i).get("student_no")+"'"));
+			stds.get(i).put("years", getScoreHist(stds.get(i).get("graduate").toString(),stds.get(i).get("student_no").toString(), stds.get(i).get("SchNo").toString()));			
+		}		
+		ScoreHistPrint p=new ScoreHistPrint();
+		p.print(response, stds);
+		return null;
+	}
+	
+	/**
+	 * 成績冊
+	 * @return
+	 * @throws IOException 
+	 */
+	public String signFormPrint() throws IOException{
+		StringBuilder sb=new StringBuilder("SELECT (SELECT COUNT(*)FROM stmd WHERE depart_class=c.ClassNo)as cnt, c.ClassName, c.ClassNo FROM Class c WHERE c.CampusNo='"+cno+"'");
+		//if(!cno.equals(""))sb.append("AND c.CampusNo='"+cno+"'");
+		if(!tno.equals(""))sb.append("AND c.SchoolType='"+tno+"'");
+		if(!sno.equals(""))sb.append("AND c.SchoolNo='"+sno+"'");
+		if(!dno.equals(""))sb.append("AND c.DeptNo='"+dno+"'");
+		if(!gno.equals(""))sb.append("AND c.Grade='"+gno+"'");
+		if(!zno.equals(""))sb.append("AND c.SeqNo='"+zno+"'");
+		if(!grade.equals("")){			
+			if(grade.equals("0"))sb.append("AND graduate='0'");
+			if(grade.equals("1"))sb.append("AND graduate='1'");
+			if(grade.equals("2"))sb.append("AND Type='E'");
+			if(grade.equals("3"))sb.append("AND Type='C'");
+			if(grade.equals("4"))sb.append("AND Type='N'");
+		}
+		/*else{
+			sb.append("AND (Type='P'||Type='E'||Type='C'||Type='N')");
+		}*/		
+		sb.append("ORDER BY c.ClassNo");		
+		//System.out.println(sb);;
+		List<Map>cls=df.sqlGet(sb.toString());
+		signFormPrint p=new signFormPrint();
+		StringBuilder sb1=new StringBuilder("SELECT DISTINCT cl.ClassName, cdo.name as optName, IFNULL(e.cname, '')as cname, c.chi_name, c.cscode "
+		+ "FROM Dtime d LEFT OUTER JOIN empl e ON d.techid=e.idno, CODE_DTIME_OPT cdo, Csno c, Class cl, Seld s WHERE s.Dtime_oid=d.Oid AND "
+		+ "d.depart_class=cl.ClassNo AND cdo.id=d.opt AND d.Sterm='"+getContext().getAttribute("school_term")+"'AND d.cscode=c.cscode AND "
+		+ "d.depart_class IN(");		
+		//sb.append(")ORDER BY cl.DeptNo, cl.Grade, d.opt");
+		for(int i=0; i<cls.size(); i++){
+			sb1.append("'"+cls.get(i).get("ClassNo")+"',");
+		}
+		sb1.delete(sb1.length()-1, sb1.length());
+		sb1.append(")AND c.cscode!='50000'ORDER BY cl.DeptNo, cl.Grade, d.opt");
+		p.print(response, df.sqlGet(sb1.toString()));
+		return null;
+	}
+	
+	public String scoreHistOne() throws IOException{
+		List<Map>stds;
+		if(student_no.indexOf(",")>-1){
+			stds=getStd(student_no.substring(0, student_no.indexOf(",")));
+		}else{
+			stds=getStd(student_no);
+		}
+		
+		if(stds.size()>0){
+			for(int i=0; i<stds.size(); i++){	
+				stds.get(i).put("MasterData", df.sqlGetMap("SELECT*FROM MasterData WHERE student_no='"+stds.get(i).get("student_no")+"'"));
+				stds.get(i).put("years", getScoreHist(stds.get(i).get("graduate").toString(), stds.get(i).get("student_no").toString(), stds.get(i).get("SchNo").toString()));			
+			}		
+			ScoreHistPrint p=new ScoreHistPrint();
+			p.print(response, stds);
+			return null;
+		}
+		Message msg=new Message();
+		msg.setError("請指定學生");
+		this.savMessage(msg);
+		return execute();
+	}
+	
+	private List getScoreTerm(String stdNo, String year, String term, int pass){		
+		return df.sqlGet("SELECT cs.chi_name, c.sname,IF(score<"+pass+", '*', '')as np, cs.cscode, s.credit, s.score FROM ScoreHist s, CODE_DTIME_OPT c, Csno cs WHERE "
+		+ "s.student_no='"+stdNo+"'AND s.school_year='"+year+"'AND s.school_term='"+term+"'AND c.id=s.opt AND s.cscode=cs.cscode AND s.cscode!='99999'ORDER BY s.opt");
+	}
+	
+	private Map getExtraTerm(String stdNo, String year, String term, int pass){		
+		StringBuilder sql=new StringBuilder("SELECT(SELECT remark FROM Gmark WHERE student_no='"+stdNo+"'AND school_year='"+year+"'AND school_term='"+term+"'LIMIT 1)as Gmark,"
+		+ "(SELECT score FROM cond WHERE student_no='"+stdNo+"'AND school_year='"+year+"'AND school_term='"+term+"')as cond,"
+		+ "(SELECT SUM(case when (score>="+pass+" OR score IS NULL) then credit else 0 end)FROM ");
+		if(term.equals("2")){
+			sql.append("ScoreHist WHERE student_no='"+stdNo+"'AND school_year<='"+year+"')as cnt, ");
+		}else{
+			sql.append("ScoreHist WHERE student_no='"+stdNo+"'AND (school_year<'"+year+"'OR(school_year='"+year+"'AND school_term='1')))as cnt, ");
+		}		
+		//sql.append("ROUND(AVG(score),1)as score,SUM(case when (score>="+pass+" OR score IS NULL) then credit else 0 end)as credit "
+		sql.append("ROUND(SUM(score*credit)/SUM(credit), 1)as score, ");
+		sql.append("SUM(case when (score>="+pass+" OR score IS NULL) then credit else 0 end)as credit ");
+		sql.append("FROM ScoreHist WHERE student_no='"+stdNo+"'AND school_year='"+year+"'AND school_term='"+term+"'AND cscode!='99999'");
+		//System.out.println(sql);
+		Map m=df.sqlGetMap(sql.toString());
+		
+		//System.out.println(m);
+		if(m.get("score")!=null){
+			return m;
+		}else{
+			return null;
+		}
+		
+	}
+	
+	private List getScoreHist(String grad, String stdNo, String SchNo){
+		int pass=60;
+		if(SchNo.equals("M"))pass = 70;
+		List<Map>years=df.sqlGet("SELECT DISTINCT school_year FROM ScoreHist WHERE student_no='"+stdNo+"'ORDER BY school_year");
+		for(int i=0; i<years.size(); i++){			
+			if(years.get(i).get("school_year")==null)continue;
+			years.get(i).put("extra1", getExtraTerm(stdNo, years.get(i).get("school_year").toString(), "1", pass));
+			years.get(i).put("term1", getScoreTerm(stdNo, years.get(i).get("school_year").toString(), "1", pass));
+			years.get(i).put("extra2", getExtraTerm(stdNo, years.get(i).get("school_year").toString(), "2", pass));
+			years.get(i).put("term2", getScoreTerm(stdNo, years.get(i).get("school_year").toString(), "2", pass));
+			//System.out.println(years.get(i));			
+		}
+		if(grad.equals("0")){
+			return years;//非畢業班
+		}else{			
+			Map m=new HashMap();
+			m=df.sqlGetMap("SELECT ''as Gmark, ''as cond,(SELECT SUM(case when (score>="+pass+" OR score IS NULL) then credit else 0 end)FROM ScoreHist WHERE student_no=se.student_no)as cnt,"
+			+ "SUM(dt.credit)as credit FROM Seld se, Dtime dt WHERE se.Dtime_oid=dt.Oid AND dt.Sterm='"+getContext().getAttribute("school_term")+"' AND se.student_no='"+stdNo+"'");
+			
+			try{
+				m.put("cnt", Float.parseFloat(m.get("cnt").toString())+Float.parseFloat(m.get("credit").toString()));
+				years.get(years.size()-1).put("school_year", getContext().getAttribute("school_year"));
+				years.get(years.size()-1).put("extra"+getContext().getAttribute("school_term"), m);
+				years.get(years.size()-1).put("term"+getContext().getAttribute("school_term"), df.sqlGet("SELECT cd.sname, c.chi_name, c.cscode, d.credit, ''as score, ''as np FROM Seld s, Dtime d, Csno c, CODE_DTIME_OPT cd WHERE d.opt=cd.id AND c.cscode=d.cscode AND s.Dtime_oid=d.Oid AND d.Sterm='"+getContext().getAttribute("school_term")+"' AND s.student_no='"+stdNo+"'"));
+				
+			}catch(Exception e){
+				
+			}
+			return years;
+		}
+		
+		
 	}
 }

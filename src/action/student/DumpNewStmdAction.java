@@ -83,6 +83,7 @@ public class DumpNewStmdAction extends BaseAction{
 				}
 				
 				//若為表頭
+				if(row.getCell(0)==null)continue;
 				ClassNo=readCellAsString(row.getCell(0));
 				ClassNo=ClassNo.trim();
 				student_no=readCellAsString(row.getCell(1));

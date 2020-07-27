@@ -45,14 +45,15 @@
 			
 		<div class="input-group">
 		<span class="input-group-addon">繳費期限</span>
-		<input class="span3" placeholder="期限" name="edate" id="edate" value="${edate}" type="text" style="ime-mode:disabled" autocomplete="Off"/>	
+		<input class="form-control" placeholder="期限" name="edate" id="edate" value="${edate}" type="text" style="ime-mode:disabled" autocomplete="Off"/>	
 		</div>	
 				
 		<div class="btn-group">
 			<button type="button" class="btn btn-default" disabled>列印</button>
+	    	<!--button class="btn btn-default" name="method:useComPrint">學雜費含電腦實習費</button-->
 	    	<button class="btn btn-default" name="method:tuitionPrint">學雜費</button>
 	    	<button class="btn btn-default" name="method:nottuitionPrint">代辦費</button>
-	    	<button class="btn btn-default" name="method:useComPrint">電腦實習費</button>
+	    	
 	    	
 	    </div>	
 		</td>
@@ -78,9 +79,16 @@
 		<c:if test="${term eq'1' && f.Grade eq'1'}">
 		<div class="panel panel-default">
 		</c:if>
-		<c:if test="${f.Grade !='1'}">
+		
+		
+		<c:if test="${f.Grade ne'1'}">
 		<div class="panel panel-primary">
 		</c:if>
+		<c:if test="${f.Grade eq'1'}">
+		<div class="panel panel-default">
+		</c:if>
+		
+		
 			<div class="panel-heading" role="tab" id="heading${f.ClassNo}">			
 			<table>
 				<tr>
@@ -100,8 +108,7 @@
 							<span class="input-group-btn">
 						        <button class="btn btn-danger" onClick="$('#ClassNo${f.ClassNo}').val('${f.ClassNo}')" name="method:save">儲存</button>
 						    </span>
-						</div>	
-										
+						</div>										
 						</c:if>	
 						</div>				
 					</td>
@@ -164,6 +171,8 @@
 								
 				</div>
 			</div>
+			
+			
 		</div>	
 		</c:if>
 	</c:forEach>
@@ -174,10 +183,13 @@
 </form>
 <script>
 $("#edate").datepicker({
-	//stepMinute: 10,
-	//hourMin: 0,
-	//hourMax: 99
-	//showTime:false
+	changeMonth: true,
+	changeYear: true,
+	//minDate: '@minDate',
+	yearRange: "-1:+1",
+	//showButtonPanel: true,
+	//dateFormat: 'yymmdd'
+	defaultDate: new Date(${school_year+1911-20}, 00, 01)
 });
 
 function confirmDel(ClassNo, ClassName){

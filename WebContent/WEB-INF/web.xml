@@ -14,16 +14,12 @@
 	</context-param>
 
 	<listener>
-		<listener-class>
-			org.springframework.web.context.ContextLoaderListener
-		</listener-class>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 	
 	<listener>
-		<listener-class>
-			service.listener.ContextSetupListener
-		</listener-class>
-	</listener>
+		<listener-class>service.listener.ContextSetupListener</listener-class>
+	</listener>	
 
 	<filter>
 		<filter-name>sitemesh</filter-name>

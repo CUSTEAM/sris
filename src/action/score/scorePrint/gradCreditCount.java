@@ -3,39 +3,26 @@ package action.score.scorePrint;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import service.impl.DataFinder;
+import action.BasePrintXmlAction;
 
 /**
  * 學分下限
  * @author John
  *
  */
-public class gradCreditCount {
+public class gradCreditCount extends BasePrintXmlAction{
 	
 	public void print(HttpServletResponse response, List<Map>list, List<Map>schools) throws IOException{
 		
 		Date date=new Date();
-		response.setContentType("text/html; charset=UTF-8");
-		response.setContentType("application/vnd.ms-excel");
-		response.setHeader("Content-disposition","attachment;filename="+date.getTime()+".xls");			
-		
-		PrintWriter out=response.getWriter();
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		xml2ods(response, getRequest(), date);
+		PrintWriter out=response.getWriter();	
 		
 		out.println ("<?xml version='1.0'?>");
 		out.println ("<?mso-application progid='Excel.Sheet'?>");

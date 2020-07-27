@@ -11,9 +11,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import action.BaseAction;
+import action.BasePrintXmlAction;
 
-public class StdClasCountPrint extends BaseAction{
+public class StdClasCountPrint extends BasePrintXmlAction{
 	
 	public String execute() throws IOException{
 		
@@ -24,11 +24,8 @@ public class StdClasCountPrint extends BaseAction{
 	public void print(HttpServletResponse response) throws IOException{
 		Date date=new Date();
 		SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd");
-		response.setContentType("text/html; charset=UTF-8");
-		response.setContentType("application/vnd.ms-excel");
-		response.setHeader("Content-disposition","attachment;filename="+date.getTime()+".xls");		
+		xml2ods(response, getRequest(), date);
 		PrintWriter out=response.getWriter();
-		
 		
 		out.println ("<?xml version='1.0'?>");
 		out.println ("<?mso-application progid='Excel.Sheet'?>");
@@ -409,6 +406,8 @@ public class StdClasCountPrint extends BaseAction{
 		out.println ("  </Style>");
 		out.println (" </Styles>");
 		
+		df.exSql("UPDATE Class SET stds=(SELECT COUNT(*)FROM stmd WHERE depart_class=Class.ClassNo)");
+		
 		String sql="SELECT cc.name as CampusName, cst.name as TypeName, cs.name "
 		+ "as SchoolName, cco.name as CollegeName,cd.name as DeptName,SUM(f.Money)as Money,"
 		+ "(SELECT COUNT(*)FROM stmd WHERE depart_class=c.ClassNo AND sex='2')as stds2, c.* "
@@ -417,8 +416,7 @@ public class StdClasCountPrint extends BaseAction{
 		+ "CODE_SCHOOL_TYPE cst WHERE c.SchoolType=cst.id AND c.SchoolNo=cs.id AND c.DeptNo=cd.id "
 		+ "AND c.CampusNo=cc.id GROUP BY c.ClassNo HAVING stds>0;";
 		//System.out.println(sql);
-		List<Map>s=df.sqlGet(sql);
-		
+		List<Map>s=df.sqlGet(sql);		
 		
 		Map<String, Integer>map=count(s, null, null);
 		

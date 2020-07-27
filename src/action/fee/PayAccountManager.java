@@ -9,15 +9,11 @@ import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import model.Message;
-import model.Stmd;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -25,10 +21,10 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import service.impl.DataFinder;
-import action.BaseAction;
+import action.BasePrintXmlAction;
+import model.Message;
 
-public class PayAccountManager extends BaseAction{
+public class PayAccountManager extends BasePrintXmlAction{
 	
 	public File upload;	
 	public String occur_month, cno, tno, year, term, StudentNo, OfficeNo, AcctNo, Money, Kind, del[];
@@ -368,9 +364,7 @@ public class PayAccountManager extends BaseAction{
 	public String print() throws IOException{
 		Date date=new Date();
 		SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd");
-		response.setContentType("text/html; charset=UTF-8");
-		response.setContentType("application/vnd.ms-excel");
-		response.setHeader("Content-disposition","attachment;filename="+date.getTime()+".xls");		
+		xml2ods(response, getRequest(), date);
 		PrintWriter out=response.getWriter();
 		
 		List<Map>list=mainSearch("stmd");
