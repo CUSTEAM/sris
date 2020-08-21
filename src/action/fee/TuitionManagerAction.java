@@ -342,7 +342,7 @@ public class TuitionManagerAction extends BasePrintXmlAction{
 				out.println ("    <Cell><Data ss:Type='String'>"+stds.get(j).get("student_no")+"</Data></Cell>");
 				out.println ("    <Cell><Data ss:Type='String'>"+stds.get(j).get("student_name")+"</Data></Cell>");
 				if(stds.get(j).get("idno")==null){
-					out.println ("    <Cell><Data ss:Type='String'>"+stds.get(j).get("student_no")+"</Data></Cell>");
+					out.println ("    <Cell><Data ss:Type='String'>"+stds.get(j).get("student_no")+"A</Data></Cell>");
 				}else{
 					out.println ("    <Cell><Data ss:Type='String'>"+stds.get(j).get("idno")+"</Data></Cell>");
 				}
