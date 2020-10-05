@@ -24,6 +24,7 @@ import model.Message;
 public class TuitionManagerAction extends BasePrintXmlAction{
 	
 	public String cno,sno,tno,dno,gno,zno;	
+	public String acc_fee_m, acc_fee_f, sec_fee_m, sec_fee_f, air_fee_m, air_fee_f;
 	public String ClassNo[],quota[],no[];	
 	public String term,edate;	
 	public String cnt;
@@ -49,9 +50,7 @@ public class TuitionManagerAction extends BasePrintXmlAction{
 		try{
 			String ClassNo=df.sqlGetStr("SELECT ClassNo FROM Class WHERE CampusNo='"+
 			cno+"'AND SchoolNo='"+sno+"'AND DeptNo='"+dno+"'AND Grade='"+gno+"'AND SeqNo='"+zno+"'");			
-			
-			
-			
+						
 			df.exSql("INSERT INTO FeePay(DepartClass,Fcode,Kind,Money)VALUES('"+ClassNo+"','N','2',450);");
 			msg.setSuccess("已建立");
 		}catch(Exception e){
@@ -166,7 +165,7 @@ public class TuitionManagerAction extends BasePrintXmlAction{
 		for(int i=0; i<list.size(); i++){
 			
 			if(term.equals("1")){
-				stds=df.sqlGet("SELECT s.student_no, s.student_name, s.idno FROM stmd s, Class c WHERE "
+				stds=df.sqlGet("SELECT s.sex, s.student_no, s.student_name, s.idno FROM stmd s, Class c WHERE "
 				+ "s.depart_class=c.ClassNo AND c.CampusNo='"+list.get(i).get("CampusNo")+"'AND SchoolNo='"+list.get(i).get("SchoolNo")+"'AND "
 				+ "DeptNo='"+list.get(i).get("DeptNo")+"'AND Grade='"+(Integer.parseInt(list.get(i).get("Grade").toString())-1)+"'AND SeqNo='"+list.get(i).get("SeqNo")+"'ORDER BY s.student_no");
 			
@@ -174,7 +173,7 @@ public class TuitionManagerAction extends BasePrintXmlAction{
 					stds=genStds(Integer.parseInt(list.get(i).get("quota").toString()), list.get(i).get("no").toString());
 				}				
 			}else{
-				stds=df.sqlGet("SELECT s.student_no,s.student_name, s.idno "
+				stds=df.sqlGet("SELECT s.sex, s.student_no,s.student_name, s.idno "
 				+ "FROM stmd s WHERE s.depart_class='"+list.get(i).get("ClassNo")+"'ORDER BY s.student_no");
 			}			
 			list.get(i).put("stds", stds);
@@ -221,6 +220,8 @@ public class TuitionManagerAction extends BasePrintXmlAction{
 			std=new HashMap();
 			std.put("student_no", head+f.format(i));
 			std.put("student_name", "");
+			std.put("sex", "1");
+			
 			list.add(std);
 		}
 		
@@ -404,7 +405,9 @@ public class TuitionManagerAction extends BasePrintXmlAction{
 		out.println ("   <ProtectScenarios>False</ProtectScenarios>");
 		out.println ("  </WorksheetOptions>");
 		out.println (" </Worksheet>");		
-		out.println ("</Workbook>");		
+		out.println ("</Workbook>");	
+		out.close();
+		out.flush();
 		return null;
 	}	
 	
@@ -602,6 +605,364 @@ public class TuitionManagerAction extends BasePrintXmlAction{
 		out.println ("  </WorksheetOptions>");
 		out.println (" </Worksheet>");		
 		out.println ("</Workbook>");
+		out.close();
+		out.flush();
+		return null;
+	}
+	
+	/**
+	 * 住宿
+	 * @return
+	 * @throws IOException
+	 * @throws ParseException
+	 */
+	public String acc_print() throws IOException, ParseException {
+		if(edate.equals("")){
+			Message msg=new Message();
+			msg.setError("繳款期限");
+			this.savMessage(msg);
+			return search();
+		}
+		
+		List<Map>list=genStds();
+		List<Map>stds;
+		Date date=new Date();
+		xml2ods(response, getRequest(), date);
+		PrintWriter out=response.getWriter();
+		
+		
+		out.println ("<?xml version='1.0'?>");
+		out.println ("<?mso-application progid='Excel.Sheet'?>");
+		out.println ("<Workbook xmlns='urn:schemas-microsoft-com:office:spreadsheet'");
+		out.println (" xmlns:o='urn:schemas-microsoft-com:office:office'");
+		out.println (" xmlns:x='urn:schemas-microsoft-com:office:excel'");
+		out.println (" xmlns:ss='urn:schemas-microsoft-com:office:spreadsheet'");
+		out.println (" xmlns:html='http://www.w3.org/TR/REC-html40'>");
+		out.println (" <DocumentProperties xmlns='urn:schemas-microsoft-com:office:office'>");
+		out.println ("  <Author>landbank</Author>");
+		out.println ("  <LastAuthor>John</LastAuthor>");
+		out.println ("  <Created>2010-05-12T06:29:34Z</Created>");
+		out.println ("  <LastSaved>2020-10-05T01:05:02Z</LastSaved>");
+		out.println ("  <Version>15.00</Version>");
+		out.println (" </DocumentProperties>");
+		out.println (" <OfficeDocumentSettings xmlns='urn:schemas-microsoft-com:office:office'>");
+		out.println ("  <AllowPNG/>");
+		out.println (" </OfficeDocumentSettings>");
+		out.println (" <ExcelWorkbook xmlns='urn:schemas-microsoft-com:office:excel'>");
+		out.println ("  <WindowHeight>11400</WindowHeight>");
+		out.println ("  <WindowWidth>28800</WindowWidth>");
+		out.println ("  <WindowTopX>0</WindowTopX>");
+		out.println ("  <WindowTopY>0</WindowTopY>");
+		out.println ("  <ProtectStructure>False</ProtectStructure>");
+		out.println ("  <ProtectWindows>False</ProtectWindows>");
+		out.println (" </ExcelWorkbook>");
+		out.println (" <Styles>");
+		out.println ("  <Style ss:ID='Default' ss:Name='Normal'>");
+		out.println ("   <Alignment ss:Vertical='Center'/>");
+		out.println ("   <Borders/>");
+		out.println ("   <Font ss:FontName='新細明體' x:CharSet='136' x:Family='Roman' ss:Size='12'/>");
+		out.println ("   <Interior/>");
+		out.println ("   <NumberFormat/>");
+		out.println ("   <Protection/>");
+		out.println ("  </Style>");
+		out.println ("  <Style ss:ID='s59'>");
+		out.println ("   <NumberFormat ss:Format='@'/>");
+		out.println ("  </Style>");
+		out.println ("  <Style ss:ID='s80'>");
+		out.println ("   <Borders>");
+		out.println ("    <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Left' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Right' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("   </Borders>");
+		out.println ("   <NumberFormat ss:Format='@'/>");
+		out.println ("  </Style>");
+		out.println ("  <Style ss:ID='s81'>");
+		out.println ("   <Borders>");
+		out.println ("    <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Left' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("   </Borders>");
+		out.println ("   <NumberFormat ss:Format='@'/>");
+		out.println ("  </Style>");
+		out.println ("  <Style ss:ID='s88'>");
+		out.println ("   <Borders>");
+		out.println ("    <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'");
+		out.println ("     ss:Color='#FF0000'/>");
+		out.println ("    <Border ss:Position='Left' ss:LineStyle='Continuous' ss:Weight='1'");
+		out.println ("     ss:Color='#FF0000'/>");
+		out.println ("    <Border ss:Position='Right' ss:LineStyle='Continuous' ss:Weight='1'");
+		out.println ("     ss:Color='#FF0000'/>");
+		out.println ("    <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='1'");
+		out.println ("     ss:Color='#FF0000'/>");
+		out.println ("   </Borders>");
+		out.println ("   <NumberFormat/>");
+		out.println ("  </Style>");
+		out.println ("  <Style ss:ID='s93'>");
+		out.println ("   <Alignment ss:Horizontal='Center' ss:Vertical='Center'/>");
+		out.println ("   <Borders>");
+		out.println ("    <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Right' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("   </Borders>");
+		out.println ("   <NumberFormat ss:Format='@'/>");
+		out.println ("  </Style>");
+		out.println ("  <Style ss:ID='s94'>");
+		out.println ("   <Alignment ss:Horizontal='Center' ss:Vertical='Center'/>");
+		out.println ("   <NumberFormat ss:Format='@'/>");
+		out.println ("  </Style>");
+		out.println ("  <Style ss:ID='s96'>");
+		out.println ("   <Alignment ss:Horizontal='Center' ss:Vertical='Center'/>");
+		out.println ("   <Borders>");
+		out.println ("    <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Left' ss:LineStyle='Continuous' ss:Weight='2'/>");
+		out.println ("    <Border ss:Position='Right' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='2'/>");
+		out.println ("   </Borders>");
+		out.println ("   <NumberFormat ss:Format='@'/>");
+		out.println ("  </Style>");
+		out.println ("  <Style ss:ID='s97'>");
+		out.println ("   <Alignment ss:Horizontal='Center' ss:Vertical='Bottom'/>");
+		out.println ("   <Borders>");
+		out.println ("    <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Left' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Right' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='2'/>");
+		out.println ("   </Borders>");
+		out.println ("   <NumberFormat ss:Format='@'/>");
+		out.println ("  </Style>");
+		out.println ("  <Style ss:ID='s98'>");
+		out.println ("   <Alignment ss:Horizontal='Center' ss:Vertical='Center'/>");
+		out.println ("   <Borders>");
+		out.println ("    <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Left' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Right' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='2'/>");
+		out.println ("   </Borders>");
+		out.println ("   <NumberFormat ss:Format='@'/>");
+		out.println ("  </Style>");
+		out.println ("  <Style ss:ID='s100'>");
+		out.println ("   <Alignment ss:Horizontal='Center' ss:Vertical='Center'/>");
+		out.println ("   <Borders>");
+		out.println ("    <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Left' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Right' ss:LineStyle='Continuous' ss:Weight='2'/>");
+		out.println ("    <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='2'/>");
+		out.println ("   </Borders>");
+		out.println ("   <NumberFormat ss:Format='@'/>");
+		out.println ("  </Style>");
+		out.println ("  <Style ss:ID='s101'>");
+		out.println ("   <Borders>");
+		out.println ("    <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Left' ss:LineStyle='Continuous' ss:Weight='2'/>");
+		out.println ("    <Border ss:Position='Right' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("   </Borders>");
+		out.println ("   <NumberFormat ss:Format='@'/>");
+		out.println ("  </Style>");
+		out.println ("  <Style ss:ID='s103'>");
+		out.println ("   <Borders>");
+		out.println ("    <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Left' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Right' ss:LineStyle='Continuous' ss:Weight='2'/>");
+		out.println ("    <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("   </Borders>");
+		out.println ("   <NumberFormat ss:Format='@'/>");
+		out.println ("  </Style>");
+		out.println ("  <Style ss:ID='s104'>");
+		out.println ("   <Alignment ss:Horizontal='Center' ss:Vertical='Center'/>");
+		out.println ("   <Borders>");
+		out.println ("    <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Left' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='2'/>");
+		out.println ("   </Borders>");
+		out.println ("   <NumberFormat ss:Format='@'/>");
+		out.println ("  </Style>");
+		out.println ("  <Style ss:ID='s105'>");
+		out.println ("   <Alignment ss:Horizontal='Center' ss:Vertical='Center'/>");
+		out.println ("   <Borders>");
+		out.println ("    <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Right' ss:LineStyle='Continuous' ss:Weight='1'/>");
+		out.println ("    <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='2'/>");
+		out.println ("   </Borders>");
+		out.println ("   <NumberFormat ss:Format='@'/>");
+		out.println ("  </Style>");
+		out.println ("  <Style ss:ID='s106'>");
+		out.println ("   <Alignment ss:Horizontal='Center' ss:Vertical='Center'/>");
+		out.println ("   <Borders>");
+		out.println ("    <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'");
+		out.println ("     ss:Color='#FF0000'/>");
+		out.println ("    <Border ss:Position='Left' ss:LineStyle='Continuous' ss:Weight='3'");
+		out.println ("     ss:Color='#FF0000'/>");
+		out.println ("    <Border ss:Position='Right' ss:LineStyle='Continuous' ss:Weight='1'");
+		out.println ("     ss:Color='#FF0000'/>");
+		out.println ("    <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='3'");
+		out.println ("     ss:Color='#FF0000'/>");
+		out.println ("   </Borders>");
+		out.println ("   <NumberFormat/>");
+		out.println ("  </Style>");
+		out.println ("  <Style ss:ID='s107'>");
+		out.println ("   <Alignment ss:Horizontal='Center' ss:Vertical='Center'/>");
+		out.println ("   <Borders>");
+		out.println ("    <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'");
+		out.println ("     ss:Color='#FF0000'/>");
+		out.println ("    <Border ss:Position='Left' ss:LineStyle='Continuous' ss:Weight='1'");
+		out.println ("     ss:Color='#FF0000'/>");
+		out.println ("    <Border ss:Position='Right' ss:LineStyle='Continuous' ss:Weight='1'");
+		out.println ("     ss:Color='#FF0000'/>");
+		out.println ("    <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='3'");
+		out.println ("     ss:Color='#FF0000'/>");
+		out.println ("   </Borders>");
+		out.println ("   <NumberFormat/>");
+		out.println ("  </Style>");
+		out.println ("  <Style ss:ID='s108'>");
+		out.println ("   <Alignment ss:Horizontal='Center' ss:Vertical='Center'/>");
+		out.println ("   <Borders>");
+		out.println ("    <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'");
+		out.println ("     ss:Color='#FF0000'/>");
+		out.println ("    <Border ss:Position='Left' ss:LineStyle='Continuous' ss:Weight='1'");
+		out.println ("     ss:Color='#FF0000'/>");
+		out.println ("    <Border ss:Position='Right' ss:LineStyle='Continuous' ss:Weight='3'");
+		out.println ("     ss:Color='#FF0000'/>");
+		out.println ("    <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='3'");
+		out.println ("     ss:Color='#FF0000'/>");
+		out.println ("   </Borders>");
+		out.println ("   <NumberFormat/>");
+		out.println ("  </Style>");
+		out.println ("  <Style ss:ID='s109'>");
+		out.println ("   <Borders>");
+		out.println ("    <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'");
+		out.println ("     ss:Color='#FF0000'/>");
+		out.println ("    <Border ss:Position='Left' ss:LineStyle='Continuous' ss:Weight='3'");
+		out.println ("     ss:Color='#FF0000'/>");
+		out.println ("    <Border ss:Position='Right' ss:LineStyle='Continuous' ss:Weight='1'");
+		out.println ("     ss:Color='#FF0000'/>");
+		out.println ("    <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='1'");
+		out.println ("     ss:Color='#FF0000'/>");
+		out.println ("   </Borders>");
+		out.println ("   <NumberFormat/>");
+		out.println ("  </Style>");
+		out.println ("  <Style ss:ID='s110'>");
+		out.println ("   <Borders>");
+		out.println ("    <Border ss:Position='Bottom' ss:LineStyle='Continuous' ss:Weight='1'");
+		out.println ("     ss:Color='#FF0000'/>");
+		out.println ("    <Border ss:Position='Left' ss:LineStyle='Continuous' ss:Weight='1'");
+		out.println ("     ss:Color='#FF0000'/>");
+		out.println ("    <Border ss:Position='Right' ss:LineStyle='Continuous' ss:Weight='3'");
+		out.println ("     ss:Color='#FF0000'/>");
+		out.println ("    <Border ss:Position='Top' ss:LineStyle='Continuous' ss:Weight='1'");
+		out.println ("     ss:Color='#FF0000'/>");
+		out.println ("   </Borders>");
+		out.println ("   <NumberFormat/>");
+		out.println ("  </Style>");
+		out.println (" </Styles>");
+		out.println (" <Worksheet ss:Name='SHEET1'>");
+		out.println ("  <Table ss:ExpandedColumnCount='18' ss:ExpandedRowCount='"+(row+99)+"' x:FullColumns='1'");
+		out.println ("   x:FullRows='1' ss:StyleID='s59' ss:DefaultColumnWidth='54'");
+		out.println ("   ss:DefaultRowHeight='16.5'>");
+		out.println ("   <Column ss:StyleID='s101' ss:AutoFitWidth='0' ss:Width='66.75'/>");
+		out.println ("   <Column ss:StyleID='s80' ss:AutoFitWidth='0'/>");
+		out.println ("   <Column ss:StyleID='s80' ss:AutoFitWidth='0' ss:Width='79.5'/>");
+		out.println ("   <Column ss:StyleID='s80' ss:AutoFitWidth='0' ss:Span='2'/>");
+		out.println ("   <Column ss:Index='7' ss:StyleID='s80' ss:AutoFitWidth='0' ss:Width='141'/>");
+		out.println ("   <Column ss:StyleID='s80' ss:AutoFitWidth='0' ss:Span='2'/>");
+		out.println ("   <Column ss:Index='11' ss:StyleID='s81' ss:AutoFitWidth='0' ss:Width='147'/>");
+		out.println ("   <Column ss:StyleID='s109' ss:AutoFitWidth='0' ss:Width='71.25'/>");
+		out.println ("   <Column ss:StyleID='s88' ss:AutoFitWidth='0'/>");
+		out.println ("   <Column ss:StyleID='s88' ss:AutoFitWidth='0' ss:Width='67.5'/>");
+		out.println ("   <Column ss:StyleID='s88' ss:AutoFitWidth='0'/>");
+		out.println ("   <Column ss:StyleID='s110' ss:AutoFitWidth='0'/>");
+		out.println ("   <Column ss:StyleID='s93' ss:AutoFitWidth='0'/>");
+		out.println ("   <Column ss:StyleID='s103' ss:AutoFitWidth='0'/>");
+		out.println ("   <Row ss:AutoFitHeight='0' ss:StyleID='s94'>");
+		out.println ("    <Cell ss:StyleID='s96'><Data ss:Type='String'>學號</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s97'><Data ss:Type='String'>姓名</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s97'><Data ss:Type='String'>身分證字號</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s97'><Data ss:Type='String'>電話</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s97'><Data ss:Type='String'>通訊地址</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s98'><Data ss:Type='String'>班級代號</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s97'><Data ss:Type='String'>班級名稱</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s98'><Data ss:Type='String'>部別代號</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s98'><Data ss:Type='String'>部別名稱</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s98'><Data ss:Type='String'>系所代號</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s104'><Data ss:Type='String'>系所名稱</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s106'><Data ss:Type='String'>住宿費</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s107'><Data ss:Type='String'>保證金</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s107'><Data ss:Type='String'>冷氣使用卡</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s107'><Data ss:Type='String'>助學貸款</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s108'><Data ss:Type='String'>合計</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s105'><Data ss:Type='String'>年級</Data></Cell>");
+		out.println ("    <Cell ss:StyleID='s100'><Data ss:Type='String'>繳款期限</Data></Cell>");
+		out.println ("   </Row>");
+		
+		
+		//public String acc_fee_m, acc_fee_f, sec_fee_m, sec_fee_f, air_fee_m, air_fee_f;
+		int sum_m, sum_f;
+		sum_m=Integer.parseInt(acc_fee_m)+Integer.parseInt(sec_fee_m)+Integer.parseInt(air_fee_m);
+		sum_f=Integer.parseInt(acc_fee_f)+Integer.parseInt(sec_fee_f)+Integer.parseInt(air_fee_f);
+		String ClassName;
+		//edate=fdate(edate);
+		Map pay1;
+		for(int i=0; i<list.size(); i++){			
+			stds=(List<Map>)list.get(i).get("stds");	
+			
+			for(int j=0; j<stds.size();j++){
+				System.out.println(stds.get(j));
+				ClassName=list.get(i).get("CampusName").toString().substring(0, 2)+list.get(i).get("ClassName").toString();
+				if(term.equals("1")&&list.get(i).get("Grade").toString().equals("1")){
+					ClassName=ClassName.substring(0, ClassName.length()-1);
+				}	
+				
+				out.println ("   <Row ss:AutoFitHeight='0'>");
+				out.println ("    <Cell><Data ss:Type='String'>"+stds.get(j).get("student_no")+"</Data></Cell>");
+				out.println ("    <Cell><Data ss:Type='String'>"+stds.get(j).get("student_name")+"</Data></Cell>");
+				
+				if(stds.get(j).get("idno")==null)stds.get(j).put("idno", "");
+				out.println ("    <Cell><Data ss:Type='String'>"+stds.get(j).get("idno")+"</Data></Cell>");
+				
+				
+				out.println ("    <Cell></Cell>");
+				out.println ("    <Cell></Cell>");
+				out.println ("    <Cell><Data ss:Type='String'>"+list.get(i).get("ClassNo")+"</Data></Cell>");
+				out.println ("    <Cell><Data ss:Type='String'>"+ClassName+"</Data></Cell>");
+				out.println ("    <Cell><Data ss:Type='String'>1</Data></Cell>");
+				out.println ("    <Cell><Data ss:Type='String'>"+list.get(i).get("CampusName")+"</Data></Cell>");
+				out.println ("    <Cell><Data ss:Type='String'>"+list.get(i).get("Dept")+"</Data></Cell>");
+				out.println ("    <Cell><Data ss:Type='String'>"+list.get(i).get("fname")+"</Data></Cell>");
+				
+				
+				if(stds.get(j).get("sex").equals("1")) {
+					out.println ("    <Cell><Data ss:Type='Number'>"+acc_fee_m+"</Data></Cell>");
+					out.println ("    <Cell><Data ss:Type='Number'>"+sec_fee_m+"</Data></Cell>");
+					out.println ("    <Cell><Data ss:Type='Number'>"+air_fee_m+"</Data></Cell>");
+					out.println ("    <Cell><Data ss:Type='Number'>0</Data></Cell>");
+					out.println ("    <Cell><Data ss:Type='Number'>"+sum_m+"</Data></Cell>");
+				}else {
+					out.println ("    <Cell><Data ss:Type='Number'>"+acc_fee_f+"</Data></Cell>");
+					out.println ("    <Cell><Data ss:Type='Number'>"+sec_fee_f+"</Data></Cell>");
+					out.println ("    <Cell><Data ss:Type='Number'>"+air_fee_f+"</Data></Cell>");
+					out.println ("    <Cell><Data ss:Type='Number'>0</Data></Cell>");
+					out.println ("    <Cell><Data ss:Type='Number'>"+sum_f+"</Data></Cell>");
+				}			
+				
+				out.println ("    <Cell><Data ss:Type='String'>"+list.get(i).get("Grade")+"</Data></Cell>");
+				out.println ("    <Cell><Data ss:Type='String'>"+edate+"</Data></Cell>");
+				out.println ("   </Row>");				
+				
+			}
+			
+		}		
+		out.println ("  </Table>");
+		out.println ("  <WorksheetOptions xmlns='urn:schemas-microsoft-com:office:excel'>");
+		out.println ("   <Unsynced/>");
+		out.println ("   <Selected/>");
+		out.println ("   <ProtectObjects>False</ProtectObjects>");
+		out.println ("   <ProtectScenarios>False</ProtectScenarios>");
+		out.println ("  </WorksheetOptions>");
+		out.println (" </Worksheet>");
+		out.println ("</Workbook>");		
+		out.close();
+		out.flush();
 		return null;
 	}
 	

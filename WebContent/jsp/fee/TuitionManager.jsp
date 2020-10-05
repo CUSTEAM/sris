@@ -43,7 +43,7 @@
 		</div>
 		
 			
-		<div class="input-group">
+		<div class="input-group has-error">
 		<span class="input-group-addon">繳費期限</span>
 		<input class="form-control" placeholder="期限" name="edate" id="edate" value="${edate}" type="text" style="ime-mode:disabled" autocomplete="Off"/>	
 		</div>	
@@ -60,6 +60,33 @@
 	</tr>
 	<tr>
 		<td>
+		<div class="input-group">
+		<span class="input-group-addon">男生住宿費</span>
+		<input class="form-control" style="width:85px;" placeholder="男住宿費" name="acc_fee_m" id="acc_fee_m" value="${acc_fee_m}" type="text" style="ime-mode:disabled" autocomplete="Off"/>	
+		</div>
+		
+		<input class="form-control" style="width:110px;" placeholder="男宿舍保證金" name="sec_fee_m" id="sec_fee_m" value="${sec_fee_m}" type="text" style="ime-mode:disabled" autocomplete="Off"/>	
+		
+				
+		<input class="form-control" style="width:110px;" placeholder="男宿舍冷氣費" name="air_fee_m" id="air_fee_m" value="${air_fee_m}" type="text" style="ime-mode:disabled" autocomplete="Off"/>		
+		
+		
+		<div class="input-group ">
+		<span class="input-group-addon">女生住宿費</span>
+		<input class="form-control" style="width:85px;" placeholder="女住宿費" name="acc_fee_f" id="acc_fee_f" value="${acc_fee_f}" type="text" style="ime-mode:disabled" autocomplete="Off"/>	
+		</div>
+		
+		<input class="form-control" style="width:110px;" placeholder="女宿舍保證金" name="sec_fee_f" id="sec_fee_f" value="${sec_fee_f}" type="text" style="ime-mode:disabled" autocomplete="Off"/>	
+		
+				
+		<input class="form-control" style="width:110px;" placeholder="女宿舍冷氣費" name="air_fee_f" id="air_fee_f" value="${air_fee_f}" type="text" style="ime-mode:disabled" autocomplete="Off"/>		
+		
+		
+		<button class="btn btn-default" name="method:acc_print">列印住宿費</button>	
+		</td>
+	</tr>
+	<tr>
+		<td>
 		<%@ include file="/inc/jsp-kit/fullSelector.jsp"%>	
 		<div class="btn-group">
 		<button class="btn btn-default" name="method:search">查詢收費班級</button>
@@ -67,6 +94,7 @@
 		</div>
 		</td>
 	</tr>
+	
 </table>
 </div>
 
