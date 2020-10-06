@@ -82,7 +82,7 @@
 		<input class="form-control" style="width:110px;" placeholder="女宿舍冷氣費" name="air_fee_f" id="air_fee_f" value="${air_fee_f}" type="text" style="ime-mode:disabled" autocomplete="Off"/>		
 		
 		
-		<button class="btn btn-default" name="method:acc_print">列印住宿費</button>	
+		<button class="btn btn-default" name="method:acc_print">列印本學期住宿費</button>	
 		</td>
 	</tr>
 	<tr>

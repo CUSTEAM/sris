@@ -62,7 +62,7 @@ public class TuitionManagerAction extends BasePrintXmlAction{
 	}
 	
 	public String search(){
-		request.setAttribute("fee", getCs());		
+		request.setAttribute("fee", getCs(true));		
 		return SUCCESS;
 	}
 	
@@ -70,7 +70,7 @@ public class TuitionManagerAction extends BasePrintXmlAction{
 	 * 取範圍內班級
 	 * @return
 	 */
-	private List getCs(){		
+	private List getCs(boolean upgrade){		
 		//範圍
 		StringBuilder sb=new StringBuilder("SELECT d.fname, fq.quota,fq.no, c.*,cc.name as CampusName,cd.name as DeptName,"
 		+ "(SELECT COUNT(*)FROM stmd WHERE depart_class=c.ClassNo)as cnt,"
@@ -82,14 +82,18 @@ public class TuitionManagerAction extends BasePrintXmlAction{
 		System.out.println(sb);
 		List<Map>list=df.sqlGet(sb.toString());
 		List result=new ArrayList();
-		if(term.equals("1")){//第1學期需升級
-			for(int i=0; i<list.size(); i++){	
-				//重整升級後人數
-				list.get(i).put("cnt", df.sqlGetInt("SELECT COUNT(*) FROM stmd s, Class c WHERE "
-				+ "s.depart_class=c.ClassNo AND c.CampusNo='"+list.get(i).get("CampusNo")+"'AND SchoolNo='"+list.get(i).get("SchoolNo")+"'AND "
-				+ "DeptNo='"+list.get(i).get("DeptNo")+"'AND Grade='"+(Integer.parseInt(list.get(i).get("Grade").toString())-1)+"'AND SeqNo='"+list.get(i).get("SeqNo")+"'"));
-			}			
+		if(upgrade) {
+			
+			if(term.equals("1")){//第1學期需升級
+				for(int i=0; i<list.size(); i++){	
+					//重整升級後人數
+					list.get(i).put("cnt", df.sqlGetInt("SELECT COUNT(*) FROM stmd s, Class c WHERE "
+					+ "s.depart_class=c.ClassNo AND c.CampusNo='"+list.get(i).get("CampusNo")+"'AND SchoolNo='"+list.get(i).get("SchoolNo")+"'AND "
+					+ "DeptNo='"+list.get(i).get("DeptNo")+"'AND Grade='"+(Integer.parseInt(list.get(i).get("Grade").toString())-1)+"'AND SeqNo='"+list.get(i).get("SeqNo")+"'"));
+				}			
+			}
 		}
+		
 		//取各項金額	
 		for(int i=0; i<list.size(); i++){			
 			
@@ -155,8 +159,8 @@ public class TuitionManagerAction extends BasePrintXmlAction{
 	 * @return
 	 * @throws ParseException
 	 */
-	private List genStds() throws ParseException{
-		List<Map>list=getCs();
+	private List genStds(boolean geNew) throws ParseException{
+		List<Map>list=getCs(geNew);
 		List<Map>stds,pays;
 		edate=fdate(edate);
 		row=0;
@@ -164,11 +168,11 @@ public class TuitionManagerAction extends BasePrintXmlAction{
 		
 		for(int i=0; i<list.size(); i++){
 			
-			if(term.equals("1")){
+			if(term.equals("1")&& geNew){
 				stds=df.sqlGet("SELECT s.sex, s.student_no, s.student_name, s.idno FROM stmd s, Class c WHERE "
 				+ "s.depart_class=c.ClassNo AND c.CampusNo='"+list.get(i).get("CampusNo")+"'AND SchoolNo='"+list.get(i).get("SchoolNo")+"'AND "
 				+ "DeptNo='"+list.get(i).get("DeptNo")+"'AND Grade='"+(Integer.parseInt(list.get(i).get("Grade").toString())-1)+"'AND SeqNo='"+list.get(i).get("SeqNo")+"'ORDER BY s.student_no");
-			
+				if(geNew)
 				if(stds.size()<1 && list.get(i).get("quota")!=null){//建立無學號
 					stds=genStds(Integer.parseInt(list.get(i).get("quota").toString()), list.get(i).get("no").toString());
 				}				
@@ -298,7 +302,7 @@ public class TuitionManagerAction extends BasePrintXmlAction{
 		out.println ("  </Style>");
 		out.println (" </Styles>");
 		
-		List<Map>list=genStds();
+		List<Map>list=genStds(true);
 		List<Map>stds;
 		out.println (" <Worksheet ss:Name='SHEET1'>");
 		out.println ("  <Table ss:ExpandedColumnCount='21' ss:ExpandedRowCount='"+(row+1)+"' x:FullColumns='1'");
@@ -426,7 +430,7 @@ public class TuitionManagerAction extends BasePrintXmlAction{
 			return search();
 		}
 		
-		List<Map>list=genStds();
+		List<Map>list=genStds(true);
 		List<Map>stds;
 		Date date=new Date();
 		xml2ods(response, getRequest(), date);
@@ -624,7 +628,7 @@ public class TuitionManagerAction extends BasePrintXmlAction{
 			return search();
 		}
 		
-		List<Map>list=genStds();
+		List<Map>list=genStds(false);
 		List<Map>stds;
 		Date date=new Date();
 		xml2ods(response, getRequest(), date);
