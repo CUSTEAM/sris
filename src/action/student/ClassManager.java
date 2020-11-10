@@ -17,8 +17,8 @@ public class ClassManager extends BaseAction{
 	//public String nobody[], Type[], CampusNo[], InstNo[], graduate[], SchoolType[], SchoolNo[], DeptNo[], Grade[], SeqNo[];	
 	public String nobody, Type, CampusNo, InstNo, graduate, SchoolType, SchoolNo, DeptNo, Grade, SeqNo;	
 	public String nobody1, Type1, CampusNo1, InstNo1, graduate1, SchoolType1, SchoolNo1, DeptNo1, Grade1, SeqNo1;
-	public String ClassNo, ClassName, ShortName;	
-	
+	public String ClassNo, ClassName, ShortName, admission;	
+	public String typeId[], admissions[], Oids[];
 	public String execute(){
 		
 		
@@ -27,7 +27,8 @@ public class ClassManager extends BaseAction{
 	
 	public String search(){		
 		
-		StringBuilder sb=new StringBuilder("SELECT e1.cname as editname, e.cname, e.CellPhone, cct.name as typeName, c.* FROM (Class c LEFT OUTER JOIN empl e ON c.tutor=e.idno)LEFT OUTER JOIN empl e1 ON e1.idno=c.editor, CODE_CLASS_TYPE cct WHERE c.Type=cct.id ");
+		StringBuilder sb=new StringBuilder("SELECT e1.cname as editname, e.cname, e.CellPhone, cct.id as typeId, cct.name as typeName, c.* "
+		+ "FROM (Class c LEFT OUTER JOIN empl e ON c.tutor=e.idno)LEFT OUTER JOIN empl e1 ON e1.idno=c.editor, CODE_CLASS_TYPE cct WHERE c.Type=cct.id ");
 		if(!Type.equals(""))sb.append("AND c.Type='"+Type+"'");
 		if(!CampusNo.equals(""))sb.append("AND c.CampusNo='"+CampusNo+"'");
 		if(!InstNo.equals(""))sb.append("AND c.InstNo='"+InstNo+"'");
@@ -44,12 +45,24 @@ public class ClassManager extends BaseAction{
 		}
 		
 		sb.append(" ORDER BY c.CampusNo, c.DeptNo, c.SchoolNo");
-		
+		//System.out.println(sb);
 		request.setAttribute("cls", df.sqlGet(sb.toString()));
 		return SUCCESS;
 	}
 	
-	
+	public String batchSave() {
+		
+		for(int i=0; i<Oids.length; i++) {
+			
+			if(!Oids[i].equals("")) {
+				df.exSql("UPDATE Class SET Type='"+typeId[i]+"', Admission='"+admissions[i]+"', editor='"+getSession().getAttribute("userid")+"' WHERE Oid="+Oids[i]);
+			}
+			
+			
+		}
+		
+		return search();
+	}
 	
 	public String save(){
 		Message msg=new Message();

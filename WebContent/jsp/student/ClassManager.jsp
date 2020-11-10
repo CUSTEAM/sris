@@ -69,6 +69,12 @@
 			<option <c:if test="${nobody eq '1'}">selected</c:if> value="1">有學生</option>
 			<option <c:if test="${nobody eq '0'}">selected</c:if> value="0">無學生</option>
 		</select>
+		
+		<select name="admission" class="selectpicker" data-width="auto">
+	  			<option value="">仍在招生</option>
+	  			<option <c:if test="${admission eq '0' }">selected</c:if> value="0">停止招生</option>
+	  			
+	  		</select>
 				
 		</td>
 	</tr>
@@ -147,23 +153,56 @@
 <div class="panel-heading">班級列表</div>
 
 <display:table name="${cls}" id="row" class="table table-bordered table-striped" sort="list"  requestURI="ClassManager?method=search">
-	  	<display:column style="width:1%;">
-			<button class="btn btn-default" name="method:edit" onClick="edit('${row.Oid}')">修改</button>
+	  	<display:column style="width:1%;">	 
+	  	<input type="hidden" name="Oids" id="Oids${row.Oid }" value="" /> 	
+			<button class="btn btn-default" name="method:edit" onClick="edit('${row.Oid}')">詳細內容</button>			
 		</display:column>
-		<display:column style="white-space:nowrap; width:5%;" title="昨日人數" property="stds" sortable="true" />
-	  	<display:column style="white-space:nowrap; width:5%;" title="型態" property="typeName" sortable="true" />
+		
+	  	<display:column style="white-space:nowrap; width:5%;">	  	
+	  	<c:choose>
+    		<c:when test="${row.typeId eq 'P' }">
+         	<select name="typeId" class="selectpicker" data-style="btn-info" data-width="100px" onChange="$('#Oids${row.Oid }').val(${row.Oid })">
+    		</c:when>
+    		<c:when test="${row.typeId eq 'O' }">
+         	<select name="typeId" class="selectpicker" data-style="btn-danger" data-width="100px" onChange="$('#Oids${row.Oid }').val(${row.Oid })">
+    		</c:when>
+    		<c:when test="${row.typeId eq 'V' }">
+         	<select name="typeId" class="selectpicker" data-style="btn-warning" data-width="100px" onChange="$('#Oids${row.Oid }').val(${row.Oid })">
+    		</c:when>
+    		<c:when test="${row.typeId eq 'N' ||  row.id eq 'C'}">
+         	<select name="typeId" class="selectpicker" data-width="100px" onChange="$('#Oids${row.Oid }').val(${row.Oid })">
+    		</c:when>
+    		<c:otherwise>
+        	<select name="typeId" class="selectpicker" data-width="100px" onChange="$('#Oids${row.Oid }').val(${row.Oid })">
+    		</c:otherwise>
+		</c:choose> 	  		
+	  		<c:forEach items="${CODE_CLASS_TYPE}" var="c">
+	  		<option <c:if test="${c.id eq row.typeId}">selected</c:if> value="${c.id}">${c.name}</option>
+	  		</c:forEach>
+	  	</select>
+	  	</display:column>
+	  	<display:column style="white-space:nowrap; width:5%;">
+	  		${row.admissions}
+	  		<select name="admissions" class="selectpicker" <c:if test="${row.admission eq '1' }">data-style="btn-warning"</c:if> data-width="100px" onChange="$('#Oids${row.Oid }').val(${row.Oid })">
+	  			<option <c:if test="${row.admission eq '1' }">selected</c:if> value="1">招生中</option>
+	  			<option <c:if test="${row.admission eq '0' }">selected</c:if> value="0">停止招生</option>
+	  			
+	  		</select>
+	  	</display:column>
+	  	<display:column style="white-space:nowrap; width:3%;" title="人數" property="stds" sortable="true" />
 	  	<display:column style="white-space:nowrap; width:5%;" title="班級代碼" property="ClassNo" sortable="true" />
 	  	<display:column style="white-space:nowrap; width:5%;" title="班級名稱" property="ClassName" sortable="true" />	  	
 		<display:column style="white-space:nowrap; width:10%;" title="導師" sortable="true">
-		${row.cname} ${row.CellPhone}
+		${row.cname}<br><small>${row.CellPhone}</small>
 		</display:column>
 		
 	  	<display:column style="white-space:nowrap; text-aling:right;" title="修改者" sortable="true">
-	  	${row.editname} ${row.editime}
+	  	${row.editname} <br>
+	  	<small>${row.editime}</small>
 	  	</display:column>
 </display:table>
 
-
+<div class="panel-footer"><button class="btn btn-danger btn-lg" name="method:batchSave">儲存變更</button></div>
 </div>
 </c:if>
 
