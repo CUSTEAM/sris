@@ -71,10 +71,10 @@
 		</select>
 		
 		<select name="admission" class="selectpicker" data-width="auto">
-	  			<option value="">仍在招生</option>
-	  			<option <c:if test="${admission eq '0' }">selected</c:if> value="0">停止招生</option>
-	  			
-	  		</select>
+			<option value="">是否招生</option>
+	  		<option <c:if test="${admission eq '1' }">selected</c:if> value="1">仍在招生</option>
+	  		<option <c:if test="${admission eq '0' }">selected</c:if> value="0">停止招生</option>
+	  	</select>
 				
 		</td>
 	</tr>

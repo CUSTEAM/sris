@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="model.gradresu" table="gradresu" catalog="CIS">
+        
+        <id name="student_no" column="student_no" type="java.lang.String">
+            <generator class="assigned"/>
+        </id> 
+        
+        <property name="hist_credit1" type="java.lang.Float">
+            <column name="hist_credit1" />
+        </property>
+        <property name="hist_credit2" type="java.lang.Float">
+            <column name="hist_credit2" />
+        </property>
+        <property name="hist_credit3" type="java.lang.Float">
+            <column name="hist_credit3" />
+        </property>
+        
+        <property name="curr_credit1" type="java.lang.Float">
+            <column name="curr_credit1" />
+        </property>
+        <property name="curr_credit2" type="java.lang.Float">
+            <column name="curr_credit2" />
+        </property>
+        <property name="curr_credit3" type="java.lang.Float">
+            <column name="curr_credit3" />
+        </property>
+        
+        <property name="language" type="java.lang.String">
+            <column name="language" />
+        </property>
+        <property name="certificate" type="java.lang.String">
+            <column name="certificate" />
+        </property>
+        <property name="practice" type="java.lang.String">
+            <column name="practice" />
+        </property>              
+    </class>
+</hibernate-mapping>

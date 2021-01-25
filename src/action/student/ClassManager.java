@@ -38,7 +38,7 @@ public class ClassManager extends BaseAction{
 		if(!DeptNo.equals(""))sb.append("AND c.DeptNo='"+DeptNo+"'");
 		if(!Grade.equals(""))sb.append("AND c.Grade='"+Grade+"'");
 		if(!SeqNo.equals(""))sb.append("AND c.SeqNo='"+SeqNo+"'");
-		
+		if(!admission.equals(""))sb.append("AND c.admission='"+admission+"'");
 		if(nobody!=null){
 			if(nobody.equals("1")){sb.append(" HAVING c.stds>0");}
 			if(nobody.equals("0")){sb.append(" HAVING c.stds<1");}

@@ -3177,14 +3177,17 @@ public class mailPrint {
 			out.print("            <wx:font wx:val='標楷體'/>");
 			out.print("          </w:rPr>");
 			
-			if(stmds.get(i).get("SchoolNo").equals("32")||stmds.get(i).get("SchoolNo").equals("72") //以下開始為進修部指定新增
-
-														||stmds.get(i).get("SchoolNo").equals("54")
-														||stmds.get(i).get("SchoolNo").equals("52")
-														||stmds.get(i).get("SchoolNo").equals("8G")
-														||stmds.get(i).get("SchoolNo").equals("B2")
-														||stmds.get(i).get("SchoolNo").equals("B3")
-														||stmds.get(i).get("SchoolNo").equals("B4")
+			if(		
+					//以下開始為進修部指定以學生姓名寄送
+					stmds.get(i).get("SchoolNo").equals("32")
+					||stmds.get(i).get("SchoolNo").equals("72") 					
+					||stmds.get(i).get("SchoolNo").equals("54")
+					||stmds.get(i).get("SchoolNo").equals("52")
+					||stmds.get(i).get("SchoolNo").equals("8G")
+					||stmds.get(i).get("SchoolNo").equals("B2")
+					||stmds.get(i).get("SchoolNo").equals("B3")
+					||stmds.get(i).get("SchoolNo").equals("B4")
+					||stmds.get(i).get("SchoolNo").equals("C3")
 					
 					){out.print("          <w:t>"+ stmds.get(i).get("student_name")+ " 同學收</w:t>");
 				
