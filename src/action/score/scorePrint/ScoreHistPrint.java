@@ -19,8 +19,6 @@ public class ScoreHistPrint extends BasePrintXmlAction{
 	
 	/**
 	 * 成績單
-	 * 只花2天(約8小時工作時間)完成
-	 * 之前的白痴是用了好幾個學期才完成，當年還要我寫同步程式把資料匯到informix去印成績單
 	 * @param response
 	 * @param stds
 	 * @throws IOException

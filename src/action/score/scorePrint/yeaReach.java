@@ -13,7 +13,8 @@ import action.BasePrintXmlAction;
 
 
 /**
- * 報表2
+ * 連續三分之二
+ * 
  * @author John
  *
  */

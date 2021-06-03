@@ -510,12 +510,12 @@ public class ScorePrintAction extends scorePrintBase{
 			}			
 			cnt=Float.parseFloat(tmp1.get(i).get("cnt").toString());
 			//if(cnt<9)continue;//小於九學分無二一
-			if(fail>=(cnt/2)){				
+			if(fail>=(   (cnt/3)*2    )){				
 				stds1.add(tmp1.get(i));
 			}
 		}		
 		
-		List stds2=new ArrayList();//連續21
+		List stds2=new ArrayList();//連續32//2021-6-3註冊組改校規
 		Map map;
 		for(int i=0; i<stds1.size(); i++){			
 			for(int j=0; j<stds.size(); j++){				

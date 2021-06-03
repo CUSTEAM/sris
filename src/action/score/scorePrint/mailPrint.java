@@ -2832,7 +2832,7 @@ public class mailPrint {
 				out.print("            <wx:font wx:val='標楷體'/>");
 				out.print("            <w:sz w:val='22'/>");
 				out.print("          </w:rPr>");
-				out.print("          <w:t>1.學期學業成績不及格科目之學分數連續兩學期達二分之ㄧ者，應予退學。</w:t>");
+				out.print("          <w:t>1.學期學業成績不及格科目之學分數連續兩學期達三分之二者，應予退學。</w:t>");
 				out.print("        </w:r>");
 				out.print("      </w:p>");
 				out.print("      <w:p wsp:rsidR='00CD0BF5' wsp:rsidRPr='00347F50' wsp:rsidRDefault='00986905' wsp:rsidP='00986905'>");
@@ -3187,8 +3187,10 @@ public class mailPrint {
 					||stmds.get(i).get("SchoolNo").equals("B2")
 					||stmds.get(i).get("SchoolNo").equals("B3")
 					||stmds.get(i).get("SchoolNo").equals("B4")
+					||stmds.get(i).get("SchoolNo").equals("C2")
 					||stmds.get(i).get("SchoolNo").equals("C3")
-					
+					||stmds.get(i).get("SchoolNo").equals("C4")
+					||stmds.get(i).get("SchoolNo").equals("22")
 					){out.print("          <w:t>"+ stmds.get(i).get("student_name")+ " 同學收</w:t>");
 				
 			}else{

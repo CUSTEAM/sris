@@ -30,8 +30,8 @@
 <table class="table">
 	<tr>
 		<td>
-		<a class="btn btn-primary btn-lg btn-block" href="jsp/student/dumpStds.xlsx"><span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>下載格式</a>	<br>			    
-		<input name="upload" type="file" data-show-upload="false"
+		
+		<input name="upload" multiple type="file" data-show-upload="false"
 		id="upload" class="file file-loading "/><br>
 		<script>
 		$("#upload").fileinput({
@@ -39,7 +39,7 @@
 			
 		    language: "zh-TW",
 		    uploadUrl: "",
-		    allowedFileExtensions: ["xls", "xlsx"]
+		    allowedFileExtensions: ["jpg", "jpeg", "png"]
 		});
 		</script>
 					

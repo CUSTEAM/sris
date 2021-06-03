@@ -69,6 +69,10 @@
 			<result name="edit">/jsp/student/CheckStmdGraduate/edit.jsp</result>
 		</action>
 		
+		<action name="UploadStmdImage" class="action.student.UploadStmdImageAction">
+			<result>/jsp/student/UploadStmdImage.jsp</result>			
+		</action>
+		
 	</package>
 	
 	<package name="PublicPrint" extends="abstract_struts" namespace="/">

@@ -83,7 +83,7 @@
 		    <button class="btn btn-default" name="method:scoreHist" type="submit">班級成績單</button>
 		    <button class="btn btn-default" name="method:avgScore" type="submit">班級平均成績</button>
 			<button class="btn btn-default" name="method:gradCredit" type="submit">班級畢業學分數</button>
-		    <button class="btn btn-danger" name="method:yeaReach" type="submit">連續1/2不及格</button>	    
+		    <button class="btn btn-danger" name="method:yeaReach" type="submit">連續2/3不及格</button>	    
 		</div>
 		
 		
