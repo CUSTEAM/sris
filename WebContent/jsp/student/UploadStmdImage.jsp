@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>新生資料匯入</title>
+<title>照片批次匯入</title>
 <link href="/eis/inc/css/jquery-ui.css" rel="stylesheet"/>
 <link href="/eis/inc/css/wizard-step.css" rel="stylesheet"/>
 <link href="/eis/inc/bootstrap/plugin/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet">
@@ -18,14 +18,14 @@
 <body>    
 <div class="bs-callout bs-callout-info">
 
-<h4>新生資料批次匯入</h4> <small>請先下載最新格式，依欄位貼上資料，儲存後點選檔案並按下匯入資料</small>
+<h4>照片批次匯入</h4> <small>請將照片檔名改為學號，瀏覽資料夾中的照片用滑鼠圈選檔案批次上傳</small>
 
 </div>
 <form action="UploadStmdImage" method="post" class="form-horizontal" enctype="multipart/form-data">
 <div class="wizard-steps">
-  	<div><a href="#"><span>1</span> 下載格式</a></div>
-  	<div><a href="#"><span>2</span> 依欄位貼上資料</a></div>
-  	<div><a href="#"><span>3</span> 匯入資料</a></div>
+  	<div><a href="#"><span>1</span> 準備照片</a></div>
+  	<div><a href="#"><span>2</span> 將檔名改為學號</a></div>
+  	<div><a href="#"><span>3</span> 圈選上傳</a></div>
 </div>
 
 <table class="table">
