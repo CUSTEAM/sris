@@ -45,6 +45,7 @@
             	<value>model/EnrollStmd.hbm.xml</value>
             	<value>model/SysLogSecurity.hbm.xml</value>
             	<value>model/gradresu.hbm.xml</value>
+            	
             </list>
         </property>
     </bean>

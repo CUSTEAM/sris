@@ -239,6 +239,7 @@ public class ScoreManagerAction extends BaseAction{
 	
 	/**
 	 * 修改個人歷年
+	 * TODO 似乎要算平均和排名2022/2/22
 	 * @return
 	 */
 	public String saveScoreHist(){

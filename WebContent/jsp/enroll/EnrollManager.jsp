@@ -47,12 +47,13 @@
 		<td>${e.enroll_name}</td>
 		<td nowrap>${fn:substring(e.sign_begin, 0, 10)}<br>${fn:substring(e.sign_end, 0, 10)}</td>
 		<td nowrap>${fn:substring(e.open_score, 0, 10)}<br>${fn:substring(e.open_match, 0, 10)}</td>
-		<td>${e.con}/${e.cnt}</td>
+		<td>${e.cnt}</td>
 		<td nowrap>
 		<div class="btn-group" role="group" aria-label="...">
 			<button onClick="$('#enrollOid').val('${e.Oid}')" name="method:managEnroll" class="btn btn-default">考試管理</button>
 		  	<button onClick="$('#enrollOid').val('${e.Oid}')" name="method:managStmd" class="btn btn-default">考生管理</button>
-		  	<a href="/pis/EnrollDoc?EnrollOid=${e.Oid}" class="btn btn-default">考生列表</a>
+		  	<a href="/pis/EnrollDoc?EnrollOid=${e.Oid}" class="btn btn-default">申請書列表</a>
+		  	<button onClick="$('#enrollOid').val('${e.Oid}')" name="method:printList" class="btn btn-default">學生列表</button>
 		</div>
 		<button onClick="return(confirm('已輸入的所有資料將無法重複使用, 確定刪除?'))" onMouseOver="$('#enrollOid').val('${e.Oid}')" name="method:del" class="btn btn-danger">刪除</button>
 		</td>
@@ -309,9 +310,9 @@
 		<div class="form-group">
 		    
 		    <div class="input-group">
-		      <div class="input-group-addon">名額</div>
-		      <input type="text" style="width:100px;" name="subsel" value="${enrol.subsel}" class="form-control" placeholder="錄取人數">
-		      <div class="input-group-addon">人</div>
+		      <div class="input-group-addon">選填志願數</div>
+		      <input type="text" style="width:100px;" name="subsel" value="${enrol.subsel}" class="form-control" placeholder="可跨系數">
+		      <div class="input-group-addon">系所</div>
 		    </div>
 		</div>
   		</td>

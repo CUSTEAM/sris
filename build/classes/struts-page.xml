@@ -73,6 +73,18 @@
 			<result>/jsp/student/UploadStmdImage.jsp</result>			
 		</action>
 		
+		<action name="StdsManager" class="action.student.StdsManagerAction">
+			<result>/jsp/student/StdsManager.jsp</result>			
+		</action>
+		
+		<action name="StdsInfoExtendManager" class="action.student.StdsInfoExtendManagerAction">
+			<result>/jsp/student/StdsInfoExtendManager.jsp</result>			
+		</action>
+		
+		<action name="RecruitQuotaManager" class="action.student.RecruitQuotaManagerAction">
+			<result>/jsp/student/RecruitQuotaManager.jsp</result>			
+		</action>
+		
 	</package>
 	
 	<package name="PublicPrint" extends="abstract_struts" namespace="/">
@@ -91,7 +103,9 @@
 			<result>/jsp/enroll/EnrollView.jsp</result>
 		</action>
 		
-		
+		<action name="EnrollSnatoManager" class="action.enroll.EnrollSnatoManager">
+			<result>/jsp/enroll/EnrollSnatoManager.jsp</result>	    
+		</action>
 		
 	</package>
 	

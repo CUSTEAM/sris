@@ -18,7 +18,7 @@
 <select name="dno" class="selectpicker" data-width="auto">
 	<option value="">所有科系</option>
 	<c:forEach items="${allDept}" var="c">
-	<option <c:if test="${c.idno eq dno}">selected</c:if> value="${c.idno}">${c.name}</option>
+	<option <c:if test="${c.idno eq dno}">selected</c:if> value="${c.idno}">${c.idno} ${c.name}</option>
 	</c:forEach>
 </select>
 <select name="gno" class="selectpicker" data-width="auto">

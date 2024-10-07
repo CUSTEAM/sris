@@ -89,14 +89,36 @@
 		<td>
 		<%@ include file="/inc/jsp-kit/fullSelector.jsp"%>	
 		<div class="btn-group">
-		<button class="btn btn-default" name="method:search">查詢收費班級</button>
-		<button class="btn btn-danger" name="method:add">新增收費班級</button>	
+		<button class="btn btn-default" name="method:search">查詢</button>
+		<button class="btn btn-danger" name="method:add">新增收費班級</button>
+		
 		</div>
+		
+		
+		
+		
+		
 		</td>
 	</tr>
-	
+	<tr>
+		<td colspan="99">
+		
+		<div class="input-group">		
+		<input class="form-control" style="width:110px;" value="${minusAmount}" name="minusAmount" placeholder="減免金額" type="text" style="ime-mode:disabled" autocomplete="Off"/>	
+		<div class="input-group-btn">
+		<button class="btn btn-success" name="method:reduce">固定金額減免項目</button>
+		</div>
+		</div>
+		
+		<button class="btn btn-primary" name="method:reduceHalf">(學分費+雜費)½減免項目</button>
+		<button class="btn btn-warning" name="method:free">五專免學費項目</button>
+		<samp>*依上列條件建立</samp>
+		</td>
+	</tr>
 </table>
 </div>
+
+
 
 
 <c:if test="${!empty fee}">
@@ -138,6 +160,12 @@
 						    </span>
 						</div>										
 						</c:if>	
+						
+						<c:if test="${term eq'1' && f.Grade ne'1'}">	
+						<input type="hidden" type="text" name="quota" />
+						<input type="hidden" type="text" name="no" />
+						</c:if>
+						
 						</div>				
 					</td>
 				</tr>
