@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="model.stmd" table="stmd" catalog="CIS">
+        <id name="oid" type="java.lang.Integer">
+            <column name="Oid" />
+            <generator class="identity" />
+        </id>
+        <property name="departClass" type="java.lang.String">
+            <column name="depart_class" length="10" not-null="true">
+                <comment>班級代碼</comment>
+            </column>
+        </property>
+        <property name="studentNo" type="java.lang.String">
+            <column name="student_no" length="10" not-null="true" unique="true">
+                <comment>學號</comment>
+            </column>
+        </property>
+        <property name="studentName" type="java.lang.String">
+            <column name="student_name" length="20" not-null="true">
+                <comment>學生姓名</comment>
+            </column>
+        </property>
+        <property name="sex" type="java.lang.String">
+            <column name="sex" length="1">
+                <comment>性別::1)男 2)女</comment>
+            </column>
+        </property>
+        <property name="birthday" type="java.util.Date">
+            <column name="birthday" length="0">
+                <comment>生日</comment>
+            </column>
+        </property>
+        <property name="idno" type="java.lang.String">
+            <column name="idno" length="10">
+                <comment>身分證字號</comment>
+            </column>
+        </property>
+        <property name="entrance" type="java.lang.Short">
+            <column name="entrance">
+                <comment>入學年月</comment>
+            </column>
+        </property>
+        <property name="gradyear" type="java.lang.Short">
+            <column name="gradyear">
+                <comment>前學歷畢業年度</comment>
+            </column>
+        </property>
+        <property name="ident" type="java.lang.String">
+            <column name="ident" length="1">
+                <comment>入學身分代碼::1)一般生2)申請入學3)殘障生4)蒙藏生5)原住民6)保送生7)僑生8)外籍9)港澳A)派外B)技優C)體保D)東引E)視障F)退伍G)退伍軍人H)推薦甄試</comment>
+            </column>
+        </property>
+        <property name="divi" type="java.lang.String">
+            <column name="divi" length="2">
+                <comment>組別::12)航空技術組13)一般機械組14)製造組21)儀表控制組31)計算機工程組32)航空電子組41)工程組42)管理組43)營管組51)設計組61)營建工程組62)地籍測量組3G)碩士班</comment>
+            </column>
+        </property>
+        <property name="birthProvince" type="java.lang.String">
+            <column name="birth_province" length="32">
+                <comment>出生省份</comment>
+            </column>
+        </property>
+        <property name="birthCounty" type="java.lang.String">
+            <column name="birth_county" length="32">
+                <comment>出生縣市</comment>
+            </column>
+        </property>
+        <property name="currPost" type="java.lang.String">
+            <column name="curr_post" length="5">
+                <comment>通訊郵遞區</comment>
+            </column>
+        </property>
+        <property name="currAddr" type="java.lang.String">
+            <column name="curr_addr" length="255">
+                <comment>通訊地址</comment>
+            </column>
+        </property>
+        <property name="schlCode" type="java.lang.String">
+            <column name="schl_code" length="8">
+                <comment>畢業學校代碼</comment>
+            </column>
+        </property>
+        <property name="gradDept" type="java.lang.String">
+            <column name="grad_dept" length="15">
+                <comment>畢業科系</comment>
+            </column>
+        </property>
+        <property name="graduStatus" type="java.lang.String">
+            <column name="gradu_status" length="1">
+                <comment>前學歷畢業狀態</comment>
+            </column>
+        </property>
+        <property name="parentName" type="java.lang.String">
+            <column name="parent_name" length="10">
+                <comment>家長姓名</comment>
+            </column>
+        </property>
+        <property name="telephone" type="java.lang.String">
+            <column name="telephone" length="20">
+                <comment>聯絡電話</comment>
+            </column>
+        </property>
+        <property name="permPost" type="java.lang.String">
+            <column name="perm_post" length="5">
+                <comment>戶籍郵遞區</comment>
+            </column>
+        </property>
+        <property name="permAddr" type="java.lang.String">
+            <column name="perm_addr" length="255">
+                <comment>戶籍地址</comment>
+            </column>
+        </property>
+        <property name="occurStatus" type="java.lang.String">
+            <column name="occur_status" length="1">
+                <comment>最後學籍狀態(可參考QuitResume)</comment>
+            </column>
+        </property>
+        <property name="occurYear" type="java.lang.Short">
+            <column name="occur_year">
+                <comment>最後學籍變更學年(可參考QuitResume)</comment>
+            </column>
+        </property>
+        <property name="occurTerm" type="java.lang.String">
+            <column name="occur_term" length="1">
+                <comment>最後學籍變更學期(可參考QuitResume)</comment>
+            </column>
+        </property>
+        <property name="occurDate" type="java.util.Date">
+            <column name="occur_date" length="0">
+                <comment>最後學籍變更日期(可參考QuitResume)</comment>
+            </column>
+        </property>
+        <property name="occurDocno" type="java.lang.String">
+            <column name="occur_docno" length="20">
+                <comment>最後學籍變更文號(可參考QuitResume)</comment>
+            </column>
+        </property>
+        <property name="occurCause" type="java.lang.String">
+            <column name="occur_cause" length="3">
+                <comment>最後學籍變更原因(可參考QuitResume)</comment>
+            </column>
+        </property>
+        <property name="occurGraduateNo" type="java.lang.String">
+            <column name="occur_graduate_no" length="20">
+                <comment>畢業號碼</comment>
+            </column>
+        </property>
+        <property name="identBasic" type="java.lang.String">
+            <column name="ident_basic" length="1">
+                <comment>入學身分</comment>
+            </column>
+        </property>
+        <property name="extraStatus" type="java.lang.String">
+            <column name="ExtraStatus" length="1">
+                <comment>1:輔系, 2:雙主修, E:可以輔系身份畢, T:可以雙主修身份畢</comment>
+            </column>
+        </property>
+        <property name="extraDept" type="java.lang.String">
+            <column name="ExtraDept" length="20">
+                <comment>輔系/雙主修的科系</comment>
+            </column>
+        </property>
+        <property name="email" type="java.lang.String">
+            <column name="Email" length="255">
+                <comment>E-mail</comment>
+            </column>
+        </property>
+        <property name="cellPhone" type="java.lang.String">
+            <column name="CellPhone" length="30">
+                <comment>行動電話</comment>
+            </column>
+        </property>
+        <property name="identRemark" type="java.lang.String">
+            <column name="ident_remark" length="30">
+                <comment>備註</comment>
+            </column>
+        </property>
+        <property name="gradyearOrigin" type="java.lang.Short">
+            <column name="gradyear_origin" />
+        </property>
+        <property name="studentEname" type="java.lang.String">
+            <column name="student_ename" length="50">
+                <comment>學生英文姓名</comment>
+            </column>
+        </property>
+        <property name="schlName" type="java.lang.String">
+            <column name="schl_name" length="50">
+                <comment>前學歷畢業學校名稱</comment>
+            </column>
+        </property>
+        
+        
+        	
+    </class>
+</hibernate-mapping>
